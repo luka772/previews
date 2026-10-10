@@ -101,6 +101,17 @@ textarea{width:100%;min-height:64px;resize:vertical}
 .send{background:var(--fg);color:var(--card);border-color:var(--fg)}
 .note{font-size:12px;color:var(--muted)}
 .empty{font-size:12.5px;color:var(--muted)}
+.capedit{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.capedit textarea{min-height:160px;font:inherit;font-size:14px;line-height:1.45;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg)}
+.capedit .row2{display:flex;gap:8px}
+.linkbtn{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--fg);cursor:pointer;margin-top:8px}
+.linkbtn:disabled{opacity:.5;cursor:default}
+.cm.edit .tag{background:var(--warnbg);color:var(--warn)}
+.final{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.final button{border:0;border-radius:12px;padding:12px 14px;font:inherit;font-weight:700;font-size:14px;background:#FD6C0D;color:#fff;cursor:pointer}
+.final button:disabled{background:var(--line);color:var(--muted);cursor:default}
+.final .done{font-size:13px;font-weight:600;color:var(--ok)}
+body.clean .final{display:none}
 @media (max-width:720px){
   .sheet{grid-template-columns:1fr;max-height:100%;overflow-y:auto}
   .sheet .media img{max-height:58vh}
@@ -116,6 +127,7 @@ textarea{width:100%;min-height:64px;resize:vertical}
     <div class="who"><label for="whoName">Je naam</label><input id="whoName" autocomplete="name" placeholder="bv. Jan van Kroketco"></div>
     <div class="progress" id="progress"></div>
     <button type="button" class="viewtoggle" id="viewToggle" aria-pressed="false">Bekijk zoals op Instagram</button>
+    <div class="final" id="final"><button type="button" id="bFinal">Alles goedgekeurd: laat inplannen</button><div class="note" id="finalMsg">Keur eerst alle posts goed.</div></div>
   </section>
 
   <section class="phone" aria-label="Profielvoorbeeld">
@@ -142,6 +154,8 @@ textarea{width:100%;min-height:64px;resize:vertical}
       <div class="scroll">
         <div class="when" id="mWhen"></div>
         <div class="cap" id="mCap"></div>
+        <button type="button" class="linkbtn" id="bEditCap">✎ Tekst aanpassen</button>
+        <div class="capedit" id="capEdit" hidden><textarea id="capText" aria-label="Nieuwe caption"></textarea><div class="row2"><button type="button" class="send" id="capSave">Tekst opslaan</button><button type="button" class="linkbtn" id="capCancel" style="margin-top:0">Annuleren</button></div></div>
         <div>
           <div class="note" style="margin-bottom:6px">Reacties op deze post</div>
           <div class="comments" id="mComments"></div>
@@ -204,6 +218,9 @@ const reviewable=POSTS.filter(p=>p.kind==="post");
 let rows=[], current=null;
 function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 
+function capOf(p){let c=p.caption||"";for(const r of rows){if(r.post===p.id&&r.type==="caption")c=r.text}return c}
+function edited(p){return rows.some(r=>r.post===p.id&&r.type==="caption")}
+function finalRow(){let f=null;for(const r of rows){if(r.type==="final")f=r}return f}
 function statusOf(id){let s=null;for(const r of rows){if(r.post===id&&r.type==="status")s=r.text}return s==="ok"||s==="warn"?s:null}
 
 function setupProfile(){
@@ -230,13 +247,17 @@ function render(){
     const c=document.createElement("span"); c.className="chip"; c.textContent=p.when.split(" · ")[0]; b.append(c);
     if(p.kind==="post"){const s=statusOf(p.id), st=document.createElement("span");
       st.className="st "+(s==="ok"?"ok":s==="warn"?"warn":"new"); st.textContent=s==="ok"?"✓ Goed":s==="warn"?"✎ Aanpassen":"Te bekijken"; b.append(st)}
-    {const n=rows.filter(r=>r.post===p.id&&r.type==="comment").length, w=p.kind==="post"&&statusOf(p.id)==="warn";
+    {const n=rows.filter(r=>r.post===p.id&&(r.type==="comment"||r.type==="caption")).length, w=p.kind==="post"&&statusOf(p.id)==="warn";
      if(n||w){const bg=document.createElement("span"); bg.className="bang"; bg.textContent=n?"! "+n:"!"; bg.title=(w?"Aanpassing gevraagd. ":"")+(n?n+" reactie(s)":""); b.append(bg)}}
     b.addEventListener("click",()=>openPost(p)); g.append(b);
   }
   const ok=reviewable.filter(p=>statusOf(p.id)==="ok").length, warn=reviewable.filter(p=>statusOf(p.id)==="warn").length;
   const pr=$("#progress"); pr.textContent="";
   [["pill ok",ok+" goedgekeurd"],["pill warn",warn+" aanpassen"],["pill",(reviewable.length-ok-warn)+" te bekijken"]].forEach(([c,t])=>{const s=document.createElement("span"); s.className=c; s.textContent=t; pr.append(s)});
+  const fr=finalRow(), all=reviewable.length&&ok===reviewable.length;
+  $("#bFinal").disabled=!CONFIG.ENDPOINT||!all||!!fr;
+  $("#finalMsg").className=fr?"done":"note";
+  $("#finalMsg").textContent=fr?("Doorgestuurd om in te plannen op "+fmtDate(fr.at)+". Bedankt!"):all?"Alles is goedgekeurd. Klik om de posts te laten inplannen.":"Keur eerst alle posts goed ("+ok+"/"+reviewable.length+").";
   if(current) fillModal();
 }
 
@@ -251,19 +272,21 @@ function fillModal(){
   const p=current, img=$("#mImg");
   if(p.img){img.src=p.img; img.hidden=false} else img.hidden=true;
   $("#mWhen").textContent=(p.kind==="reel"?"Reel · al ingepland · ":"Gepland voor ")+p.when;
-  $("#mCap").textContent=p.caption||"Deze reel staat al ingepland en hoeft niet goedgekeurd te worden.";
+  $("#mCap").textContent=p.kind==="post"?capOf(p):(p.caption||"Deze reel staat al ingepland en hoeft niet goedgekeurd te worden.");
+  $("#bEditCap").hidden=p.kind!=="post"; $("#bEditCap").disabled=!CONFIG.ENDPOINT;
+  if($("#capEdit").dataset.post!==p.id){$("#capEdit").hidden=true}
   $("#mFb").hidden=p.kind!=="post";
   const s=statusOf(p.id);
   $("#bOk").setAttribute("aria-pressed",String(s==="ok")); $("#bWarn").setAttribute("aria-pressed",String(s==="warn"));
   const list=$("#mComments"); list.textContent="";
-  const mine=rows.filter(r=>r.post===p.id&&r.type==="comment");
+  const mine=rows.filter(r=>r.post===p.id&&(r.type==="comment"||r.type==="caption"));
   if(!mine.length){const e=document.createElement("div"); e.className="empty"; e.textContent=p.kind==="post"?"Nog geen reacties.":"Geen reacties."; list.append(e)}
   for(const c of mine){
-    const d=document.createElement("div"); d.className="cm";
+    const d=document.createElement("div"); d.className="cm"+(c.type==="caption"?" edit":"");
     const m=document.createElement("div"); m.className="meta";
-    const t=document.createElement("span"); t.className="tag"; t.textContent=c.target==="caption"?"Caption":"Afbeelding";
+    const t=document.createElement("span"); t.className="tag"; t.textContent=c.type==="caption"?"Tekst aangepast":c.target==="caption"?"Caption":"Afbeelding";
     const w=document.createElement("span"); w.textContent=(c.name||"Klant")+" · "+fmtDate(c.at);
-    m.append(t,w); const tx=document.createElement("p"); tx.textContent=c.text; d.append(m,tx); list.append(d);
+    m.append(t,w); const tx=document.createElement("p"); tx.textContent=c.type==="caption"?"Nieuwe tekst opgeslagen (zie caption hierboven).":c.text; d.append(m,tx); list.append(d);
   }
   const off=!CONFIG.ENDPOINT; ["#bOk","#bWarn","#cSend"].forEach(q=>$(q).disabled=off);
   if(off) $("#cMsg").textContent="Reageren is nog niet geactiveerd.";
@@ -297,6 +320,27 @@ $("#fComment").addEventListener("submit",async e=>{
   try{await send(entry); rows.push(Object.assign({name:$("#whoName").value.trim()||"Klant",at:new Date().toISOString()},entry)); $("#cText").value=""; $("#cMsg").textContent="Reactie geplaatst."; render()}
   catch(err){$("#cMsg").textContent="Opslaan lukte niet. Controleer je internet en probeer opnieuw."}
   finally{$("#cSend").disabled=!CONFIG.ENDPOINT}
+});
+
+$("#bEditCap").addEventListener("click",()=>{if(!current)return; const ce=$("#capEdit"); ce.dataset.post=current.id; $("#capText").value=capOf(current); ce.hidden=false; $("#capText").focus()});
+$("#capCancel").addEventListener("click",()=>{$("#capEdit").hidden=true});
+$("#capSave").addEventListener("click",async()=>{
+  if(!current) return; const p=current, text=$("#capText").value.trim(), old=capOf(p);
+  if(!text){$("#cMsg").textContent="De tekst mag niet leeg zijn."; return}
+  if(text===old){$("#capEdit").hidden=true; return}
+  $("#capSave").disabled=true;
+  try{await send({post:p.id,type:"caption",text:text.slice(0,2200),old:old.slice(0,2200)});
+    rows.push({post:p.id,type:"caption",text,name:$("#whoName").value.trim()||"Klant",at:new Date().toISOString()});
+    $("#capEdit").hidden=true; render(); $("#cMsg").textContent="Nieuwe tekst opgeslagen."}
+  catch(e){$("#cMsg").textContent="Opslaan lukte niet. Controleer je internet en probeer opnieuw."}
+  finally{$("#capSave").disabled=false}
+});
+$("#bFinal").addEventListener("click",async()=>{
+  const b=$("#bFinal"); b.disabled=true;
+  const caps=reviewable.map(p=>p.id+": "+(edited(p)?"tekst aangepast":"originele tekst")).join("\n");
+  try{await send({post:"*",type:"final",text:"Alle "+reviewable.length+" posts goedgekeurd.\n"+caps});
+    rows.push({post:"*",type:"final",text:"ok",at:new Date().toISOString()}); render()}
+  catch(e){$("#finalMsg").textContent="Versturen lukte niet. Probeer opnieuw."; b.disabled=false}
 });
 
 $("#viewToggle").addEventListener("click",e=>{
