@@ -1,0 +1,28 @@
+FEEDPREVIEW KROKETCO – OKTOBER
+==============================
+
+In deze map:
+- index.html            de preview (profiel + grid + feedback per post)
+- posts/                afbeeldingen die de preview gebruikt
+- feedback-script.gs    script dat de reacties in een Google Sheet bewaart
+
+A. FEEDBACK ACTIVEREN (eenmalig, ±5 minuten, voor alle klanten samen)
+1. Maak in Google Drive een nieuwe Google Sheet, bv. "Cohezy – klantfeedback".
+2. Menu Extensies > Apps Script. Wis wat er staat en plak de inhoud van feedback-script.gs. Opslaan.
+3. Klik rechtsboven op Implementeren > Nieuwe implementatie > type "Web-app".
+   - Uitvoeren als: Ik
+   - Wie heeft toegang: Iedereen
+   Klik Implementeren en geef toestemming.
+4. Kopieer de web-app-URL (eindigt op /exec).
+5. Open index.html in een teksteditor en plak die URL bij ENDPOINT:"" (bovenaan het script, onder CONFIG).
+
+Alle reacties komen als rijen in het tabblad "Feedback": tijd, klant, post, type (status/comment), over (afbeelding/caption), tekst en naam.
+
+B. ONLINE ZETTEN
+Upload de hele map (index.html + posts/) naar je eigen hosting, bv. als
+cohezy.agency/preview/kroketco-oktober/  (of via Netlify/Vercel: map slepen = online).
+Stuur de klant die link. De pagina staat op "noindex", dus Google toont ze niet.
+
+C. NIEUWE MAAND / ANDERE KLANT
+Kopieer de map, vervang de afbeeldingen in posts/ en pas in index.html enkel CONFIG en POSTS aan
+(CLIENT moet uniek zijn, bv. "gardor-2026-11"). Het script en de Sheet blijven dezelfde.
