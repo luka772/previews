@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cohezy · Klantoverzicht</title>
+<style>
+:root{--bg:#FCFAF6;--card:#fff;--fg:#131313;--muted:#6f6a63;--line:#e6e0d8;--coral:#F87759;--ok:#1f8a4c;--okbg:#e3f5ea;--warn:#b45309;--warnbg:#fff1e3;--soft:#EDE9E3}
+@media (prefers-color-scheme:dark){:root{--bg:#131313;--card:#1c1b1a;--fg:#EDE9E3;--muted:#a49d94;--line:#34322f;--ok:#4cc27e;--okbg:#173326;--warn:#ffb067;--warnbg:#3a2614;--soft:#2a2927;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:26px;letter-spacing:-.01em}h1 span{color:var(--coral)}
+.sub{color:var(--muted);margin:2px 0 0}
+button,input,a.btn{font:inherit}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:7px 14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card.alert{border-color:var(--coral);box-shadow:0 0 0 1px var(--coral)}
+.card h2{margin:0;font-size:17px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.card h2 small{font-size:12px;color:var(--muted);font-weight:500}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--soft);font-variant-numeric:tabular-nums}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.final{background:var(--coral);color:#131313}
+.feed{display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto}
+.it{font-size:12.5px;border-left:3px solid var(--line);padding:2px 0 2px 8px}
+.it b{font-weight:600}.it .t{color:var(--muted)}
+.it.caption{border-color:var(--warn)}.it.date{border-color:#5aa9d6}.it.comment{border-color:var(--coral)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.gate{max-width:360px;margin:12vh auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.gate input{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--bg);color:var(--fg)}
+.muted{color:var(--muted)}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<form class="gate" id="gate" hidden>
+  <h1>Cohezy<span>.</span></h1>
+  <p class="muted" style="margin:0">Vul je beheerderssleutel in. Die blijft enkel op dit toestel bewaard.</p>
+  <input id="key" autocomplete="off" placeholder="Sleutel" aria-label="Sleutel">
+  <button class="btn primary" type="submit">Openen</button>
+  <div class="muted" id="gmsg" role="status"></div>
+</form>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <div><h1>Klantoverzicht<span>.</span></h1><p class="sub" id="upd">Laden…</p></div>
+    <div class="row"><button class="btn" id="refresh" type="button">Vernieuwen</button><button class="btn" id="logout" type="button">Afmelden</button></div>
+  </header>
+  <div class="cards" id="cards"></div>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const ENDPOINT="https://script.google.com/macros/s/AKfycbwjggOapIO31TU4rKeiYpTNFTFSVcYq4PR1Dks2gbo856KOfw7WkM17SteqbnBGOznK/exec";
+// Klant-id → naam, aantal posts ter goedkeuring en link naar de preview
+const CLIENTS={
+  "kroketco-2026-10":{name:"Kroketco",month:"Oktober 2026",posts:6,link:"../kroketco/"}
+};
+/* ================== */
+const $=s=>document.querySelector(s);
+function st(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+let KEY=st("cz-admin")||"";
+const fmt=v=>{try{return new Date(v).toLocaleString("nl-BE",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return""}};
+const label={comment:"reactie",caption:"tekst aangepast",date:"datumvoorstel",status:"status",final:"alles goedgekeurd"};
+
+async function load(){
+  $("#upd").textContent="Laden…";
+  try{
+    const r=await fetch(ENDPOINT+"?client=*&key="+encodeURIComponent(KEY)); const j=await r.json();
+    if(j&&j.error){$("#app").hidden=true; $("#gate").hidden=false; $("#gmsg").textContent=KEY?"Sleutel klopt niet.":""; return}
+    $("#gate").hidden=true; $("#app").hidden=false; render(j);
+    $("#upd").textContent="Bijgewerkt om "+new Date().toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
+  }catch(e){$("#upd").textContent="Laden lukte niet. Controleer je internet."}
+}
+function render(rows){
+  const by={}; rows.forEach(r=>{(by[r.client]=by[r.client]||[]).push(r)});
+  const ids=[...new Set([...Object.keys(CLIENTS),...Object.keys(by)])];
+  const data=ids.map(id=>{
+    const rs=(by[id]||[]).sort((a,b)=>new Date(a.at)-new Date(b.at));
+    const status={}; rs.forEach(r=>{if(r.type==="status")status[r.post]=r.text});
+    const ok=Object.values(status).filter(s=>s==="ok").length, warn=Object.values(status).filter(s=>s==="warn").length;
+    const fin=rs.filter(r=>r.type==="final").pop();
+    const last=rs.length?rs[rs.length-1].at:null;
+    return {id,cfg:CLIENTS[id]||{name:id},rs,ok,warn,fin,last};
+  }).sort((a,b)=>(!!b.fin-!!a.fin)||(new Date(b.last||0)-new Date(a.last||0)));
+  const box=$("#cards"); box.textContent="";
+  data.forEach(d=>{
+    const c=document.createElement("article"); c.className="card"+(d.fin||d.warn?" alert":"");
+    const h=document.createElement("h2"); h.textContent=d.cfg.name; const sm=document.createElement("small"); sm.textContent=d.cfg.month||d.id; h.append(sm); c.append(h);
+    const p=document.createElement("div"); p.className="pills";
+    const add=(cl,t)=>{const s=document.createElement("span"); s.className="pill "+cl; s.textContent=t; p.append(s)};
+    if(d.fin) add("final","Klaar om in te plannen ("+fmt(d.fin.at)+")");
+    add("ok",d.ok+(d.cfg.posts?"/"+d.cfg.posts:"")+" goedgekeurd"); if(d.warn) add("warn",d.warn+" aanpassen");
+    c.append(p);
+    const f=document.createElement("div"); f.className="feed";
+    const items=d.rs.filter(r=>r.type!=="status").slice(-12).reverse();
+    if(!items.length){const e=document.createElement("div"); e.className="muted"; e.textContent=d.last?"Enkel goedkeuringen, geen reacties.":"Nog geen activiteit."; f.append(e)}
+    items.forEach(r=>{const it=document.createElement("div"); it.className="it "+r.type;
+      const b=document.createElement("b"); b.textContent=(r.post==="*"?"Alle posts":r.post)+" · "+(label[r.type]||r.type)+(r.type==="comment"?" ("+(r.target==="caption"?"caption":"beeld")+")":"");
+      const t=document.createElement("div"); t.className="t"; t.textContent=(r.name||"Klant")+" · "+fmt(r.at);
+      const x=document.createElement("div"); x.textContent=r.type==="date"?String(r.text).replace("T"," om "):String(r.text||"").slice(0,240);
+      it.append(b,t,x); f.append(it)});
+    c.append(f);
+    const row=document.createElement("div"); row.className="row";
+    if(d.cfg.link){const a=document.createElement("a"); a.className="btn"; a.href=d.cfg.link; a.target="_blank"; a.rel="noopener"; a.textContent="Preview openen"; row.append(a)}
+    const sub=document.createElement("span"); sub.className="muted"; sub.style.fontSize="12px"; sub.style.alignSelf="center"; sub.textContent=d.last?"Laatste activiteit "+fmt(d.last):""; row.append(sub);
+    c.append(row); box.append(c);
+  });
+}
+$("#gate").addEventListener("submit",e=>{e.preventDefault(); KEY=$("#key").value.trim(); st("cz-admin",KEY); load()});
+$("#refresh").addEventListener("click",load);
+$("#logout").addEventListener("click",()=>{st("cz-admin",null); KEY=""; $("#app").hidden=true; $("#gate").hidden=false});
+if(KEY) load(); else $("#gate").hidden=false;
+</script>
+</body>
+</html>
