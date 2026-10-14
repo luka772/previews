@@ -77,7 +77,7 @@ async function load(){
 }
 function render(rows){
   const by={}; rows.forEach(r=>{(by[r.client]=by[r.client]||[]).push(r)});
-  const ids=[...new Set([...Object.keys(CLIENTS),...Object.keys(by)])];
+  const ids=[...new Set([...Object.keys(CLIENTS),...Object.keys(by)])].filter(id=>!/^test/.test(id));
   const data=ids.map(id=>{
     const rs=(by[id]||[]).sort((a,b)=>new Date(a.at)-new Date(b.at));
     const status={}; rs.forEach(r=>{if(r.type==="status")status[r.post]=r.text});
