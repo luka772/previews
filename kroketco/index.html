@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Kroketco · Feedvoorstel oktober</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* ===== INSTELLINGEN STAAN ONDERAAN IN HET SCRIPT (CONFIG) ===== */
+:root{
+  --bg:#eef4f8; --card:#ffffff; --fg:#1c1c1c; --muted:#6b7680; --line:#dfe6ec;
+  --soft:#f3f6f9; --orange:#fd6c0d; --blue:#b5e3fc; --ok:#1f8a4c; --okbg:#e3f5ea;
+  --warn:#b45309; --warnbg:#fff1e3; --tile:#1c1c1c; --scrim:rgba(18,22,26,.62);
+  --display:'Oswald','Arial Narrow',Impact,sans-serif;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0f1418; --card:#171d22; --fg:#f2f4f6; --muted:#9aa6b0; --line:#2a333b;
+  --soft:#1f272e; --orange:#ff7a24; --blue:#2c5a73; --ok:#4cc27e; --okbg:#173326;
+  --warn:#ffb067; --warnbg:#3a2614; --tile:#0b0e11; --scrim:rgba(0,0,0,.72); color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:520px;margin:0 auto;padding-inline:16px;padding-block:16px 48px;display:flex;flex-direction:column;gap:14px}
+.brief{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.brief h1{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.01em;margin:0;text-transform:uppercase;text-wrap:balance}
+.brief p{margin:0;color:var(--muted)}
+.progress{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--fg);font-variant-numeric:tabular-nums}
+.pill.ok{background:var(--okbg);color:var(--ok)} .pill.warn{background:var(--warnbg);color:var(--warn)}
+.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.who label{font-size:12.5px;color:var(--muted)}
+.who input{flex:1;min-width:160px}
+.phone{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 6px}
+.handle{font-weight:700;font-size:16px}
+.prof{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:8px 16px}
+.avatar{width:84px;height:84px;border-radius:50%;padding:3px;background:conic-gradient(var(--orange),var(--blue),var(--orange))}
+.avatar img{width:100%;height:100%;border-radius:50%;background:#fff;border:3px solid var(--card);display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.stats b{display:block;font-size:16px;font-variant-numeric:tabular-nums} .stats span{font-size:12.5px;color:var(--muted)}
+.bio{padding:2px 16px 10px;display:flex;flex-direction:column;gap:1px}
+.bio .nm{font-weight:600} .bio a{color:var(--fg);font-weight:600;text-decoration:none}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 12px}
+.btns span{background:var(--soft);border-radius:8px;text-align:center;font-weight:600;padding:7px 0;font-size:13px}
+.hl{display:flex;gap:14px;padding:4px 16px 12px;overflow-x:auto}
+.hl div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11.5px;flex:0 0 auto}
+.hl i{width:58px;height:58px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-family:var(--display);font-weight:700;font-size:19px;background:var(--blue);color:#1c1c1c}
+.tabs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.tabs span{display:grid;place-items:center;padding:9px 0;color:var(--muted)} .tabs span.on{color:var(--fg);box-shadow:inset 0 -2px 0 var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.tile{position:relative;aspect-ratio:3/4;max-width:100%;border:0;padding:0;margin:0;background:var(--tile);cursor:pointer;overflow:hidden;font:inherit;color:inherit}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile:focus-visible{outline:3px solid var(--orange);outline-offset:-3px}
+.tile .reel{position:absolute;top:6px;right:7px;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.tile .chip{position:absolute;left:6px;bottom:6px;font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:999px;background:rgba(20,20,20,.72);color:#fff;font-variant-numeric:tabular-nums}
+.tile .st{position:absolute;top:6px;left:6px;font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:999px}
+.st.ok{background:var(--okbg);color:var(--ok)} .st.warn{background:var(--warnbg);color:var(--warn)} .st.new{background:#fff;color:#1c1c1c}
+.tile.slot{background:var(--soft);border:2px dashed var(--line);display:grid;place-items:center;text-align:center;color:var(--muted);cursor:default;padding:8px}
+.tile.slot b{display:block;color:var(--fg);font-family:var(--display);text-transform:uppercase;font-size:15px}
+.tile.placeholder{display:grid;place-items:center;color:#fff;text-align:center;padding:10px;font-family:var(--display);text-transform:uppercase;font-size:15px;line-height:1.1;background:linear-gradient(160deg,#2a2a2a,#111)}
+.legend{font-size:12px;color:var(--muted);padding:10px 16px 14px}
+.viewtoggle{font:inherit;font-weight:600;font-size:13px;border-radius:999px;padding:8px 14px;border:1px solid var(--fg);background:var(--fg);color:var(--card);cursor:pointer;align-self:flex-start}
+.viewtoggle[aria-pressed="true"]{background:var(--card);color:var(--fg)}
+.tile .bang{position:absolute;top:6px;right:6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#FD6C0D;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff}
+body.clean .tile .bang{display:none}
+body.clean .tile .st, body.clean .tile .chip, body.clean .legend, body.clean .top .note{display:none}
+.foot{text-align:center;font-size:12px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:var(--scrim);display:grid;place-items:center;padding:16px;z-index:20}
+.sheet{background:var(--card);border-radius:14px;overflow:hidden;width:min(960px,100%);max-height:calc(100% - 8px);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.sheet .media{background:#000;display:grid;place-items:center;min-height:0}
+.sheet .media img{width:100%;height:100%;max-height:86vh;object-fit:contain}
+.side{display:flex;flex-direction:column;min-width:0;min-height:0;max-height:86vh}
+.sh{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.sh img{width:32px;height:32px;border-radius:50%;background:#fff}
+.sh .x{margin-left:auto;background:none;border:0;font-size:22px;line-height:1;color:var(--fg);cursor:pointer;padding:4px 8px;border-radius:8px}
+.scroll{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px;min-height:0}
+.when{font-size:12.5px;color:var(--muted)}
+.cap{white-space:pre-wrap;overflow-wrap:anywhere}
+.fb{border-top:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:var(--soft)}
+.fb h3{margin:0;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.decide{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.decide button,.send{font:inherit;font-weight:600;border-radius:10px;padding:9px 10px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+.decide button[aria-pressed="true"].ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.decide button[aria-pressed="true"].warn{background:var(--orange);border-color:var(--orange);color:#fff}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+button:disabled{opacity:.55;cursor:default}
+.comments{display:flex;flex-direction:column;gap:8px}
+.cm{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.cm .meta{font-size:11.5px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+.cm .tag{font-weight:700;color:var(--fg)}
+.cm p{margin:3px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.compose{display:flex;flex-direction:column;gap:6px}
+.compose .row{display:flex;gap:6px;align-items:center}
+select,textarea,input{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+textarea{width:100%;min-height:64px;resize:vertical}
+.send{background:var(--fg);color:var(--card);border-color:var(--fg)}
+.note{font-size:12px;color:var(--muted)}
+.empty{font-size:12.5px;color:var(--muted)}
+.capedit{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.capedit textarea{min-height:160px;font:inherit;font-size:14px;line-height:1.45;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg)}
+.capedit .row2{display:flex;gap:8px}
+.linkbtn{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--fg);cursor:pointer;margin-top:8px}
+.linkbtn:disabled{opacity:.5;cursor:default}
+.cm.edit .tag{background:var(--warnbg);color:var(--warn)}
+.final{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.final button{border:0;border-radius:12px;padding:12px 14px;font:inherit;font-weight:700;font-size:14px;background:#FD6C0D;color:#fff;cursor:pointer}
+.final button:disabled{background:var(--line);color:var(--muted);cursor:default}
+.final .done{font-size:13px;font-weight:600;color:var(--ok)}
+body.clean .final{display:none}
+.st.upd{background:#1c1c1c;color:#fff}
+.sheet .media video{width:100%;max-height:86vh;display:block;background:#000}
+.cm.old{opacity:.6}
+.cm.date .tag{background:var(--blue);color:#1c1c1c;padding:0 6px;border-radius:6px}
+.oldhead{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.newv{font-size:12.5px;font-weight:600;background:var(--blue);color:#1c1c1c;border-radius:10px;padding:8px 10px}
+.datebox{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.datebox input{flex:1;min-width:180px}
+.months{display:flex;gap:6px;flex-wrap:wrap}
+.months a{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--fg);text-decoration:none}
+.months a.on{background:var(--fg);color:var(--card);border-color:var(--fg)}
+.gate{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;padding:16px;z-index:40}
+.gate form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:360px;width:100%;display:flex;flex-direction:column;gap:10px}
+.gate h2{font-family:var(--display);text-transform:uppercase;margin:0;font-size:20px}
+.gate p{margin:0;color:var(--muted)}
+@media (max-width:720px){
+  .sheet{grid-template-columns:1fr;max-height:100%;overflow-y:auto}
+  .sheet .media img{max-height:58vh}
+  .side{max-height:none}
+  .sheet{display:block}
+  .side{display:block}
+  .side .scroll{overflow:visible}
+  .sheet .media img{max-height:52vh}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="brief" aria-label="Over dit voorstel">
+    <h1 id="hTitle">Feedvoorstel oktober</h1>
+    <nav class="months" id="months" aria-label="Maanden"></nav>
+    <p>Zo komt jullie Instagram-profiel eruit te zien. Tik op een post om de caption te lezen, keur hem goed of vraag een aanpassing.</p>
+    <div class="who"><label for="whoName">Je naam</label><input id="whoName" autocomplete="name" placeholder="bv. Jan van Kroketco"></div>
+    <div class="progress" id="progress"></div>
+    <button type="button" class="viewtoggle" id="viewToggle" aria-pressed="false">Bekijk zoals op Instagram</button>
+    <div class="final" id="final"><button type="button" id="bFinal">Alles goedgekeurd: laat inplannen</button><div class="note" id="finalMsg">Keur eerst alle posts goed.</div></div>
+  </section>
+
+  <section class="phone" aria-label="Profielvoorbeeld">
+    <div class="top"><span class="handle" id="handle"></span><span class="note">voorbeeld</span></div>
+    <div class="prof">
+      <div class="avatar"><img src="posts/avatar.png" alt="Logo"></div>
+      <div class="stats"><div><b id="nposts">0</b><span>posts</span></div><div><b id="followers"></b><span>volgers</span></div><div><b id="following"></b><span>volgend</span></div></div>
+    </div>
+    <div class="bio" id="bio"></div>
+    <div class="btns"><span>Volgend</span><span>Bericht</span></div>
+    <div class="hl" id="hl" aria-hidden="true"></div>
+    <div class="tabs" aria-hidden="true"><span class="on">▦</span><span>▶</span></div>
+    <div class="grid" id="grid"></div>
+    <div class="legend">Bovenaan staat de laatst geplande post. Tegels met ▶ zijn reels die al ingepland staan.</div>
+  </section>
+  <div class="foot">Voorstel door Cohezy</div>
+</div>
+
+<div class="gate" id="gate" hidden>
+  <form id="gateForm">
+    <h2>Feedvoorstel</h2>
+    <p>Vul de toegangscode in die je van ons kreeg.</p>
+    <input id="gateCode" autocomplete="off" autocapitalize="characters" placeholder="Toegangscode" aria-label="Toegangscode">
+    <button class="send" type="submit">Openen</button>
+    <div class="note" id="gateMsg" role="status"></div>
+  </form>
+</div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet">
+    <div class="media"><img id="mImg" alt=""><video id="mVid" controls playsinline preload="metadata" hidden></video></div>
+    <div class="side">
+      <div class="sh"><img src="posts/avatar.png" alt=""><b id="mTitle"></b><button class="x" id="mClose" aria-label="Sluiten">×</button></div>
+      <div class="scroll">
+        <div class="when" id="mWhen"></div>
+        <div class="newv" id="mNew" hidden>Nieuwe versie na jullie feedback. Bekijk ze opnieuw en keur goed of vraag nog een aanpassing.</div>
+        <div class="cap" id="mCap"></div>
+        <div><button type="button" class="linkbtn" id="bEditCap">✎ Tekst aanpassen</button> <button type="button" class="linkbtn" id="bDate">📅 Andere datum voorstellen</button></div>
+        <div class="datebox" id="dateBox" hidden><input type="datetime-local" id="dateIn" aria-label="Voorgestelde datum en uur"><button type="button" class="send" id="dateSave">Voorstel sturen</button><button type="button" class="linkbtn" id="dateCancel" style="margin-top:0">Annuleren</button></div>
+        <div class="capedit" id="capEdit" hidden><textarea id="capText" aria-label="Nieuwe caption"></textarea><div class="row2"><button type="button" class="send" id="capSave">Tekst opslaan</button><button type="button" class="linkbtn" id="capCancel" style="margin-top:0">Annuleren</button></div></div>
+        <div>
+          <div class="note" style="margin-bottom:6px">Reacties op deze post</div>
+          <div class="comments" id="mComments"></div>
+        </div>
+      </div>
+      <div class="fb" id="mFb">
+        <h3>Jouw feedback</h3>
+        <div class="decide">
+          <button type="button" class="ok" id="bOk" aria-pressed="false">✓ Goedkeuren</button>
+          <button type="button" class="warn" id="bWarn" aria-pressed="false">✎ Aanpassing nodig</button>
+        </div>
+        <form class="compose" id="fComment">
+          <div class="row">
+            <label class="note" for="cTarget">Over</label>
+            <select id="cTarget"><option value="afbeelding">de afbeelding</option><option value="caption">de caption</option></select>
+          </div>
+          <textarea id="cText" placeholder="Schrijf wat je wil aanpassen of wat je goed vindt…"></textarea>
+          <button class="send" type="submit" id="cSend">Reactie plaatsen</button>
+          <div class="note" id="cMsg" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ CONFIG: dit pas je per klant/maand aan ============ */
+const CONFIG={
+  // Web-app-URL van het Google Apps Script (zie LEESMIJ). Leeg = feedback werkt nog niet.
+  ENDPOINT:"https://script.google.com/macros/s/AKfycbwjggOapIO31TU4rKeiYpTNFTFSVcYq4PR1Dks2gbo856KOfw7WkM17SteqbnBGOznK/exec",
+  CLIENT:"kroketco-2026-10",           // uniek per klant + maand
+  HANDLE:"kroketco.belgium",
+  FOLLOWERS:"1,2K", FOLLOWING:"180",
+  BIO:["Kroketco","De beste kroketten en puree in België","Proef zeker onze Groendal-kroketten","Ambacht en kwaliteit op #1"],
+  LINK:{label:"kroketco.be",url:"https://kroketco.be"},
+  HIGHLIGHTS:[["KR","Over ons"],["OK","Partners"],["GR","Groendal"],["AS","Assortiment"]],
+  TITLE:"Feedvoorstel oktober",
+  // Andere maanden van deze klant (archief). href relatief t.o.v. deze pagina.
+  MONTHS:[{label:"Oktober 2026",href:"./",on:true}]
+};
+/* Posts in gridvolgorde: nieuwste linksboven. kind: post | reel | slot
+   Optioneel: video:"posts/x.mp4" (afspelen), review:true (reel laten goedkeuren),
+   updated:"2026-10-14T17:00" (nieuwe versie: oude feedback wordt "vorige versie") */
+const POSTS=[
+ {id:"r-process",kind:"reel",title:"Ons process",when:"za 24 okt · 07:40"},
+ {id:"ambacht",kind:"post",img:"posts/p-ambacht.jpg",when:"vr 23 okt · 18:00",
+  caption:"Ambacht. Passie. Kroket. 🧡\n\nEen goudgele korst die kraakt, en daarbinnen een romige vulling met echte Noordzeegarnalen. Zo hoort een garnaalkroket te zijn.\n\nBij Kroketco maken we elke kroket met de hand, met eerlijke ingrediënten en heel veel liefde voor het vak. Vers of diepvries, telkens met dezelfde kwaliteit.\n\n📍 Kroketco, Roeselare\n\n👉 Welke kroket is jouw favoriet? Laat het weten in de comments!\n\n#kroketco #garnaalkroket #kroketten #ambacht #roeselare #belgischlekker #handgemaakt #foodie"},
+ {id:"gerechtjes",kind:"post",img:"posts/p-gerechtjes.jpg",when:"wo 21 okt · 18:00",
+  caption:"3 gerechtjes waar een kroket gewoon bij hoort 🧡\n\n🍂 Fazant met kroketten: een heerlijke najaarsklassieker. Met een glanzende wildsaus, druiven en een stoofpeertje.\n\n🥩 Rosbief met kroketten: een tijdloze Vlaamse favoriet. Mals, rosé gebakken en met een potje bearnaise erbij.\n\n🍷 Hertenstoofvlees met kroketten: het wildseizoen op zijn best. Lang gestoofd, rijk van smaak en met een stoofpeer met veenbessen.\n\nWelk gerechtje zet jij deze week op tafel? 👇\n\n📍 Kroketco, Roeselare\n\n#kroketco #kroketten #aardappelkroketten #wildseizoen #fazant #rosbief #hertenstoofvlees #roeselare #belgischlekker"},
+ {id:"friteuse",kind:"post",img:"posts/p-friteuse.jpg",when:"ma 19 okt · 09:00",
+  caption:"Kroketten horen in de friteuse. Punt. 🔥\n\nEen airfryer is handig, maar voor een echte kroket wil je hete frituurolie. Alleen zo krijg je die goudgele, knapperige korst en een vulling die mooi romig blijft.\n\nMini-kroketjes voor de apero, een kaaskroket bij het avondeten of een garnaalkroket voor een feestje: altijd in de friteuse, altijd perfect.\n\nTeam friteuse of team airfryer? Zeg het eerlijk 👇\n\n📍 Kroketco, Roeselare\n\n#kroketco #kroketten #minikroketjes #friteuse #apero #roeselare #belgischlekker"},
+ {id:"r-kaas",kind:"reel",img:"posts/r-kaas.jpg",title:"Kroket met beste kaas ter wereld",when:"za 17 okt · 07:36"},
+ {id:"website",kind:"post",img:"posts/p-website.jpg",when:"do 15 okt · 18:00",
+  caption:"Onze nieuwe website is er! 🧡\n\nAlles over onze ambachtelijke kroketten op één plek: ons volledige assortiment, onze partners, het verhaal achter Kroketco sinds 1998 en waar je ons vindt.\n\nVers gedraaid, goudbruin gebakken, en nu ook online.\n\n👉 Neem een kijkje via de link in bio.\n\n📍 Kroketco, Roeselare\n\n#kroketco #nieuwewebsite #kroketten #roeselare #belgischlekker #handgemaakt"},
+ {id:"wortelpuree",kind:"post",img:"posts/p-wortelpuree.jpg",when:"wo 14 okt · 18:00",
+  caption:"Onze wortelpuree combineert vertrouwde, huiselijke smaken met het gemak van vandaag. Een heerlijke aanvulling voor slagerijen, traiteurs, foodservice en supermarkten die hun dagschotels en andere gerechten nét dat tikkeltje meer willen geven.\n\n🧡 De authentieke smaak van vroeger\n📦 Praktisch verpakt voor professioneel gebruik\n📅 Tot 40 dagen THT\n🍽️ Ideaal om jouw gerechten naar een hoger niveau te tillen.\n\n#Kroketco #Wortelpuree #Foodservice #Slagerij #Traiteur #Dagschotels #BelgischeProducten #GemakMetSmaak"},
+ {id:"nieuwelook",kind:"post",img:"posts/p-nieuwelook.jpg",when:"zo 11 okt · 09:00",
+  caption:"Nieuwe look, zelfde ambacht 🧡\n\nOns logo kreeg een frisse update, met lichtblauw en oranje als nieuwe kleuren. Maar onze kroketten blijven precies zoals je ze kent: met de hand gemaakt in Roeselare, met dezelfde liefde voor het vak.\n\nWat vind jij van de nieuwe stijl? 👇\n\n#kroketco #nieuwelook #rebranding #kroketten #roeselare #handgemaakt"},
+ {id:"r-puree",kind:"reel",img:"posts/r-puree.jpg",title:"10 kilo puree!",when:"za 10 okt · 08:10"}
+];
+/* ================================================================ */
+
+const $=s=>document.querySelector(s);
+const isRev=p=>p.kind==="post"||(p.kind==="reel"&&p.review);
+const reviewable=POSTS.filter(isRev);
+const SLUG=CONFIG.CLIENT.replace(/-\d{4}-\d{2}$/,"");
+let CODE=store("fb-code-"+SLUG)||"";
+let rows=[], current=null;
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+function upd(id){const p=POSTS.find(x=>x.id===id);return p&&p.updated?new Date(p.updated).getTime():0}
+function fresh(r){return new Date(r.at).getTime()>=upd(r.post)}
+function isNewVersion(p){return !!p.updated&&rows.some(r=>r.post===p.id&&!fresh(r))}
+function capOf(p){let c=p.caption||"";for(const r of rows){if(r.post===p.id&&r.type==="caption"&&fresh(r))c=r.text}return c}
+function edited(p){return rows.some(r=>r.post===p.id&&r.type==="caption"&&fresh(r))}
+function finalRow(){let f=null;for(const r of rows){if(r.type==="final")f=r}return f}
+function statusOf(id){let s=null;for(const r of rows){if(r.post===id&&r.type==="status"&&fresh(r))s=r.text}return s==="ok"||s==="warn"?s:null}
+function dateOf(id){let d=null;for(const r of rows){if(r.post===id&&r.type==="date"&&fresh(r))d=r.text}return d}
+
+function setupProfile(){
+  $("#handle").textContent=CONFIG.HANDLE; $("#mTitle").textContent=CONFIG.HANDLE;
+  $("#followers").textContent=CONFIG.FOLLOWERS; $("#following").textContent=CONFIG.FOLLOWING;
+  const bio=$("#bio"); CONFIG.BIO.forEach((t,i)=>{const s=document.createElement("span"); if(i===0)s.className="nm"; s.textContent=t; bio.append(s)});
+  if(CONFIG.LINK){const a=document.createElement("a"); a.href=CONFIG.LINK.url; a.target="_blank"; a.rel="noopener"; a.textContent=CONFIG.LINK.label; bio.append(a)}
+  const hl=$("#hl"); CONFIG.HIGHLIGHTS.forEach(([i,l])=>{const d=document.createElement("div"),c=document.createElement("i"); c.textContent=i; d.append(c,document.createTextNode(l)); hl.append(d)});
+  $("#hTitle").textContent=CONFIG.TITLE||"Feedvoorstel"; document.title=CONFIG.HANDLE+" · "+(CONFIG.TITLE||"Feedvoorstel");
+  const mo=$("#months"); (CONFIG.MONTHS||[]).forEach(m=>{const a=document.createElement("a"); a.href=m.href; a.textContent=m.label; if(m.on){a.className="on"; a.setAttribute("aria-current","page")} mo.append(a)}); mo.hidden=(CONFIG.MONTHS||[]).length<2;
+  $("#whoName").value=store("fb-name")||"";
+  $("#whoName").addEventListener("change",e=>store("fb-name",e.target.value.trim()));
+}
+
+function render(){
+  $("#nposts").textContent=String(POSTS.filter(p=>p.kind!=="slot").length);
+  const g=$("#grid"); g.textContent="";
+  for(const p of POSTS){
+    if(p.kind==="slot"){const d=document.createElement("div"); d.className="tile slot";
+      const inner=document.createElement("div"), b=document.createElement("b"); b.textContent=p.title||"Vrije plaats";
+      inner.append(b,document.createTextNode("plaats vrijgehouden"),document.createElement("br"),document.createTextNode(p.when)); d.append(inner); g.append(d); continue;}
+    const b=document.createElement("button"); b.type="button"; b.className="tile"+(p.img?"":" placeholder");
+    b.setAttribute("aria-label",(p.kind==="reel"?"Reel: ":"Post: ")+(p.title||p.caption.split("\n")[0])+", "+p.when);
+    if(p.img){const im=document.createElement("img"); im.src=p.img; im.alt=""; im.loading="lazy"; b.append(im)} else b.append(document.createTextNode(p.title));
+    if(p.kind==="reel"){const r=document.createElement("span"); r.className="reel"; r.textContent="▶"; b.append(r)}
+    const c=document.createElement("span"); c.className="chip"; c.textContent=p.when.split(" · ")[0]; b.append(c);
+    if(isRev(p)){const s=statusOf(p.id), nv=isNewVersion(p)&&!s, st=document.createElement("span");
+      st.className="st "+(s==="ok"?"ok":s==="warn"?"warn":nv?"upd":"new"); st.textContent=s==="ok"?"✓ Goed":s==="warn"?"✎ Aanpassen":nv?"Nieuwe versie":"Te bekijken"; b.append(st)}
+    {const n=rows.filter(r=>r.post===p.id&&fresh(r)&&(r.type==="comment"||r.type==="caption"||r.type==="date")).length, w=isRev(p)&&statusOf(p.id)==="warn";
+     if(n||w){const bg=document.createElement("span"); bg.className="bang"; bg.textContent=n?"! "+n:"!"; bg.title=(w?"Aanpassing gevraagd. ":"")+(n?n+" reactie(s)":""); b.append(bg)}}
+    b.addEventListener("click",()=>openPost(p)); g.append(b);
+  }
+  const ok=reviewable.filter(p=>statusOf(p.id)==="ok").length, warn=reviewable.filter(p=>statusOf(p.id)==="warn").length;
+  const pr=$("#progress"); pr.textContent="";
+  [["pill ok",ok+" goedgekeurd"],["pill warn",warn+" aanpassen"],["pill",(reviewable.length-ok-warn)+" te bekijken"]].forEach(([c,t])=>{const s=document.createElement("span"); s.className=c; s.textContent=t; pr.append(s)});
+  const fr=finalRow(), all=reviewable.length&&ok===reviewable.length;
+  $("#bFinal").disabled=!CONFIG.ENDPOINT||!all||!!fr;
+  $("#finalMsg").className=fr?"done":"note";
+  $("#finalMsg").textContent=fr?("Doorgestuurd om in te plannen op "+fmtDate(fr.at)+". Bedankt!"):all?"Alles is goedgekeurd. Klik om de posts te laten inplannen.":"Keur eerst alle posts goed ("+ok+"/"+reviewable.length+").";
+  if(current) fillModal();
+}
+
+function openPost(p){current=p; $("#modal").hidden=false; $("#cMsg").textContent=""; fillModal(); $("#mClose").focus()}
+function closePost(){current=null; $("#modal").hidden=true}
+$("#mClose").addEventListener("click",closePost);
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closePost()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&current)closePost()});
+
+function fmtWish(v){try{return new Date(v).toLocaleString("nl-BE",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return v}}
+function fmtDate(v){try{return new Date(v).toLocaleString("nl-BE",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}catch(e){return ""}}
+function fillModal(){
+  const p=current, img=$("#mImg");
+  const vid=$("#mVid");
+  if(p.video){if(vid.dataset.src!==p.video){vid.src=p.video; vid.dataset.src=p.video} if(p.img)vid.poster=p.img; vid.hidden=false; img.hidden=true}
+  else{vid.pause&&vid.pause(); vid.hidden=true; vid.removeAttribute("src"); vid.dataset.src=""; if(p.img){img.src=p.img; img.hidden=false} else img.hidden=true}
+  const rv=isRev(p), dw=dateOf(p.id);
+  $("#mWhen").textContent=(p.kind==="reel"&&!rv?"Reel · al ingepland · ":"Gepland voor ")+p.when+(dw?"  ·  voorgesteld: "+fmtWish(dw):"");
+  $("#mNew").hidden=!(isNewVersion(p)&&rv);
+  $("#mCap").textContent=rv?capOf(p):(p.caption||"Deze reel staat al ingepland en hoeft niet goedgekeurd te worden.");
+  $("#bEditCap").hidden=!rv; $("#bEditCap").disabled=!CONFIG.ENDPOINT;
+  $("#bDate").hidden=!rv; $("#bDate").disabled=!CONFIG.ENDPOINT;
+  if($("#capEdit").dataset.post!==p.id){$("#capEdit").hidden=true}
+  if($("#dateBox").dataset.post!==p.id){$("#dateBox").hidden=true}
+  $("#mFb").hidden=!rv;
+  const s=statusOf(p.id);
+  $("#bOk").setAttribute("aria-pressed",String(s==="ok")); $("#bWarn").setAttribute("aria-pressed",String(s==="warn"));
+  const list=$("#mComments"); list.textContent="";
+  const all=rows.filter(r=>r.post===p.id&&(r.type==="comment"||r.type==="caption"||r.type==="date"));
+  const cur=all.filter(fresh), old=all.filter(r=>!fresh(r));
+  if(!cur.length){const e=document.createElement("div"); e.className="empty"; e.textContent=rv?"Nog geen reacties.":"Geen reacties."; list.append(e)}
+  const addCm=(c,isOld)=>{
+    const d=document.createElement("div"); d.className="cm"+(c.type==="caption"?" edit":"")+(c.type==="date"?" date":"")+(isOld?" old":"");
+    const m=document.createElement("div"); m.className="meta";
+    const t=document.createElement("span"); t.className="tag"; t.textContent=c.type==="caption"?"Tekst aangepast":c.type==="date"?"Datumvoorstel":c.target==="caption"?"Caption":"Afbeelding";
+    const w=document.createElement("span"); w.textContent=(c.name||"Klant")+" · "+fmtDate(c.at);
+    m.append(t,w); const tx=document.createElement("p"); tx.textContent=c.type==="caption"?(isOld?"Tekst aangepast in de vorige versie.":"Nieuwe tekst opgeslagen (zie caption hierboven)."):c.type==="date"?fmtWish(c.text):c.text; d.append(m,tx); list.append(d);
+  };
+  cur.forEach(c=>addCm(c,false));
+  if(old.length){const h=document.createElement("div"); h.className="oldhead"; h.textContent="Feedback op de vorige versie"; list.append(h); old.forEach(c=>addCm(c,true))}
+  const off=!CONFIG.ENDPOINT; ["#bOk","#bWarn","#cSend"].forEach(q=>$(q).disabled=off);
+  if(off) $("#cMsg").textContent="Reageren is nog niet geactiveerd.";
+}
+
+async function load(){
+  if(!CONFIG.ENDPOINT) return;
+  try{const r=await fetch(CONFIG.ENDPOINT+"?client="+encodeURIComponent(CONFIG.CLIENT)+"&code="+encodeURIComponent(CODE));
+    const j=await r.json();
+    if(j&&j.error==="code"){showGate(!!CODE); return false}
+    $("#gate").hidden=true;
+    if(Array.isArray(j)){rows=j; render()} return true}catch(e){return null}
+}
+async function send(entry){
+  const body=JSON.stringify(Object.assign({client:CONFIG.CLIENT,code:CODE,name:($("#whoName").value.trim()||"Klant").slice(0,80)},entry));
+  // text/plain vermijdt een CORS-preflight bij Google Apps Script
+  const r=await fetch(CONFIG.ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body});
+  if(!r.ok) throw new Error("http "+r.status);
+  try{const j=await r.clone().json(); if(j&&j.error==="code"){showGate(true); throw new Error("code")}}catch(e){if(e.message==="code")throw e}
+}
+async function setStatus(st){
+  if(!current) return;
+  const next=statusOf(current.id)===st?"open":st;
+  rows.push({post:current.id,type:"status",text:next,at:new Date().toISOString()}); render();
+  try{await send({post:current.id,type:"status",text:next}); $("#cMsg").textContent=next==="ok"?"Goedgekeurd. Bedankt!":next==="warn"?"Genoteerd: aanpassing nodig. Zeg hieronder wat je anders wil.":"Keuze gewist."}
+  catch(e){$("#cMsg").textContent="Opslaan lukte niet. Controleer je internet en probeer opnieuw."}
+}
+$("#bOk").addEventListener("click",()=>setStatus("ok"));
+$("#bWarn").addEventListener("click",()=>setStatus("warn"));
+$("#fComment").addEventListener("submit",async e=>{
+  e.preventDefault(); if(!current) return;
+  const text=$("#cText").value.trim(); if(!text){$("#cMsg").textContent="Typ eerst je reactie."; return}
+  $("#cSend").disabled=true;
+  const entry={post:current.id,type:"comment",target:$("#cTarget").value,text:text.slice(0,2000)};
+  try{await send(entry); rows.push(Object.assign({name:$("#whoName").value.trim()||"Klant",at:new Date().toISOString()},entry)); $("#cText").value=""; $("#cMsg").textContent="Reactie geplaatst."; render()}
+  catch(err){$("#cMsg").textContent="Opslaan lukte niet. Controleer je internet en probeer opnieuw."}
+  finally{$("#cSend").disabled=!CONFIG.ENDPOINT}
+});
+
+$("#bEditCap").addEventListener("click",()=>{if(!current)return; const ce=$("#capEdit"); ce.dataset.post=current.id; $("#capText").value=capOf(current); ce.hidden=false; $("#capText").focus()});
+$("#capCancel").addEventListener("click",()=>{$("#capEdit").hidden=true});
+$("#capSave").addEventListener("click",async()=>{
+  if(!current) return; const p=current, text=$("#capText").value.trim(), old=capOf(p);
+  if(!text){$("#cMsg").textContent="De tekst mag niet leeg zijn."; return}
+  if(text===old){$("#capEdit").hidden=true; return}
+  $("#capSave").disabled=true;
+  try{await send({post:p.id,type:"caption",text:text.slice(0,2200),old:old.slice(0,2200)});
+    rows.push({post:p.id,type:"caption",text,name:$("#whoName").value.trim()||"Klant",at:new Date().toISOString()});
+    $("#capEdit").hidden=true; render(); $("#cMsg").textContent="Nieuwe tekst opgeslagen."}
+  catch(e){$("#cMsg").textContent="Opslaan lukte niet. Controleer je internet en probeer opnieuw."}
+  finally{$("#capSave").disabled=false}
+});
+$("#bFinal").addEventListener("click",async()=>{
+  const b=$("#bFinal"); b.disabled=true;
+  const caps=reviewable.map(p=>p.id+": "+(edited(p)?"tekst aangepast":"originele tekst")).join("\n");
+  try{await send({post:"*",type:"final",text:"Alle "+reviewable.length+" posts goedgekeurd.\n"+caps});
+    rows.push({post:"*",type:"final",text:"ok",at:new Date().toISOString()}); render()}
+  catch(e){$("#finalMsg").textContent="Versturen lukte niet. Probeer opnieuw."; b.disabled=false}
+});
+
+$("#bDate").addEventListener("click",()=>{if(!current)return; const b=$("#dateBox"); b.dataset.post=current.id; b.hidden=false; $("#dateIn").focus()});
+$("#dateCancel").addEventListener("click",()=>{$("#dateBox").hidden=true});
+$("#dateSave").addEventListener("click",async()=>{
+  if(!current) return; const v=$("#dateIn").value; if(!v){$("#cMsg").textContent="Kies eerst een datum en uur."; return}
+  $("#dateSave").disabled=true;
+  try{await send({post:current.id,type:"date",text:v}); rows.push({post:current.id,type:"date",text:v,name:$("#whoName").value.trim()||"Klant",at:new Date().toISOString()});
+    $("#dateBox").hidden=true; render(); $("#cMsg").textContent="Datumvoorstel doorgestuurd."}
+  catch(e){$("#cMsg").textContent="Opslaan lukte niet. Probeer opnieuw."}
+  finally{$("#dateSave").disabled=false}
+});
+function showGate(wrong){$("#gate").hidden=false; $("#gateMsg").textContent=wrong?"Deze code klopt niet. Probeer opnieuw.":""; $("#gateCode").focus()}
+$("#gateForm").addEventListener("submit",async e=>{e.preventDefault(); CODE=$("#gateCode").value.trim().toUpperCase(); $("#gateMsg").textContent="Even controleren…"; const ok=await load(); if(ok){store("fb-code-"+SLUG,CODE)}});
+$("#viewToggle").addEventListener("click",e=>{
+  const on=document.body.classList.toggle("clean");
+  e.currentTarget.setAttribute("aria-pressed",String(on));
+  e.currentTarget.textContent=on?"Toon labels en feedback":"Bekijk zoals op Instagram";
+});
+setupProfile(); render(); load();
+</script>
+</body>
+</html>
