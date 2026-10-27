@@ -224,7 +224,7 @@ th.ck{text-align:center}
   <ul class="steps" id="stepsNav"></ul>
   <div class="sidefoot">
     <div class="save" id="saveState"><span class="pip"></span><span id="saveText">Nog niets ingevuld</span></div>
-    <div class="to">Gaat naar <b>luka@cohezy.agency</b></div>
+    <div class="to">We overlopen alles <b>samen tijdens de meeting</b></div>
   </div>
 </aside>
 
@@ -255,7 +255,7 @@ const STORAGE_KEY = "website-intake-v1";
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Deze vragenlijst verzamelt alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Reken op anderhalf tot twee uur. Alles wat je typt wordt automatisch bewaard in deze browser, dus je kunt gerust later verder gaan op hetzelfde toestel.",
+  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Je notities blijven enkel op dit toestel bewaard en worden nergens naartoe gestuurd.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -796,8 +796,8 @@ function buildNav(){
     mSel.append(h("option", {value:String(i)}, (i + 1) + ". " + s.nav));
   });
   nav.append(h("li", null, h("button", {type:"button", class:"final", onclick:() => go(STEPS.length)},
-    h("span", {class:"n"}, h("span", null, "→")), h("span", {class:"t"}, "Nakijken & verzenden"), h("span", {class:"cnt"}))));
-  mSel.append(h("option", {value:String(STEPS.length)}, "Nakijken & verzenden"));
+    h("span", {class:"n"}, h("span", null, "→")), h("span", {class:"t"}, "Overzicht"), h("span", {class:"cnt"}))));
+  mSel.append(h("option", {value:String(STEPS.length)}, "Overzicht"));
   mSel.addEventListener("change", () => go(parseInt(mSel.value, 10)));
 }
 
@@ -939,7 +939,7 @@ function renderStep(si){
   const navEl = h("div", {class:"nav"});
   if (si > 0) navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(si - 1)}, "← Vorige"));
   const right = h("div", {class:"right"});
-  right.append(h("button", {type:"button", class:"btn primary", onclick:() => go(si + 1)}, si === STEPS.length - 1 ? "Naar nakijken →" : "Volgende →"));
+  right.append(h("button", {type:"button", class:"btn primary", onclick:() => go(si + 1)}, si === STEPS.length - 1 ? "Naar overzicht →" : "Volgende →"));
   navEl.append(right);
   sec.append(navEl);
   return sec;
@@ -949,9 +949,9 @@ function renderReview(){
   main.innerHTML = "";
   const sec = h("section", {class:"step active"});
   let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
-  sec.append(h("p", {class:"eyebrow"}, "Afronden"), h("h1", null, "Nakijken en verzenden"),
-    h("p", {class:"intro"}, "Je hoeft niet alles ingevuld te hebben. Wat open blijft, bespreken we in het gesprek. Klik op een deel om nog iets aan te passen."));
-  sec.append(h("div", {class:"stats"},
+  sec.append(h("p", {class:"eyebrow"}, "Afronden"), h("h1", null, "Overzicht"),
+    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. We overlopen ze samen tijdens de meeting. Klik op een deel om het nog eens te bekijken."));
+  if (false) sec.append(h("div", {class:"stats"},
     h("div", {class:"stat"}, h("b", null, String(d)), h("span", null, "vragen beantwoord")),
     h("div", {class:"stat"}, h("b", null, String(t - d)), h("span", null, "nog open")),
     h("div", {class:"stat accent"}, h("b", null, Math.round(d / t * 100) + " %"), h("span", null, "compleet"))));
@@ -990,7 +990,7 @@ function renderReview(){
   const mailA = h("a", {class:"btn ghost", id:"mailLink", href:"#"}, "Open in e-mail");
   fb.append(h("p", {class:"legend"}, "Kopieer de tekst hieronder en plak ze in een e-mail naar ", h("span", {class:"addr"}, SEND_TO), "."), ta, h("div", {class:"row"}, copyBtn, mailA));
   box.append(fb);
-  sec.append(box);
+  /* verzenden uitgeschakeld: vragen worden tijdens de meeting overlopen */
 
   const navEl = h("div", {class:"nav"});
   navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(STEPS.length - 1)}, "← Vorige"));
