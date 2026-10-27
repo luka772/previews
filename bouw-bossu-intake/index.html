@@ -759,32 +759,65 @@ function persist(){
     pushRemote();
   }, 400);
 }
-let pushTimer = null;
+let pushTimer = null, pushPending = false, pushTries = 0;
+function payload(){
+  let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
+  return JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, tekst: buildText(true)});
+}
 function pushRemote(){
   if (!SHEET_URL) return;
+  pushPending = true;
   clearTimeout(pushTimer);
-  pushTimer = setTimeout(async () => {
-    let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
-    try {
-      await fetch(SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
-        body: JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, tekst: buildText(true)})});
-      saveTxt.textContent = "Online bewaard om " + new Date().toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
-    } catch (e) {
-      saveTxt.textContent = "Bewaard op dit toestel (online lukte niet)";
-    }
-  }, 1200);
+  pushTimer = setTimeout(doPush, 1200);
+}
+async function doPush(){
+  const ts = state._ts || 0;
+  try {
+    await fetch(SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: payload()});
+    /* controleren of het echt online staat */
+    const r = await fetch(SHEET_URL + "?klant=" + encodeURIComponent(CLIENT_ID), {cache:"no-store"});
+    const j = await r.json();
+    if (!j || !j.state || (j.state._ts || 0) < ts) throw new Error("niet bevestigd");
+    pushPending = false; pushTries = 0;
+    saveEl.classList.remove("err");
+    saveTxt.textContent = "Online bewaard om " + new Date().toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
+  } catch (e) {
+    pushTries++;
+    saveTxt.textContent = "Bewaard op dit toestel, online opslaan wordt opnieuw geprobeerd…";
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(doPush, Math.min(30000, 3000 * pushTries));
+  }
+}
+/* bij sluiten of wegklikken: openstaande wijziging meteen doorsturen */
+function flushPush(){
+  if (!SHEET_URL || !pushPending) return;
+  try { navigator.sendBeacon(SHEET_URL, new Blob([payload()], {type:"text/plain;charset=utf-8"})); } catch (e) {}
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushPush(); });
+window.addEventListener("pagehide", flushPush);
+function userKeys(st){
+  return Object.keys(st).filter(k => !k.startsWith("_") && !(k in PREFILL && JSON.stringify(st[k]) === JSON.stringify(PREFILL[k])));
 }
 async function pullRemote(){
   if (!SHEET_URL) return;
   try {
     const r = await fetch(SHEET_URL + "?klant=" + encodeURIComponent(CLIENT_ID), {cache:"no-store"});
     const j = await r.json();
-    if (j && j.state && (j.state._ts || 0) > (state._ts || 0)) {
-      state = j.state;
+    if (!j || !j.state) return;
+    const remote = j.state, local = state;
+    if ((remote._ts || 0) > (local._ts || 0)) {
+      /* online versie is nieuwer: overnemen, maar nooit eigen antwoorden van dit toestel verliezen */
+      const merged = Object.assign({}, remote);
+      let added = false;
+      userKeys(local).forEach(k => { if (merged[k] == null || merged[k] === "") { merged[k] = local[k]; added = true; } });
+      state = merged;
       applyPrefill();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
       go(current);
       saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
+      if (added) { state._ts = Date.now(); persist(); }
+    } else if ((local._ts || 0) > (remote._ts || 0)) {
+      pushRemote(); /* dit toestel heeft nieuwere antwoorden die nog niet online staan */
     }
   } catch (e) {}
 }
