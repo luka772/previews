@@ -1048,18 +1048,23 @@ function buildText(onlyAnswered){
   out.push("Datum: " + new Date().toLocaleString("nl-BE"));
   STEPS.forEach((s, si) => {
     if (si === 0) return;
-    out.push("", "=".repeat(60), s.eyebrow.toUpperCase() + " · " + s.title.toUpperCase(), "=".repeat(60));
-    let n = 0;
+    const sec = []; let n = 0, any = false;
     s.groups.forEach((g, gi) => {
-      if (g.title) out.push("", "## " + g.title);
-      if (g.sub) out.push("", "### " + g.sub);
+      const grp = [];
       g.qs.forEach((q, qi) => {
         n++;
         const a = answerText(q, qKey(si, gi, qi));
         if (onlyAnswered && !a) return;
-        out.push("", n + ". " + q.t, a ? (a.startsWith("\n") ? a.slice(1) : "   " + a.replace(/\n/g, "\n   ")) : "   (niet beantwoord)");
+        if (a) any = true;
+        grp.push("", n + ". " + q.t, a ? (a.startsWith("\n") ? a.slice(1) : "   " + a.replace(/\n/g, "\n   ")) : "   (niet beantwoord)");
       });
+      if (!grp.length) return;
+      if (g.title) sec.push("", "## " + g.title);
+      if (g.sub) sec.push("", "### " + g.sub);
+      sec.push(...grp);
     });
+    if (onlyAnswered && !any) return;
+    out.push("", "=".repeat(60), s.eyebrow.toUpperCase() + " · " + s.title.toUpperCase(), "=".repeat(60), ...sec);
   });
   return out.join("\n");
 }
