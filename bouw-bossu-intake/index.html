@@ -255,7 +255,7 @@ const STORAGE_KEY = "website-intake-v1";
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Je notities blijven enkel op dit toestel bewaard en worden nergens naartoe gestuurd.",
+  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Je notities blijven enkel op dit toestel bewaard. Wil je ze ons al bezorgen? Onderaan, bij Overzicht, kan je ze met één klik doormailen.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -979,18 +979,30 @@ function renderReview(){
   row.append(sendBtn, h("button", {type:"button", class:"btn ghost", onclick:showFallback}, "Toon als tekst"));
   box.append(row);
   box.append(h("div", {class:"status", id:"status"}));
+  /* notities doorsturen via eigen mail of bestand, geen externe dienst */
+  const nb = h("div", {class:"sendbox"});
+  nb.append(h("h2", null, "Je notities doorsturen"),
+    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we er tijdens de meeting al rekening mee houden. Dit is volledig vrijblijvend."));
+  const nrow = h("div", {style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"});
+  nrow.append(h("button", {type:"button", class:"btn coral", onclick:showFallback}, "Toon mijn notities"));
+  nb.append(nrow);
   const fb = h("div", {class:"fallback", id:"fallback"});
   const ta = h("textarea", {id:"fallbackText", readonly:""});
   const copyBtn = h("button", {type:"button", class:"btn primary", onclick:async () => {
-    const txt = ta.value;
-    try { await navigator.clipboard.writeText(txt); copyBtn.textContent = "Gekopieerd"; }
+    try { await navigator.clipboard.writeText(ta.value); copyBtn.textContent = "Gekopieerd"; }
     catch (e) { ta.focus(); ta.select(); copyBtn.textContent = "Selecteer en kopieer (Ctrl+C)"; }
     setTimeout(() => copyBtn.textContent = "Kopieer alles", 2500);
   }}, "Kopieer alles");
   const mailA = h("a", {class:"btn ghost", id:"mailLink", href:"#"}, "Open in e-mail");
-  fb.append(h("p", {class:"legend"}, "Kopieer de tekst hieronder en plak ze in een e-mail naar ", h("span", {class:"addr"}, SEND_TO), "."), ta, h("div", {class:"row"}, copyBtn, mailA));
-  box.append(fb);
-  /* verzenden uitgeschakeld: vragen worden tijdens de meeting overlopen */
+  const dlBtn = h("button", {type:"button", class:"btn ghost", onclick:() => {
+    const b = new Blob([ta.value], {type:"text/plain;charset=utf-8"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(b);
+    a.download = "Intake website - " + ((state["start.bedrijf"] || "notities").replace(/[\\/:*?"<>|]/g, "")) + ".txt";
+    document.body.append(a); a.click(); a.remove();
+  }}, "Download als bestand");
+  fb.append(h("p", {class:"legend", id:"fbLegend"}), ta, h("div", {class:"row"}, copyBtn, mailA, dlBtn));
+  nb.append(fb);
+  sec.append(nb);
 
   const navEl = h("div", {class:"nav"});
   navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(STEPS.length - 1)}, "← Vorige"));
@@ -1028,12 +1040,12 @@ function answerText(q, key){
   if (ex) v += (v ? "\n  Toelichting: " : "") + ex;
   return v;
 }
-function buildText(){
+function buildText(onlyAnswered){
   const out = [];
   out.push("INTAKE NIEUWE WEBSITE");
   out.push("Bedrijf: " + (state["start.bedrijf"] || "–"));
   out.push("Contact: " + (state["start.contact"] || "–") + " · " + (state["start.email"] || "–") + (state["start.tel"] ? " · " + state["start.tel"] : ""));
-  out.push("Verzonden: " + new Date().toLocaleString("nl-BE"));
+  out.push("Datum: " + new Date().toLocaleString("nl-BE"));
   STEPS.forEach((s, si) => {
     if (si === 0) return;
     out.push("", "=".repeat(60), s.eyebrow.toUpperCase() + " · " + s.title.toUpperCase(), "=".repeat(60));
@@ -1044,6 +1056,7 @@ function buildText(){
       g.qs.forEach((q, qi) => {
         n++;
         const a = answerText(q, qKey(si, gi, qi));
+        if (onlyAnswered && !a) return;
         out.push("", n + ". " + q.t, a ? (a.startsWith("\n") ? a.slice(1) : "   " + a.replace(/\n/g, "\n   ")) : "   (niet beantwoord)");
       });
     });
@@ -1052,9 +1065,13 @@ function buildText(){
 }
 function showFallback(){
   const fb = document.getElementById("fallback"), ta = document.getElementById("fallbackText");
-  const txt = buildText(); ta.value = txt; fb.classList.add("show");
+  const txt = buildText(true); ta.value = txt; fb.classList.add("show");
   const subj = "Intake nieuwe website – " + (state["start.bedrijf"] || "");
-  document.getElementById("mailLink").href = "mailto:" + SEND_TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent("Zie antwoorden hieronder (plak uit het formulier):\n\n");
+  const full = txt.length < 1800;
+  document.getElementById("mailLink").href = "mailto:" + SEND_TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(full ? txt : "Mijn notities voor de meeting (geplakt uit de vragenlijst):\n\n");
+  document.getElementById("fbLegend").textContent = full
+    ? "Klik op \u201cOpen in e-mail\u201d: je notities staan dan al in een mail naar " + SEND_TO + ". Je hoeft enkel nog op verzenden te drukken."
+    : "Klik op \u201cKopieer alles\u201d en daarna op \u201cOpen in e-mail\u201d, en plak je notities in de mail naar " + SEND_TO + ". Of download ze als bestand en voeg dat als bijlage toe.";
   ta.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
 function setStatus(kind, msg){ const s = document.getElementById("status"); s.className = "status show " + kind; s.textContent = msg; }
