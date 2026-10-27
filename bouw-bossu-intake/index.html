@@ -102,6 +102,7 @@ h1{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.4vw,36
 .q.answered{border-color:#dcdcd8}
 .q .meta{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .q .num{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--fg-faint);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.q .pre{font-size:11px;font-weight:600;color:#2f6b4f;background:#e4f2ea;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
 .q .req{font-size:11px;font-weight:600;color:var(--coral-deep);background:var(--coral-soft);padding:2px 8px;border-radius:999px;letter-spacing:.02em}
 .q .chk{margin-left:auto;width:18px;height:18px;border-radius:50%;background:var(--coral);color:#fff;display:none;place-items:center;font-size:10px}
 .q.answered .chk{display:grid}
@@ -252,13 +253,15 @@ const STORAGE_KEY = "website-intake-v1";
 /* Online opslag in Google Sheet (Apps Script web-app). Leeg = enkel lokaal bewaren. */
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbx0GTZM6i2XBU854MBidg_f63EGzfQKQMVeg9U4iBWJ7DlnvTgUm9N8u3kAg0TqBepo/exec";
 const CLIENT_ID = "bouw-bossu";
+/* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
+const PREFILL = {"start.bedrijf": "Bouw Bossu", "huidig.3-6": "Ja. Google Ads (o.a. Performance Max) aan meer dan € 1.000 per maand en Meta Ads aan ± € 200–300 per maand, al meer dan 10 jaar in eigen beheer. Ongeveer 80% van het budget gaat naar Google, 20% naar Meta. De advertenties zijn vandaag vooral statisch (foto en tekst).", "nieuw.0-1": "Voorstel vanuit de strategie: 1) aanvragen en bezoeken aan de kijkwoning, 2) elk project tonen op een eigen pagina die ook dient als landingspagina voor de advertenties, 3) beter gevonden worden in Google met SEO per gemeente. Klopt deze volgorde voor jullie?", "nieuw.0-2": "Voorstel vanuit de strategie: we meten via Google Tag Manager en GA4 met events per stap (projectpagina bekeken, contactopname of infoaanvraag, klik op telefoon of bericht) en koppelen terug of een lead goed was of kocht. Succes = meer en betere aanvragen en meer bezoeken aan de kijkwoning.", "nieuw.0-3": ["Aanvraag gedaan", "Gebeld", "Project bekeken"], "nieuw.0-3.extra": "Hoofddoel is een contactopname of informatieaanvraag, daarnaast een bericht, telefoontje of bezoek aan de kijkwoning.", "nieuw.1-2": ["Dedicated landingspagina per project (zoals roelevard.be, maar beter design)", "Campagnes en tijdelijke acties met eigen landingspagina's"], "nieuw.1-2.extra": "In de advertentiestrategie landt elke Google-advertentiegroep op een eigen pagina: projectpagina woningen, projectpagina appartementen, kijkwoningpagina, pagina over de immo-tak ('eerst je huis verkocht') en de homepage voor wie op de naam Bossu zoekt.", "bedrijf.0-3": "Ja, een familiebedrijf. Jens is zaakvoerder. Zijn vader is metser van opleiding: de ruwbouw gebeurt met een eigen bouwbedrijf.", "bedrijf.1-0": "Voorstel: 'Huizen zonder zorgen, van de grond tot de sleutel bij één partner.'", "bedrijf.3-0": "Een straal van ± 20 km rond Rumbeke, met projecten in onder meer Houthulst, Izegem, Oostrozebeke en Roeselare.", "bedrijf.3-2": "Twee hoofdgroepen: de doorstromer (± 35–60 jaar, heeft al een woning en wil groter, nieuwer of comfortabeler wonen) en de jonge garde (± 25–38 jaar, eerste nieuwbouw). Nevendoelgroep: eigenaars van grond of een pand, want Bossu koopt ook aan.", "bedrijf.3-3": "Enkel volledige nieuwbouwprojecten: woningen en appartementen, waaronder een luxe appartement en penthouse in Roeselare (Izegemsestraat). Geen losse renovaties of deelwerken.", "diensten.0-0": "Het volledige proces in eigen beheer: aankoop en verkaveling van gronden, ontwerp met de architect, ruwbouw met een eigen bouwbedrijf, afwerking met vaste kwalitatieve onderaannemers en de oplevering. Daarnaast een eigen immo-tak die eerst de bestaande woning van de koper verkoopt.", "diensten.0-2": "Bossu koopt grond of een pand aan, verkavelt, ontwerpt met de architect, bouwt (de ruwbouw zelf) en verkoopt de nieuwbouw. Heeft de koper nog een woning, dan verkoopt de immo-tak die eerst aan een vaste prijs, onder opschortende voorwaarde: pas daarna wordt de aankoop van de nieuwbouw definitief.", "diensten.3-2": "De ruwbouw gebeurt volledig in eigen beheer, met een eigen bouwbedrijf. Voor de afwerking kiezen jullie bewust de meest kwalitatieve onderaannemers, niet de goedkoopste.", "diensten.3-4": "Standaard inbegrepen: aluminium ramen, vloerafwerking op beide verdiepingen, een volledig aangelegde oprit en terras, en een bruikbare zolder.", "diensten.13-0": ["Wij kopen zelf woningen of gronden aan"], "diensten.13-0.extra": "Bossu koopt gronden en panden aan om zelf te ontwikkelen.", "onderscheid.1-0": "Eerst je huidige woning verkocht: via de eigen immo-tak verkopen jullie de bestaande woning van de koper aan een vaste prijs, pas daarna wordt de nieuwbouw definitief. Nooit met twee huizen blijven zitten.", "onderscheid.1-1": "1) Eigen ruwbouw met een eigen bouwbedrijf; Jens' vader is metser, dus kwaliteitscontrole op de werf. 2) Standaard premium afgewerkt: aluminium ramen, vloeren, oprit, terras, bruikbare zolder. 3) Eén partner van de grond tot de sleutel. 4) Eerst je huis verkocht via de immo-tak. 5) De beste onderaannemers, niet de goedkoopste. Bewijzen (cijfers, reviews) vullen we samen aan.", "onderscheid.1-3": "Eigen ruwbouw en vaste vakmannen in plaats van alles uitbesteden, alles standaard afgewerkt in plaats van opties die bijkomen, en één partner van de grond tot de sleutel.", "onderscheid.2-0": "Beide: de ruwbouw volledig met eigen ploegen (eigen bouwbedrijf), de afwerking met vaste onderaannemers.", "onderscheid.2-1": "Bewust de meest kwalitatieve partners, niet de goedkoopste.", "team.0-0": "Jens, zaakvoerder. Zijn vader, metser van opleiding, voor de ruwbouw. De rest van het team vullen we samen aan.", "woningen.0-3": "Traditioneel: de ruwbouw wordt gemetseld door het eigen bouwbedrijf.", "woningen.0-5": "Standaard aluminium ramen.", "woningen.1-0": "Vloerafwerking op beide verdiepingen, oprit en terras zitten standaard in. De afwerking gebeurt met vaste onderaannemers.", "projecten.2-0": "Voorstel vanuit de strategie: ja. Elk project krijgt een eigen pagina die ook dient als landingspagina voor de advertenties op Google en Meta. Wie 'nieuwbouwappartement Roeselare' zoekt, landt rechtstreeks op de pagina van dat appartement.", "leads.0-1": "Voorstel vanuit de strategie: binnen 24 uur, persoonlijk. Elke aanvraag krijgt binnen 24 uur een telefoontje of bericht van Jens of het team.", "stijl.0-0": "De doorstromer: ± 35–60 jaar, heeft al een woning en wil groter, nieuwer of comfortabeler wonen, in een straal van ± 20–25 km rond Rumbeke. De jonge garde: ± 25–38 jaar, eerste nieuwbouw, oriënteert zich op Instagram en Facebook, met extra gewicht op Roeselare en Izegem.", "stijl.0-1": "Doorstromers zijn bang om met twee huizen te blijven zitten. De jonge garde is bang om na de sleutel nog maanden bij te betalen en af te werken.", "stijl.0-2": ["Google", "Sociale media", "Werfborden"], "stijl.0-2.extra": "Google Ads (meer dan € 1.000 per maand) en Meta Ads, 2.412 volgers op Instagram en 3.800 op Facebook. Veel mensen kennen de naam al van de werfborden.", "stijl.3-1": "Ja. We filmen video's met Jens, met als eerste shoot de kijkwoning in Houthulst (Zwanestraat) zodra die volledig afgewerkt is. Op de werven filmen we vanuit vaste camerapunten, zodat er een beeldarchief groeit voor voor-en-na-beelden.", "techniek.1-0": "Uit de advertentiestrategie: nieuwbouwwoning Houthulst, nieuwbouw Izegem, nieuwbouw Roeselare, nieuwbouwappartement Roeselare, penthouse Roeselare, kijkwoning nieuwbouw, nieuwbouw bezichtigen West-Vlaanderen, huis verkopen en nieuwbouw kopen, Bouw Bossu, Bossu Rumbeke.", "techniek.1-1": "Voorstel: een pagina per gemeente voor SEO, zeker voor Houthulst, Izegem, Oostrozebeke en Roeselare.", "techniek.1-4": "Ja"};
 
 /* ---------- Vragenlijst ---------- */
 // t = tekstvak (standaard), s = kort tekstveld, r = één keuze, c = meerdere keuzes
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Wat je noteert wordt automatisch bewaard, zodat je later gewoon verder kunt, ook op een ander toestel.",
+  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Een deel van de vragen hebben we al ingevuld op basis van ons eerste gesprek en de strategie. Je herkent ze aan het groene label \u201cvooraf ingevuld\u201d. Kijk ze gerust na: klopt iets niet, pas het dan gewoon aan. Wil je iets noteren? Dat kan in de vakjes. Wat je noteert wordt automatisch bewaard, zodat je later gewoon verder kunt, ook op een ander toestel.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -306,12 +309,12 @@ const STEPS = [
     {t:"Wat is de reden dat je een nieuwe website wilt? Wat was de aanleiding (concurrent, klachten, groei, nieuwe dienst)?"},
     {t:"Wat is het hoofddoel van de nieuwe website? Zijn er meerdere doelen? Rangschik ze."},
     {t:"Hoe meten we over een jaar of de site geslaagd is? (aantal aanvragen, kwaliteit van leads, minder telefoontjes met basisvragen, verkochte woningen, ...)"},
-    {t:"Wat moet een bezoeker gedaan hebben als hij de site verlaat?", type:"c", opts:["Aanvraag gedaan","Simulatie gedaan","Brochure gedownload","Gebeld","Project bekeken","Ingeschreven op nieuws"]}
+    {t:"Wat moet een bezoeker gedaan hebben als hij de site verlaat?", type:"c", opts:["Aanvraag gedaan","Simulatie gedaan","Brochure gedownload","Gebeld","Project bekeken","Ingeschreven op nieuws"], extra:true}
   ]},
   { title:"Omvang en type", qs:[
     {t:"Heb je een grote, uitgebreide website voor ogen of eerder compact, klein maar informatief?", type:"r", opts:["Uitgebreid","Compact maar informatief","Weet ik nog niet"]},
     {t:"Is de website puur informatief, of zetten we sterk in op lead capture?", type:"r", opts:["Vooral informatief","Vooral lead capture","Beide evenveel"]},
-    {t:"Wil je de site ook multi-channel inzetten? Vink aan wat je wilt kunnen doen.", type:"c", opts:["Campagnes en tijdelijke acties met eigen landingspagina's","Kennisbank met artikels die mensen vinden via Google","Tijdelijke pagina's voor events (opendeurdag, kijkdag, werfbezoek)","Dedicated landingspagina per project (zoals roelevard.be, maar beter design)"]},
+    {t:"Wil je de site ook multi-channel inzetten? Vink aan wat je wilt kunnen doen.", type:"c", opts:["Campagnes en tijdelijke acties met eigen landingspagina's","Kennisbank met artikels die mensen vinden via Google","Tijdelijke pagina's voor events (opendeurdag, kijkdag, werfbezoek)","Dedicated landingspagina per project (zoals roelevard.be, maar beter design)"], extra:true},
     {t:"Komt er een Nederlandstalige site, of ook Frans en Engels?", type:"c", opts:["Nederlands","Frans","Engels"]},
     {t:"Wil je op termijn zelf pagina's en projecten kunnen toevoegen zonder ontwikkelaar?", type:"r", opts:["Ja, alles zelf","Enkel nieuws en projecten","Nee, liever uitbesteden"]}
   ]},
@@ -665,7 +668,7 @@ const STEPS = [
   { title:"Doelgroep", qs:[
     {t:"Beschrijf de ideale klant per dienst: leeftijd, gezinssituatie, waar hij woont, wat hem bezighoudt, waar hij bang voor is.", req:true, tall:true},
     {t:"Welke bezwaren of twijfels hoor je het vaakst vóór iemand tekent? (timing, vertrouwen, keuzes)"},
-    {t:"Hoe zoeken klanten jullie vandaag?", type:"c", opts:["Google","Mond-tot-mond","Werfborden","Sociale media","Beurzen","Immoweb of Zimmo"]},
+    {t:"Hoe zoeken klanten jullie vandaag?", type:"c", opts:["Google","Mond-tot-mond","Werfborden","Sociale media","Beurzen","Immoweb of Zimmo"], extra:true},
     {t:"Via welk toestel bekijken ze de site: vooral mobiel of desktop? (we checken dit ook in Analytics)", type:"r", opts:["Vooral mobiel","Vooral desktop","Weet ik niet"]}
   ]},
   { title:"Tone of voice", qs:[
@@ -729,6 +732,17 @@ const STEPS = [
 /* ---------- State ---------- */
 let state = {};
 try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch (e) { state = {}; }
+function applyPrefill(){
+  if (state._pf) return false;
+  Object.keys(PREFILL).forEach(k => { if (state[k] == null || state[k] === "") state[k] = PREFILL[k]; });
+  state._pf = 1;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  return true;
+}
+applyPrefill();
+function isPrefilled(key){
+  return [key, key + ".extra"].some(k => k in PREFILL && JSON.stringify(state[k]) === JSON.stringify(PREFILL[k]));
+}
 let current = 0;
 try { const c = parseInt(localStorage.getItem(STORAGE_KEY + ":step"), 10); if (!isNaN(c)) current = Math.min(Math.max(c, 0), STEPS.length); } catch (e) {}
 
@@ -767,6 +781,7 @@ async function pullRemote(){
     const j = await r.json();
     if (j && j.state && (j.state._ts || 0) > (state._ts || 0)) {
       state = j.state;
+      applyPrefill();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
       go(current);
       saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
@@ -948,6 +963,7 @@ function renderStep(si){
       const isForm = q.type === "grid" || q.type === "check" || q.type === "r" || q.type === "c";
       const meta = h("div", {class:"meta"}, h("span", {class:"num"}, String(n).padStart(2, "0")));
       if (q.req) meta.append(h("span", {class:"req"}, "verplicht"));
+      if (isPrefilled(key)) meta.append(h("span", {class:"pre", title:"Ingevuld op basis van ons eerste gesprek en de strategie. Klopt het niet? Pas het gerust aan."}, "vooraf ingevuld · klopt dit?"));
       meta.append(h("span", {class:"chk"}, "✓"));
       const qt = isForm ? h("div", {class:"qt"}, q.t) : h("label", {class:"qt", for:id}, q.t);
       const ctl = h("div", {class:"ctl"});
@@ -1161,7 +1177,7 @@ function clearAll(){
 /* ---------- Boot ---------- */
 buildNav();
 go(current);
-if (Object.keys(state).length) { saveEl.classList.add("saved"); saveTxt.textContent = "Eerder bewaard"; }
+if (state._ts) { saveEl.classList.add("saved"); saveTxt.textContent = "Eerder bewaard"; }
 pullRemote();
 </script>
 </body>
