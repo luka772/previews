@@ -763,7 +763,7 @@ function persist(){
 let pushTimer = null, pushPending = false, pushTries = 0;
 function payload(){
   let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
-  return JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, tekst: buildText(true)});
+  return JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, rows: buildRows()});
 }
 function pushRemote(){
   if (!SHEET_URL) return;
@@ -1120,6 +1120,19 @@ function answerText(q, key){
   const ex = state[key + ".extra"];
   if (ex) v += (v ? "\n  Toelichting: " : "") + ex;
   return v;
+}
+function buildRows(){
+  const rows = [];
+  STEPS.forEach((s, si) => {
+    const deel = si === 0 ? "Gegevens" : "Deel " + si + " · " + (s.nav || s.title);
+    let n = 0;
+    s.groups.forEach((g, gi) => g.qs.forEach((q, qi) => {
+      n++;
+      const a = answerText(q, qKey(si, gi, qi));
+      if (a) rows.push([deel, n, q.t, a.startsWith("\n") ? a.slice(1) : a]);
+    }));
+  });
+  return rows;
 }
 function buildText(onlyAnswered){
   const out = [];
