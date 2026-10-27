@@ -249,13 +249,16 @@ th.ck{text-align:center}
 const SEND_TO = "luka@cohezy.agency";
 const WEB3FORMS_KEY = "";           // bv. "a1b2c3d4-...."
 const STORAGE_KEY = "website-intake-v1";
+/* Online opslag in Google Sheet (Apps Script web-app). Leeg = enkel lokaal bewaren. */
+const SHEET_URL = "";
+const CLIENT_ID = "bouw-bossu";
 
 /* ---------- Vragenlijst ---------- */
 // t = tekstvak (standaard), s = kort tekstveld, r = één keuze, c = meerdere keuzes
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Je notities blijven enkel op dit toestel bewaard. Wil je ze ons al bezorgen? Onderaan, bij Overzicht, kan je ze met één klik doormailen.",
+  intro:"Deze vragenlijst bevat alles wat we nodig hebben om de nieuwe website te structureren, te schrijven en te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Wil je iets noteren? Dat kan in de vakjes. Wat je noteert wordt automatisch bewaard, zodat je later gewoon verder kunt, ook op een ander toestel.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -739,9 +742,38 @@ function persist(){
     saveEl.classList.remove("saving"); saveEl.classList.add("saved");
     const d = new Date(); saveTxt.textContent = "Bewaard om " + d.toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
     updateProgress();
+    pushRemote();
   }, 400);
 }
-function setVal(key, val){ if (val === "" || val == null || (Array.isArray(val) && !val.length)) delete state[key]; else state[key] = val; persist(); }
+let pushTimer = null;
+function pushRemote(){
+  if (!SHEET_URL) return;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(async () => {
+    let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
+    try {
+      await fetch(SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, tekst: buildText(true)})});
+      saveTxt.textContent = "Online bewaard om " + new Date().toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
+    } catch (e) {
+      saveTxt.textContent = "Bewaard op dit toestel (online lukte niet)";
+    }
+  }, 1200);
+}
+async function pullRemote(){
+  if (!SHEET_URL) return;
+  try {
+    const r = await fetch(SHEET_URL + "?klant=" + encodeURIComponent(CLIENT_ID), {cache:"no-store"});
+    const j = await r.json();
+    if (j && j.state && (j.state._ts || 0) > (state._ts || 0)) {
+      state = j.state;
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      go(current);
+      saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
+    }
+  } catch (e) {}
+}
+function setVal(key, val){ if (val === "" || val == null || (Array.isArray(val) && !val.length)) delete state[key]; else state[key] = val; state._ts = Date.now(); persist(); }
 
 /* ---------- Keys & counting ---------- */
 function qKey(si, gi, qi){ return STEPS[si].id + "." + (STEPS[si].groups[gi].qs[qi].k || (gi + "-" + qi)); }
@@ -1006,7 +1038,6 @@ function renderReview(){
 
   const navEl = h("div", {class:"nav"});
   navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(STEPS.length - 1)}, "← Vorige"));
-  navEl.append(h("div", {class:"right"}, h("button", {type:"button", class:"btn text", onclick:clearAll}, "Wis alle antwoorden")));
   sec.append(navEl);
   main.append(sec);
 }
@@ -1130,7 +1161,8 @@ function clearAll(){
 /* ---------- Boot ---------- */
 buildNav();
 go(current);
-if (Object.keys(state).length) { saveEl.classList.add("saved"); saveTxt.textContent = "Eerder bewaard op dit toestel"; }
+if (Object.keys(state).length) { saveEl.classList.add("saved"); saveTxt.textContent = "Eerder bewaard"; }
+pullRemote();
 </script>
 </body>
 </html>
