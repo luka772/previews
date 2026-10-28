@@ -733,6 +733,33 @@ const STEPS = [
 }
 ];
 
+
+/* ---------- Compacte versie ----------
+   Vragen in COMPACT_REMOVE worden verborgen, BEHALVE als er al een antwoord bij staat:
+   ingevulde info verdwijnt dus nooit. Elke vraag krijgt een vaste sleutel, zodat
+   bestaande antwoorden bij de juiste vraag blijven staan. */
+const COMPACT_REMOVE = new Set(["bedrijf.0-1", "bedrijf.0-2", "bedrijf.1-3", "bedrijf.3-1", "bedrijf.4-2", "bedrijf.4-3", "diensten.0-3", "diensten.0-4", "diensten.1-1", "diensten.1-2", "diensten.1-3", "diensten.10-2", "diensten.10-4", "diensten.10-5", "diensten.10-6", "diensten.11-0", "diensten.11-1", "diensten.11-2", "diensten.11-3", "diensten.11-4", "diensten.12-1", "diensten.12-2", "diensten.13-3", "diensten.13-4", "diensten.14-1", "diensten.14-2", "diensten.14-3", "diensten.15-0", "diensten.15-1", "diensten.15-2", "diensten.16-0", "diensten.16-1", "diensten.17-1", "diensten.17-3", "diensten.18-1", "diensten.18-2", "diensten.2-0", "diensten.2-1", "diensten.2-2", "diensten.2-3", "diensten.2-4", "diensten.2-5", "diensten.2-6", "diensten.3-0", "diensten.3-1", "diensten.3-3", "diensten.3-5", "diensten.4-1", "diensten.4-2", "diensten.4-3", "diensten.5-0", "diensten.5-1", "diensten.5-2", "diensten.5-3", "diensten.6-2", "diensten.6-4", "diensten.6-5", "diensten.7-0", "diensten.7-1", "diensten.7-2", "diensten.7-3", "diensten.7-4", "diensten.8-1", "diensten.8-2", "diensten.9-1", "diensten.9-2", "diensten.9-4", "huidig.0-2", "huidig.0-3", "huidig.1-1", "huidig.2-0", "huidig.3-2", "huidig.3-3", "kennis.0-2", "kennis.0-3", "kennis.0-4", "kennis.1-1", "kennis.1-2", "kennis.1-3", "kennis.2-0", "kennis.2-1", "kennis.2-2", "kennis.2-3", "kennis.3-0", "kennis.3-1", "kennis.3-2", "kennis.4-1", "leads.0-2", "leads.0-5", "leads.1-1", "leads.2-1", "leads.2-2", "leads.2-3", "nieuw.1-1", "nieuw.2-2", "nieuw.2-4", "onderscheid.0-1", "onderscheid.0-2", "onderscheid.0-3", "onderscheid.1-2", "onderscheid.1-4", "onderscheid.2-3", "onderscheid.2-4", "onderscheid.3-2", "onderscheid.3-3", "projecten.0-4", "projecten.1-1", "projecten.1-2", "projecten.1-3", "projecten.1-4", "projecten.2-2", "stijl.0-3", "stijl.1-2", "stijl.2-1", "stijl.2-3", "stijl.3-2", "team.0-1", "team.0-4", "team.0-5", "team.0-6", "team.0-8", "techniek.0-4", "techniek.1-3", "techniek.2-1", "techniek.3-4", "woningen.0-1", "woningen.0-2", "woningen.1-1", "woningen.1-3", "woningen.2-1", "woningen.3-1", "woningen.3-2", "woningen.3-3", "woningen.3-4", "woningen.4-0", "woningen.4-1", "woningen.4-2", "woningen.4-3"]);
+const COMPACT_RETEXT = {"start.email": "Jouw e-mailadres", "huidig.2-1": "Wie doet vandaag de aanpassingen aan de site, en gaat dat makkelijk?", "bedrijf.0-0": "Wanneer is het bedrijf opgericht, door wie en waarom? Zijn er mijlpalen, oude foto's of verhalen die we mogen gebruiken?", "bedrijf.2-0": "Kerncijfers: hoeveel woningen en projecten hebben jullie al gebouwd, verkocht of aangekocht (totaal en per jaar), en hoeveel lopen er nu?", "diensten.1-0": "Bouwen jullie ook op grond van de klant? Zo ja: wat houdt dat in (sleutel-op-de-deur, eigen ontwerp of externe architect, ook na sloop)?", "diensten.4-0": "Waar zijn klanten het meest bang voor vóór ze tekenen, en hoe nemen jullie die twijfel weg?", "diensten.6-0": "Hoe verloopt de aankoop van een nieuwbouwwoning of -appartement bij jullie, stap voor stap en met richtduur?", "diensten.14-0": "Hoe verloopt een aankoop door jullie, hoe snel kan dat rond zijn, en mag de eigenaar nog even blijven wonen?", "diensten.18-0": "Zijn er nog andere diensten (renovatie, verhuur, investeerders) of plannen voor de komende 2 jaar waar de site rekening mee moet houden?", "onderscheid.0-0": "Wie zijn jullie belangrijkste concurrenten, en waarin verschillen jullie van hen?", "team.0-3": "Welke teamleden mogen met foto en naam op de site? Zijn er professionele teamfoto's, of plannen we een shoot?", "kennis.1-0": "Welke vragen krijgen jullie het vaakst van klanten? Die worden de basis van de veelgestelde vragen op de site.", "stijl.2-0": "Is er een logo in vectorformaat (AI, EPS, SVG), met kleurcodes en lettertypes? Is er een huisstijlgids?"};
+const COMPACT_INTRO = {"diensten": "Per dienst de kern: wat het is, hoe het verloopt en waar klanten mee zitten. We vragen nergens naar prijzen: die komen niet op de site."};
+STEPS.forEach(st => st.groups.forEach((g, gi) => g.qs.forEach((q, qi) => { if (!q.k) q.k = gi + "-" + qi; })));
+const ALL_STEPS = STEPS.map(st => Object.assign({}, st, {groups: st.groups.map(g => Object.assign({}, g, {qs: g.qs.slice()}))}));
+function hasAnswer(key){
+  return Object.keys(state).some(k => (k === key || k === key + ".extra" || k.startsWith(key + "[")) && state[k] !== "" && state[k] != null && state[k] !== false && !(Array.isArray(state[k]) && !state[k].length));
+}
+function applyCompact(){
+  const out = ALL_STEPS.map(st => {
+    const groups = [];
+    st.groups.forEach(g => {
+      const qs = g.qs.filter(q => { const key = st.id + "." + q.k; return !COMPACT_REMOVE.has(key) || hasAnswer(key); })
+        .map(q => { const t = COMPACT_RETEXT[st.id + "." + q.k]; return t ? Object.assign({}, q, {t}) : q; });
+      if (qs.length) groups.push(Object.assign({}, g, {qs}));
+      else if (g.title) groups.pendingTitle = g.title;
+      if (qs.length && groups.pendingTitle) { if (!groups[groups.length - 1].title) groups[groups.length - 1].title = groups.pendingTitle; delete groups.pendingTitle; }
+    });
+    return Object.assign({}, st, {groups, intro: COMPACT_INTRO[st.id] || st.intro});
+  }).filter(st => st.groups.length);
+  STEPS.length = 0; out.forEach(st => STEPS.push(st));
+}
 /* ---------- State ---------- */
 let state = {};
 try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch (e) { state = {}; }
@@ -747,6 +774,7 @@ function applyPrefill(){
   return true;
 }
 applyPrefill();
+applyCompact();
 function isPrefilled(key){
   return [key, key + ".extra"].some(k => k in PREFILL && JSON.stringify(state[k]) === JSON.stringify(PREFILL[k]));
 }
@@ -819,6 +847,7 @@ async function pullRemote(){
       userKeys(local).forEach(k => { if (merged[k] == null || merged[k] === "") { merged[k] = local[k]; added = true; } });
       state = merged;
       if (applyPrefill()) added = true;
+      applyCompact();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
       go(current);
       saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
