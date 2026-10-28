@@ -324,12 +324,15 @@ const STEPS = [
   ]},
   { title:"Voorgestelde structuur", qs:[
     {t:"Ons voorstel, af te toetsen per pagina.", type:"grid",
-     rows:[["Homepagina","overzicht, vertrouwen, snelle weg naar aanvraag"],["Over ons","geschiedenis, team, waarden"],["Nieuws","actualiteit, premies, events"],["Kennisbank","antwoorden op veelgestelde vragen, SEO"],["Projecten","referenties en lopende projecten"],["Documenten","downloadbare brochures, lastenboeken, formulieren"],["Huis aankopen","dienst, stappen, aanbod"],["Huis verkopen","dienst, stappen, aanvraagformulier"],["Huis bouwen","dienst, stappen, woningtypes"],["Nieuwbouw","aanbod nieuwbouwprojecten"],["Simulatietool","budget- of haalbaarheidssimulatie, lead capture","__hidden"],["Onze betrouwbaarheid","garanties, erkenningen, reviews"],["Contact","adres, openingsuren, formulier, kaart"],["Vacatures","aanwerving, indien van toepassing"]],
+     rows:[["Homepagina","overzicht, vertrouwen, snelle weg naar aanvraag"],["Over ons","geschiedenis, team, waarden"],["Nieuws","actualiteit, premies, events"],["Kennisbank","antwoorden op veelgestelde vragen, SEO"],["Realisaties","referenties, elk met een eigen pagina die jullie zelf toevoegen via het CMS"],["Documenten","downloadbare brochures, lastenboeken, formulieren"],["Herverkoop","aanbod bestaande woningen, elk pand een eigen pagina via het CMS"],["Eigendom verkopen","gronden en panden die Bossu aankoopt, met formulier"],["Huis bouwen","dienst, stappen, woningtypes"],["Nieuwbouw","overzicht, met een eigen pagina per project en per woning, zelf toe te voegen via het CMS"],["Simulatietool","budget- of haalbaarheidssimulatie, lead capture","__hidden"],["Onze betrouwbaarheid","garanties, erkenningen, reviews"],["Contact","adres, openingsuren, formulier, kaart"],["Vacatures","aanwerving, indien van toepassing"],["Kijkwoning","adres, foto's, bezoek aanvragen"],["Eerst je huis verkocht","uitleg + formulier 'gratis schatting van je woning aanvragen'"],["Pagina per gemeente","voor Google: nieuwbouw in Houthulst, Izegem, Roeselare, ..."]],
      cols:[{k:"keuze",l:"Beslissing",kind:"select",opts:["Nodig","Later","Schrappen"]},{k:"opm",l:"Opmerking",kind:"text"}]},
     {t:"Welke pagina's ontbreken in dit voorstel? Welke zijn overbodig?"},
     {t:"Welke 3 pagina's zijn het belangrijkst voor jou?"},
     {t:"Zijn er voorbeelden van websites (binnen of buiten de sector) die je mooi of goed vindt? Wat precies?"},
-    {t:"Zijn er websites die je absoluut niet wilt lijken?"}
+    {t:"Zijn er websites die je absoluut niet wilt lijken?"},
+    {k:"cms-sjablonen", t:"Ons voorstel: per project, per woning in een project, per herverkoop-pand en per realisatie maken we één vaste opmaak. Nieuwe huizen voegen jullie daarna zelf toe via het CMS: foto's, gegevens en tekst invullen, en de pagina staat online. Is dat de manier waarop jullie willen werken?", type:"r", opts:["Ja, zo willen we het","Liever dat jullie nieuwe huizen toevoegen","Te bespreken"], extra:true},
+    {k:"cms-aantal", t:"Hoeveel projecten, woningen en herverkoop-panden komen er ongeveer per jaar bij?"},
+    {k:"cms-start", t:"Welke projecten, woningen en realisaties moeten er bij de lancering al op staan?"}
   ]}]
 },
 { id:"bedrijf", nav:"Het bedrijf", title:"Het bedrijf", eyebrow:"Deel 3",
