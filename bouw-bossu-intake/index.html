@@ -679,7 +679,7 @@ const STEPS = [
     {t:"Hoe spreken jullie klanten aan?", type:"r", opts:["Je, vlot en warm","U, zakelijk","U, maar warm"]},
     {t:"Welke woorden gebruiken jullie zelf vaak? Welke woorden willen jullie vermijden (bv. goedkoop, luxe, uniek)?"},
     {t:"Zijn er teksten (mails, brochures, offertes) die de juiste toon al hebben?"},
-    {t:"Wie schrijft de teksten en wie keurt goed?", type:"r", opts:["Jullie schrijven","Wij schrijven op basis van de antwoorden","Een copywriter"], extra:true}
+    {t:"Wie schrijft de teksten en wie keurt goed?", type:"r", opts:["Jullie schrijven","Wij geven een voorstel en jullie kunnen dit veranderen","Een copywriter"], extra:true}
   ]},
   { title:"Huisstijl", qs:[
     {t:"Is er een logo in vectorformaat (AI, EPS, SVG)? Kleurcodes en lettertypes?"},
@@ -702,7 +702,10 @@ const STEPS = [
     {t:"Wie beheert domeinnaam, hosting en e-mailadressen? Hebben we toegang nodig?"},
     {t:"Wie zal de site na oplevering beheren? Hoeveel technische kennis heeft die persoon? Is er opleiding nodig?"},
     {t:"Moet er een klantenportaal komen (werfverslagen, documenten, planning per klant)?", type:"r", opts:["Nu","Later","Nee"]},
-    {t:"Moet er een beveiligde zone komen voor partners of investeerders?", type:"r", opts:["Ja","Nee","Later"]}
+    {t:"Moet er een beveiligde zone komen voor partners of investeerders?", type:"r", opts:["Ja","Nee","Later"]},
+    {k:"cms-zelf", t:"De nieuwe site krijgt een CMS waarmee jullie zelf inhoud aanpassen, zonder ontwikkelaar. Wat willen jullie zelf kunnen aanpassen?", type:"c", opts:["Teksten op de pagina's","Foto's en video's","Projecten en realisaties","Nieuwbouw-units en beschikbaarheid","Herverkoop-aanbod","Nieuws en events (kijkdagen, opendeurdagen)","Vacatures","Veelgestelde vragen"], extra:true},
+    {k:"cms-wie", t:"Wie moet kunnen inloggen in het CMS, en wie mag iets publiceren? (bv. Floris past projecten aan, Jens keurt goed)"},
+    {k:"cms-voorkeur", t:"Hebben jullie een voorkeur voor het systeem achter de site?", type:"r", opts:["Geen voorkeur, jullie adviseren","WordPress (zoals nu)","Webflow","Iets anders"], extra:true}
   ]},
   { title:"SEO en vindbaarheid", qs:[
     {t:"Op welke zoektermen willen jullie gevonden worden? (bv. woning bouwen regio X, huis verkopen gemeente Y, nieuwbouw te koop Z)"},
@@ -739,7 +742,7 @@ const STEPS = [
    ingevulde info verdwijnt dus nooit. Elke vraag krijgt een vaste sleutel, zodat
    bestaande antwoorden bij de juiste vraag blijven staan. */
 const COMPACT_REMOVE = new Set(["bedrijf.0-1", "bedrijf.0-2", "bedrijf.1-3", "bedrijf.3-1", "bedrijf.4-2", "bedrijf.4-3", "diensten.0-3", "diensten.0-4", "diensten.1-1", "diensten.1-2", "diensten.1-3", "diensten.10-2", "diensten.10-4", "diensten.10-5", "diensten.10-6", "diensten.11-0", "diensten.11-1", "diensten.11-2", "diensten.11-3", "diensten.11-4", "diensten.12-1", "diensten.12-2", "diensten.13-3", "diensten.13-4", "diensten.14-1", "diensten.14-2", "diensten.14-3", "diensten.15-0", "diensten.15-1", "diensten.15-2", "diensten.16-0", "diensten.16-1", "diensten.17-1", "diensten.17-3", "diensten.18-1", "diensten.18-2", "diensten.2-0", "diensten.2-1", "diensten.2-2", "diensten.2-3", "diensten.2-4", "diensten.2-5", "diensten.2-6", "diensten.3-0", "diensten.3-1", "diensten.3-3", "diensten.3-5", "diensten.4-1", "diensten.4-2", "diensten.4-3", "diensten.5-0", "diensten.5-1", "diensten.5-2", "diensten.5-3", "diensten.6-2", "diensten.6-4", "diensten.6-5", "diensten.7-0", "diensten.7-1", "diensten.7-2", "diensten.7-3", "diensten.7-4", "diensten.8-1", "diensten.8-2", "diensten.9-1", "diensten.9-2", "diensten.9-4", "huidig.0-2", "huidig.0-3", "huidig.1-1", "huidig.2-0", "huidig.3-2", "huidig.3-3", "kennis.0-2", "kennis.0-3", "kennis.0-4", "kennis.1-1", "kennis.1-2", "kennis.1-3", "kennis.2-0", "kennis.2-1", "kennis.2-2", "kennis.2-3", "kennis.3-0", "kennis.3-1", "kennis.3-2", "kennis.4-1", "leads.0-2", "leads.0-5", "leads.1-1", "leads.2-1", "leads.2-2", "leads.2-3", "nieuw.1-1", "nieuw.2-2", "nieuw.2-4", "onderscheid.0-1", "onderscheid.0-2", "onderscheid.0-3", "onderscheid.1-2", "onderscheid.1-4", "onderscheid.2-3", "onderscheid.2-4", "onderscheid.3-2", "onderscheid.3-3", "projecten.0-4", "projecten.1-1", "projecten.1-2", "projecten.1-3", "projecten.1-4", "projecten.2-2", "stijl.0-3", "stijl.1-2", "stijl.2-1", "stijl.2-3", "stijl.3-2", "team.0-1", "team.0-4", "team.0-5", "team.0-6", "team.0-8", "techniek.0-4", "techniek.1-3", "techniek.2-1", "techniek.3-4", "woningen.0-1", "woningen.0-2", "woningen.1-1", "woningen.1-3", "woningen.2-1", "woningen.3-1", "woningen.3-2", "woningen.3-3", "woningen.3-4", "woningen.4-0", "woningen.4-1", "woningen.4-2", "woningen.4-3"]);
-const COMPACT_RETEXT = {"start.email": "Jouw e-mailadres", "huidig.2-1": "Wie doet vandaag de aanpassingen aan de site, en gaat dat makkelijk?", "bedrijf.0-0": "Wanneer is het bedrijf opgericht, door wie en waarom? Zijn er mijlpalen, oude foto's of verhalen die we mogen gebruiken?", "bedrijf.2-0": "Kerncijfers: hoeveel woningen en projecten hebben jullie al gebouwd, verkocht of aangekocht (totaal en per jaar), en hoeveel lopen er nu?", "diensten.1-0": "Bouwen jullie ook op grond van de klant? Zo ja: wat houdt dat in (sleutel-op-de-deur, eigen ontwerp of externe architect, ook na sloop)?", "diensten.4-0": "Waar zijn klanten het meest bang voor vóór ze tekenen, en hoe nemen jullie die twijfel weg?", "diensten.6-0": "Hoe verloopt de aankoop van een nieuwbouwwoning of -appartement bij jullie, stap voor stap en met richtduur?", "diensten.14-0": "Hoe verloopt een aankoop door jullie, hoe snel kan dat rond zijn, en mag de eigenaar nog even blijven wonen?", "diensten.18-0": "Zijn er nog andere diensten (renovatie, verhuur, investeerders) of plannen voor de komende 2 jaar waar de site rekening mee moet houden?", "onderscheid.0-0": "Wie zijn jullie belangrijkste concurrenten, en waarin verschillen jullie van hen?", "team.0-3": "Welke teamleden mogen met foto en naam op de site? Zijn er professionele teamfoto's, of plannen we een shoot?", "kennis.1-0": "Welke vragen krijgen jullie het vaakst van klanten? Die worden de basis van de veelgestelde vragen op de site.", "stijl.2-0": "Is er een logo in vectorformaat (AI, EPS, SVG), met kleurcodes en lettertypes? Is er een huisstijlgids?"};
+const COMPACT_RETEXT = {"nieuw.1-4": "Willen jullie zelf pagina's, projecten en aanbod kunnen aanpassen in een CMS, zonder ontwikkelaar?", "start.email": "Jouw e-mailadres", "huidig.2-1": "Wie doet vandaag de aanpassingen aan de site, en gaat dat makkelijk?", "bedrijf.0-0": "Wanneer is het bedrijf opgericht, door wie en waarom? Zijn er mijlpalen, oude foto's of verhalen die we mogen gebruiken?", "bedrijf.2-0": "Kerncijfers: hoeveel woningen en projecten hebben jullie al gebouwd, verkocht of aangekocht (totaal en per jaar), en hoeveel lopen er nu?", "diensten.1-0": "Bouwen jullie ook op grond van de klant? Zo ja: wat houdt dat in (sleutel-op-de-deur, eigen ontwerp of externe architect, ook na sloop)?", "diensten.4-0": "Waar zijn klanten het meest bang voor vóór ze tekenen, en hoe nemen jullie die twijfel weg?", "diensten.6-0": "Hoe verloopt de aankoop van een nieuwbouwwoning of -appartement bij jullie, stap voor stap en met richtduur?", "diensten.14-0": "Hoe verloopt een aankoop door jullie, hoe snel kan dat rond zijn, en mag de eigenaar nog even blijven wonen?", "diensten.18-0": "Zijn er nog andere diensten (renovatie, verhuur, investeerders) of plannen voor de komende 2 jaar waar de site rekening mee moet houden?", "onderscheid.0-0": "Wie zijn jullie belangrijkste concurrenten, en waarin verschillen jullie van hen?", "team.0-3": "Welke teamleden mogen met foto en naam op de site? Zijn er professionele teamfoto's, of plannen we een shoot?", "kennis.1-0": "Welke vragen krijgen jullie het vaakst van klanten? Die worden de basis van de veelgestelde vragen op de site.", "stijl.2-0": "Is er een logo in vectorformaat (AI, EPS, SVG), met kleurcodes en lettertypes? Is er een huisstijlgids?"};
 const COMPACT_INTRO = {"diensten": "Per dienst de kern: wat het is, hoe het verloopt en waar klanten mee zitten. We vragen nergens naar prijzen: die komen niet op de site."};
 STEPS.forEach(st => st.groups.forEach((g, gi) => g.qs.forEach((q, qi) => { if (!q.k) q.k = gi + "-" + qi; })));
 const ALL_STEPS = STEPS.map(st => Object.assign({}, st, {groups: st.groups.map(g => Object.assign({}, g, {qs: g.qs.slice()}))}));
@@ -773,7 +776,15 @@ function applyPrefill(){
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
   return true;
 }
+const VALUE_MIGRATE = {"stijl.1-3": {"Wij schrijven op basis van de antwoorden": "Wij geven een voorstel en jullie kunnen dit veranderen"}};
+function migrateValues(){
+  let changed = false;
+  Object.keys(VALUE_MIGRATE).forEach(k => { const m = VALUE_MIGRATE[k]; if (typeof state[k] === "string" && m[state[k]]) { state[k] = m[state[k]]; changed = true; } });
+  if (changed) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+  return changed;
+}
 applyPrefill();
+let migratedAtBoot = migrateValues();
 applyCompact();
 function isPrefilled(key){
   return [key, key + ".extra"].some(k => k in PREFILL && JSON.stringify(state[k]) === JSON.stringify(PREFILL[k]));
@@ -847,11 +858,14 @@ async function pullRemote(){
       userKeys(local).forEach(k => { if (merged[k] == null || merged[k] === "") { merged[k] = local[k]; added = true; } });
       state = merged;
       if (applyPrefill()) added = true;
+      if (migrateValues()) added = true;
       applyCompact();
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
       go(current);
       saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
       if (added) { state._ts = Date.now(); persist(); }
+    } else if (migratedAtBoot && local._ts) {
+      migratedAtBoot = false; state._ts = Date.now(); persist();
     } else if ((remote._pf || 0) < PREFILL_V && local._ts) {
       state._ts = Date.now(); persist(); /* nieuwe vooraf ingevulde antwoorden ook online zetten */
     } else if ((local._ts || 0) > (remote._ts || 0)) {
