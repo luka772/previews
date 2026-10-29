@@ -354,11 +354,12 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 
 /* ---------- smaller screens: stage on top ---------- */
 @media (max-width: 1023px) {
-  html { scroll-padding-top: calc(50svh + 70px); }
+  html { scroll-padding-top: calc(40svh + 70px); }
   .app { display: block; }
-  .stage { position: sticky; top: 0; z-index: 4; height: 50vh; height: 50svh; min-height: 300px; border-bottom: 1px solid var(--line); }
+  .stage { position: sticky; top: 0; z-index: 4; height: 40vh; height: 40svh; min-height: 250px; border-bottom: 1px solid var(--line); }
+  #gl { touch-action: pan-y pinch-zoom; }
   .panel { border-left: 0; }
-  .progress { top: max(300px, 50svh); }
+  .progress { top: max(250px, 40svh); }
   .stage__card { top: 10px; left: 10px; padding: 9px 12px 10px; }
   .stage__brand { width: 104px; }
   .stage__summary { margin-top: 8px; padding-top: 7px; }
@@ -382,7 +383,7 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
   .stage .age input[type="range"] { margin-top: 2px; }
   .stage .age__ticks { font-size: 0.7rem; }
   .stage .age__note { display: none; }
-  .stage__hint { display: none; }
+  .stage__hint { top: auto; bottom: 94px; font-size: 0.75rem; padding: 5px 10px; }
   .sum__line { display: none; }
   .panel__head { padding-top: var(--s8); }
   .panel__head h1 { font-size: 1.7rem; }
@@ -393,9 +394,9 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
   .foot { padding-bottom: 110px; }
 }
 @media (max-width: 1023px) and (max-height: 720px) {
-  html { scroll-padding-top: calc(42svh + 70px); }
-  .stage { height: 42vh; height: 42svh; min-height: 250px; }
-  .progress { top: max(250px, 42svh); }
+  html { scroll-padding-top: calc(36svh + 70px); }
+  .stage { height: 36vh; height: 36svh; min-height: 220px; }
+  .progress { top: max(220px, 36svh); }
   .stage .age__label { display: none; }
 }
 @media (min-width: 640px) and (max-width: 1023px) {
@@ -1504,16 +1505,26 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     let drag = null;
     const pts = new Map();
     el.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch' && el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (x) {} }
       pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
       drag = { x: e.clientX, y: e.clientY, touch: e.pointerType === 'touch' };
       onInteract && onInteract();
     });
+    const span = () => { const a = [...pts.values()]; return Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y); };
     window.addEventListener('pointermove', (e) => {
       if (!drag || !pts.has(e.pointerId)) return;
       const p = pts.get(e.pointerId);
       const dx = e.clientX - p.x, dy = e.clientY - p.y;
+      const before = pts.size > 1 ? span() : 0;
       pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (pts.size > 1) return;
+      if (pts.size > 1) {
+        // knijpen om te zoomen
+        if (r.photoCam || before < 1) return;
+        const k = before / span();
+        r.goal.dist = Math.min(r.maxDist || 30, Math.max(1.2, r.goal.dist * k)); r.cam.dist = r.goal.dist;
+        r.dirty = true;
+        return;
+      }
       if (r.photoCam) {
         r.peekGoal.az = Math.max(-0.16, Math.min(0.16, r.peekGoal.az + dx * 0.0025));
         r.peekGoal.el = Math.max(-0.06, Math.min(0.06, r.peekGoal.el + dy * 0.0015));
@@ -2555,7 +2566,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     const hf = Math.atan(Math.tan(R.fovy / 2) * asp);
     const d = Math.max((w / 2 + 0.55) / Math.tan(hf), (b.ymax / 2 + 0.55) / Math.tan(R.fovy / 2));
     R.maxDist = d * 2.4;
-    return d * (mobileMq.matches ? 1.26 : 1.16);
+    return d * (mobileMq.matches ? 1.55 : 1.16);  // op de gsm wat kleiner, knijpen zoomt in
   }
 
   function applyOpen(force) {
@@ -2826,7 +2837,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     R.goal.tx = (bb.xmin + bb.xmax) / 2; R.goal.ty = bb.ymax * 0.46; R.goal.tz = 0; R.goal.dist = fitBase;
     userCam = true; R.dirty = true;
   }));
-  const setHint = () => { $('#hint').textContent = mobileMq.matches ? 'Sleep opzij om te draaien' : 'Sleep om rond je poort te kijken'; };
+  const setHint = () => { $('#hint').textContent = mobileMq.matches ? 'Sleep om te draaien · Knijp om te zoomen' : 'Sleep om rond je poort te kijken'; };
   setHint();
   mobileMq.addEventListener('change', () => { setHint(); if (photoMode) { photoNoteText = photoNoteFor(photoList); showPhotos(false); } if (R && scene) { fitBase = computeFit(); goCamera(activeSec); } });
   window.addEventListener('resize', () => { if (R && scene) { R.dirty = true; const nf = computeFit(); if (Math.abs(nf - fitBase) > 0.05) { fitBase = nf; if (!userCam) goCamera(activeSec, true); } } });
