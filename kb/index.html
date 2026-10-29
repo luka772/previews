@@ -360,14 +360,15 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
   #gl { touch-action: pan-y pinch-zoom; }
   .panel { border-left: 0; }
   .progress { top: max(250px, 40svh); }
-  .stage__card { top: 10px; left: 10px; padding: 9px 12px 10px; }
-  .stage__brand { width: 104px; }
-  .stage__summary { margin-top: 8px; padding-top: 7px; }
-  .sum__name { font-size: 1.15rem; }
-  .sum__line, .sum__dims { font-size: 0.85rem; }
-  .sum__line { margin-top: 2px; }
+  /* less is more: geen logo, alleen het model en de maat in één klein label; enkel de knoppen 3D, Foto's en Oprit */
+  .stage__card { top: 10px; left: 10px; padding: 6px 10px; border-radius: 999px; }
+  .stage__brand { display: none; }
+  .stage__summary { margin-top: 0; padding-top: 0; border-top: 0; display: flex; align-items: baseline; gap: 6px; }
+  .sum__name { font-size: 0.9rem; }
+  .sum__dims { font-size: 0.78rem; }
   .stage__tools { top: 10px; right: 10px; gap: 6px; }
-  .seg button { padding: 6px 10px; font-size: 0.825rem; }
+  .stage__tools .seg:has([data-view]) { display: none; }
+  .seg button { padding: 7px 11px; font-size: 0.85rem; }
   .photos__frame { padding: 8px 8px 8px; }
   .photos__img { border-radius: 8px; }
   .photos__bar { margin: 0 10px 10px; padding: 6px 6px 6px 12px; gap: 8px; }
@@ -491,7 +492,7 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 /* een lange link (kopiëren mislukt) mag de pagina niet breder maken */
 #formOk{overflow-wrap:anywhere}
 </style>
-<style></style>
+<style>.stage__brand{display:none}.stage__summary{margin-top:0;padding-top:0;border-top:0}</style>
 <script>
 /* ============================================================
    INSTELLINGEN
