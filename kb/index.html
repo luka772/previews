@@ -506,6 +506,10 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 
 .mark__est { margin-top: 6px; color: var(--sage-deep); }
 @media (max-width: 1023px) { .mark__fields .mark__est { display: block; font-size: 0.75rem; grid-column: 1 / -1; margin-top: 0; } }
+.oprit__how { margin: 10px 0 0; padding: 8px 10px; border-radius: 10px; background: var(--sage-wash); color: var(--ink); font-size: 0.86rem; line-height: 1.4; }
+.oprit__how b { font-family: var(--font-head); }
+.only-narrow-block { display: none; }
+@media (max-width: 1023px) { .only-narrow-block { display: block; } .oprit__card .oprit__how { margin-top: 4px; font-size: 0.8rem; } }
 </style>
 <style>.stage__brand{display:none}.stage__summary{margin-top:0;padding-top:0;border-top:0}</style>
 <script>
@@ -615,9 +619,10 @@ window.KB_CONFIG = {
         <p class="oprit__lede">Neem een foto van je oprit en duid de opening aan. Je ziet je poort meteen op de juiste plek, en je kan verder kiezen.</p>
         <ul class="oprit__tips">
           <li>Sta op straat, recht voor de opening</li>
-          <li>Hou je gsm op ooghoogte, met de hele opening in beeld</li>
+          <li>Hou je gsm recht, op ooghoogte, met de hele opening in beeld</li>
           <li>Liefst zonder poort, of met de poort open</li>
         </ul>
+        <p class="oprit__how only-narrow-block"><b>Zo neem je de foto:</b> sta recht voor je oprit en hou je gsm recht op ooghoogte.</p>
         <div class="oprit__actions">
           <button type="button" class="btn btn--primary" id="opritCam" hidden>Neem nu een foto</button>
           <button type="button" class="btn btn--primary" id="opritPick">Kies of neem een foto</button>
@@ -940,6 +945,7 @@ window.KB_CONFIG = {
     <p class="oprit__eyebrow">Jouw oprit</p>
     <h2 id="welcomeTitle">Zie je poort op je eigen oprit</h2>
     <p>Neem een foto van je oprit, duid de opening aan en je ziet je poort meteen op de juiste plek. Je kan ook gewoon starten en dat later nog doen.</p>
+    <p class="oprit__how"><b>Zo neem je de foto:</b> sta op straat, recht voor je oprit, en hou je gsm recht op ooghoogte.</p>
     <div class="oprit__actions">
       <button type="button" class="btn btn--primary" id="welcomeCam" hidden>Neem nu een foto</button>
       <button type="button" class="btn btn--primary" id="welcomeOprit">Configureer op je eigen oprit</button>
