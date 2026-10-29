@@ -497,6 +497,12 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 .sheet--welcome .oprit__actions { margin-top: var(--s4); }
 .sheet--welcome .oprit__fine { margin-top: var(--s3); margin-bottom: 0; }
 @media (max-width: 1023px) { .sheet--welcome .sheet__in { padding: 18px 16px 14px; } .sheet--welcome h2 { font-size: 1.2rem; } }
+@media (max-width: 1023px) {
+  /* op de gsm: zolang de kaart "Jouw oprit" open staat, geen knoppen eronder */
+  .stage.is-oprit:has(.oprit:not([hidden])) .stage__bar, .stage.is-oprit:has(.oprit:not([hidden])) .stage__hint, .stage.is-oprit:has(.oprit:not([hidden])) .stage__card { display: none; }
+  .stage.is-oprit .oprit { padding: 58px 10px 10px; }
+  .oprit__actions { flex-wrap: wrap; }
+}
 </style>
 <style>.stage__brand{display:none}.stage__summary{margin-top:0;padding-top:0;border-top:0}</style>
 <script>
@@ -610,6 +616,7 @@ window.KB_CONFIG = {
           <li>Liefst zonder poort, of met de poort open</li>
         </ul>
         <div class="oprit__actions">
+          <button type="button" class="btn btn--primary" id="opritCam" hidden>Neem nu een foto</button>
           <button type="button" class="btn btn--primary" id="opritPick">Kies of neem een foto</button>
           <button type="button" class="btn btn--quiet" id="opritSample" hidden>Probeer met een voorbeeld</button>
         </div>
@@ -931,6 +938,7 @@ window.KB_CONFIG = {
     <h2 id="welcomeTitle">Zie je poort op je eigen oprit</h2>
     <p>Neem een foto van je oprit, duid de opening aan en je ziet je poort meteen op de juiste plek. Je kan ook gewoon starten en dat later nog doen.</p>
     <div class="oprit__actions">
+      <button type="button" class="btn btn--primary" id="welcomeCam" hidden>Neem nu een foto</button>
       <button type="button" class="btn btn--primary" id="welcomeOprit">Configureer op je eigen oprit</button>
       <button type="button" class="btn btn--quiet" id="welcomeSkip">Start zonder foto</button>
     </div>
@@ -3228,7 +3236,12 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   });
   const fileIn = $('#opritFile');
   fileIn.addEventListener('change', () => { $('#opritErr').hidden = true; pickFile(fileIn.files[0]); fileIn.value = ''; });
-  $('#opritPick').addEventListener('click', () => fileIn.click());
+  // op een gsm: eerst de camera, of een foto uit de galerij
+  const pick = (cam) => { if (cam) fileIn.setAttribute('capture', 'environment'); else fileIn.removeAttribute('capture'); fileIn.click(); };
+  const hasCam = matchMedia('(pointer: coarse)').matches;
+  if (hasCam) { $('#opritCam').hidden = false; $('#opritPick').textContent = 'Kies een foto uit je galerij'; $('#opritPick').classList.replace('btn--primary', 'btn--quiet'); }
+  $('#opritCam').addEventListener('click', () => pick(true));
+  $('#opritPick').addEventListener('click', () => pick(false));
   $('#opritNew').addEventListener('click', () => fileIn.click());
   $('#opritEdit').addEventListener('click', () => openMark());
   const SAMPLES = (CFG.opties && CFG.opties.voorbeeldOprit) || [];
@@ -3248,7 +3261,9 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   if (OPRIT_ON && welcome && welcome.showModal && !location.hash.includes('oprit') && !(() => { try { return sessionStorage.getItem('kb-welcome'); } catch (e) { return 1; } })()) {
     const seen = () => { try { sessionStorage.setItem('kb-welcome', '1'); } catch (e) {} };
     $('#welcomeSkip').addEventListener('click', () => { welcome.close(); });
-    $('#welcomeOprit').addEventListener('click', () => { welcome.close(); setMode('oprit'); fileIn.click(); });
+    if (hasCam) { $('#welcomeCam').hidden = false; $('#welcomeOprit').textContent = 'Kies een foto uit je galerij'; $('#welcomeOprit').classList.replace('btn--primary', 'btn--quiet'); }
+    $('#welcomeCam').addEventListener('click', () => { welcome.close(); setMode('oprit'); pick(true); });
+    $('#welcomeOprit').addEventListener('click', () => { welcome.close(); setMode('oprit'); pick(false); });
     welcome.addEventListener('close', seen);
     welcome.addEventListener('click', (e) => { if (e.target === welcome) welcome.close(); });
     setTimeout(() => { if (!welcome.open) welcome.showModal(); }, 900);
