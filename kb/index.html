@@ -491,6 +491,12 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 
 /* een lange link (kopiëren mislukt) mag de pagina niet breder maken */
 #formOk{overflow-wrap:anywhere}
+
+/* welkomstvenster: configureer op je eigen oprit */
+.sheet--welcome .sheet__in { padding: 22px 22px 18px; }
+.sheet--welcome .oprit__actions { margin-top: var(--s4); }
+.sheet--welcome .oprit__fine { margin-top: var(--s3); margin-bottom: 0; }
+@media (max-width: 1023px) { .sheet--welcome .sheet__in { padding: 18px 16px 14px; } .sheet--welcome h2 { font-size: 1.2rem; } }
 </style>
 <style>.stage__brand{display:none}.stage__summary{margin-top:0;padding-top:0;border-top:0}</style>
 <script>
@@ -919,6 +925,18 @@ window.KB_CONFIG = {
   </div>
 </div>
 
+<dialog class="sheet sheet--welcome" id="welcome" aria-labelledby="welcomeTitle">
+  <div class="sheet__in">
+    <p class="oprit__eyebrow">Jouw oprit</p>
+    <h2 id="welcomeTitle">Zie je poort op je eigen oprit</h2>
+    <p>Neem een foto van je oprit, duid de opening aan en je ziet je poort meteen op de juiste plek. Je kan ook gewoon starten en dat later nog doen.</p>
+    <div class="oprit__actions">
+      <button type="button" class="btn btn--primary" id="welcomeOprit">Configureer op je eigen oprit</button>
+      <button type="button" class="btn btn--quiet" id="welcomeSkip">Start zonder foto</button>
+    </div>
+    <p class="oprit__fine">Je foto blijft op je toestel. We krijgen ze alleen als je ze zelf meestuurt met je aanvraag.</p>
+  </div>
+</dialog>
 <dialog class="sheet" id="priceSheet" aria-labelledby="sheetTitle">
   <form method="dialog" class="sheet__form" id="sheetForm" novalidate>
     <h2 id="sheetTitle">Bekijk je prijsindicatie</h2>
@@ -3225,6 +3243,16 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     catch (e) { $('#opritErr').textContent = 'Het voorbeeld kon niet laden.'; $('#opritErr').hidden = false; }
   });
   if (OPRIT_ON) $('[data-mode="oprit"]').hidden = false;
+  // welkomstvenster: de kans om meteen een foto van de eigen oprit te kiezen (één keer per bezoek)
+  const welcome = $('#welcome');
+  if (OPRIT_ON && welcome && welcome.showModal && !location.hash.includes('oprit') && !(() => { try { return sessionStorage.getItem('kb-welcome'); } catch (e) { return 1; } })()) {
+    const seen = () => { try { sessionStorage.setItem('kb-welcome', '1'); } catch (e) {} };
+    $('#welcomeSkip').addEventListener('click', () => { welcome.close(); });
+    $('#welcomeOprit').addEventListener('click', () => { welcome.close(); setMode('oprit'); fileIn.click(); });
+    welcome.addEventListener('close', seen);
+    welcome.addEventListener('click', (e) => { if (e.target === welcome) welcome.close(); });
+    setTimeout(() => { if (!welcome.open) welcome.showModal(); }, 900);
+  }
 
   /* ---------- progress + scroll-driven camera ---------- */
   const secs = $$('.sec');
