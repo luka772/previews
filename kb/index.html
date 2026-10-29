@@ -503,6 +503,9 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
   .stage.is-oprit .oprit { padding: 58px 10px 10px; }
   .oprit__actions { flex-wrap: wrap; }
 }
+
+.mark__est { margin-top: 6px; color: var(--sage-deep); }
+@media (max-width: 1023px) { .mark__fields .mark__est { display: block; font-size: 0.75rem; grid-column: 1 / -1; margin-top: 0; } }
 </style>
 <style>.stage__brand{display:none}.stage__summary{margin-top:0;padding-top:0;border-top:0}</style>
 <script>
@@ -920,7 +923,7 @@ window.KB_CONFIG = {
     <h2 id="markTitle">Duid je opening aan</h2>
     <p class="mark__lede">Sleep de vier bolletjes naar de hoeken van je opening: onderaan op de grond tegen je palen of muur, bovenaan op de hoogte van je palen.</p>
     <div class="mark__fields">
-      <div class="field"><label for="markW">Breedte van de opening</label><div class="unit"><input type="number" id="markW" inputmode="numeric" min="60" max="1200" step="5"><span>cm</span></div></div>
+      <div class="field"><label for="markW">Breedte van de opening</label><div class="unit"><input type="number" id="markW" inputmode="numeric" min="60" max="1200" step="5"><span>cm</span></div><p class="field__hint mark__est" id="markEst" hidden></p></div>
       <div class="field"><label for="markH">Hoogte van je palen <span class="opt-l">(niet verplicht)</span></label><div class="unit"><input type="number" id="markH" inputmode="numeric" min="60" max="500" step="5"><span>cm</span></div><p class="field__hint">Leeg laten mag. Dan schatten we het uit je foto.</p></div>
     </div>
     <p class="form-error" id="markErr" role="alert" hidden></p>
@@ -1656,6 +1659,15 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   }
   KB.calibratePhoto = calibratePhoto;
   KB.photoAspect = photoAspect;
+  /* slimme schatting van de breedte: een foto heeft geen schaal, maar wie een foto neemt houdt zijn gsm
+     meestal op ooghoogte (ongeveer 1,5 m). Uit de perspectief volgt de camerahoogte in eenheden van de breedte. */
+  KB.estimateWidth = function (pts, iw, ih, f, eyeHeight = 1.5) {
+    const a = photoAspect(pts, iw, ih, f);
+    if (!a) return null;
+    const cal = calibratePhoto(pts, 1, a, iw, ih, f);
+    if (!cal || !(cal.eye[1] > 0.05)) return null;
+    return eyeHeight / cal.eye[1];
+  };
 
   KB.Renderer = Renderer;
   KB.attachOrbit = attachOrbit;
@@ -3124,14 +3136,28 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   /* aanduiden: vier bolletjes op de foto, met een loep onder je vinger */
   const mark = $('#mark'), markPic = $('#markPic'), loupe = $('#markLoupe');
   let markPts = null, markReturn = null;
+  let markWTouched = false;
+  function estimateWidth() {
+    // slimme schatting uit de foto; voorbeeldfoto's hebben hun maat al
+    const est = $('#markEst');
+    if (oprit.sample || !quadOk(markPts)) { est.hidden = true; return; }
+    const f = oprit.f35 / 43.27 * Math.hypot(oprit.iw, oprit.ih);
+    const w = KB.estimateWidth(orderPts(markPts), oprit.iw, oprit.ih, f);
+    if (!w || w < 2 || w > 7) { est.hidden = true; return; }
+    const cm = Math.round(w * 10) * 10;
+    if (!markWTouched) { $('#markW').value = cm; updateMarkHeight(); }
+    est.textContent = 'Slimme schatting uit je foto: ongeveer ' + (cm / 100).toLocaleString('nl-BE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' m. Dat kan er wat naast zitten, kijk de breedte dus zelf even na.';
+    est.hidden = false;
+  }
   function openMark() {
     markPts = oprit.pts.map((p) => [...p]);
+    markWTouched = false; $('#markEst').hidden = true;
     $('#markW').value = Math.round(oprit.W * 100);
     $('#markH').value = oprit.Hauto ? '' : Math.round(oprit.Href * 100);
     $('#markErr').hidden = true;
     markReturn = document.activeElement;
     mark.hidden = false; document.documentElement.classList.add('is-marking');
-    requestAnimationFrame(() => { layoutMark(); $('#markHandle0').focus({ preventScroll: true }); });
+    requestAnimationFrame(() => { layoutMark(); estimateWidth(); $('#markHandle0').focus({ preventScroll: true }); });
   }
   function closeMark() {
     mark.hidden = true; document.documentElement.classList.remove('is-marking');
@@ -3149,6 +3175,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     drawMark();
   }
   function drawMark() {
+    estimateWidth();
     const q = orderPts(markPts);
     $('#markPoly').setAttribute('points', q.map((p) => p.join(',')).join(' '));
     $('#markGround').setAttribute('points', [q[0], q[1]].map((p) => p.join(',')).join(' '));
@@ -3210,7 +3237,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
       drawMark();
     });
   }
-  $('#markW').addEventListener('input', updateMarkHeight);
+  $('#markW').addEventListener('input', () => { markWTouched = true; updateMarkHeight(); });
   window.addEventListener('resize', () => { if (!mark.hidden) layoutMark(); });
   $('#markCancel').addEventListener('click', () => { closeMark(); if (!oprit.cal && opritMode) $('#opritIntro').hidden = false; });
   mark.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.stopPropagation(); $('#markCancel').click(); } });
