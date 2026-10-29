@@ -260,7 +260,17 @@ p { margin: 0; text-wrap: pretty; }
 .tile.is-on::after { content: "Jouw keuze"; grid-column: 2; align-self: start; justify-self: start; order: -1; font: 600 0.7rem/1 var(--font-head); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sage-deep); background: var(--sage-wash); padding: 5px 8px; border-radius: 999px; margin-bottom: 2px; }
 .tile.is-on .tile__t, .tile.is-on .tile__d { grid-column: 2; }
 .tile.is-on img { grid-column: 1; grid-row: 1 / 4; }
-.tiles:has(.tile.is-on) .tile:not(.is-on) img { aspect-ratio: 4 / 3; }
+.tiles:has(.tile.is-on) { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.tiles:has(.tile.is-on) .tile:not(.is-on) { padding: 6px; }
+.tiles:has(.tile.is-on) .tile:not(.is-on) img { aspect-ratio: 4 / 3; margin-bottom: 4px; border-radius: 6px; }
+.tiles:has(.tile.is-on) .tile:not(.is-on) .tile__t { font-size: 0.8rem; padding: 0 2px; }
+.tiles:has(.tile.is-on) .tile:not(.is-on) .tile__d { font-size: 0.7rem; padding: 0 2px; }
+.tile.is-on { animation: tile-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); transform-origin: top center; }
+.tile.is-on img { animation: tile-img-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes tile-in { from { transform: scale(0.72); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+@keyframes tile-img-in { from { transform: scale(0.9); } to { transform: scale(1); } }
+@media (max-width: 1023px) { .tiles:has(.tile.is-on) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } }
+@media (prefers-reduced-motion: reduce) { .tile.is-on, .tile.is-on img { animation: none; } }
 @media (max-width: 1023px) { .tile.is-on { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 10px; padding: 8px 10px 8px 8px; } .tile.is-on .tile__t { font-size: 1.05rem; } .tile.is-on .tile__d { font-size: 0.82rem; } }
 .tile:has(input:disabled) { opacity: 0.38; cursor: not-allowed; }
 .modelinfo { margin-top: var(--s4); color: var(--ink-soft); max-width: 56ch; }
@@ -1675,6 +1685,24 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     }
   }
   KB.calibratePhoto = calibratePhoto;
+  /* Een rechte foto wordt recht gerekend. Wie van voor fotografeert, zet de bolletjes nooit op de pixel juist;
+     een bovenhoek een paar pixels hoger dan de andere zou anders als een gedraaide camera gelezen worden en de
+     poort scheef zetten. Zonder duidelijk perspectief (zijkanten en boven/onder bijna evenwijdig) maken we de
+     opening daarom symmetrisch: boven en onder waterpas, de zijkanten even sterk naar het midden van de foto. */
+  KB.snapFrontal = function (pts, iw, ih) {
+    const [bl, br, tr, tl] = pts;
+    const slope = (a, b) => (b[1] - a[1]) / Math.max(1, b[0] - a[0]);
+    const sBot = slope(bl, br), sTop = slope(tl, tr);
+    const yaw = Math.abs(sTop - sBot), roll = Math.abs((sTop + sBot) / 2);
+    if (yaw > 0.035 || roll > 0.045) return pts;
+    const cx = iw / 2;
+    const yb = (bl[1] + br[1]) / 2, yt = (tl[1] + tr[1]) / 2;
+    // verhouding waarmee de bovenhoeken naar het midden van de foto schuiven (perspectief van een camera die naar beneden kijkt)
+    const k = (dT, dB) => (Math.abs(dB) > iw * 0.04 ? dT / dB : null);
+    const ks = [k(tl[0] - cx, bl[0] - cx), k(tr[0] - cx, br[0] - cx)].filter((v) => v != null && v > 0.5 && v < 1.5);
+    const kk = ks.length ? ks.reduce((a, b) => a + b, 0) / ks.length : 1;
+    return [[bl[0], yb], [br[0], yb], [cx + (br[0] - cx) * kk, yt], [cx + (bl[0] - cx) * kk, yt]];
+  };
   KB.photoAspect = photoAspect;
   /* slimme schatting van de breedte: een foto heeft geen schaal, maar wie een foto neemt houdt zijn gsm
      meestal op ooghoogte (ongeveer 1,5 m). Uit de perspectief volgt de camerahoogte in eenheden van de breedte. */
@@ -2501,6 +2529,8 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     if (!COATS[st.coat]) st.coat = 'antraciet';
     const r = WIDTH[st.type];
     st.width = Math.min(r[1], Math.max(r[0], Math.round(st.width / 5) * 5));
+    // op je eigen oprit is de opening altijd even breed als de poort: de poort komt tot aan de hoeken
+    if (opritActive() && Math.abs(oprit.W * 100 - st.width) > 0.5) { oprit.W = st.width / 100; calibrateOprit(); }
     st.height = Math.min(220, Math.max(100, Math.round(st.height / 5) * 5));
     st.arch = Math.min(50, Math.max(10, Math.round(st.arch)));
     st.mayaGap = Math.min(50, Math.max(8, Math.round(st.mayaGap)));
@@ -3041,7 +3071,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   function calibrateOprit() {
     if (!oprit.pts) return null;
     const f = oprit.f35 / 43.27 * Math.hypot(oprit.iw, oprit.ih);
-    const pts = orderPts(oprit.pts);
+    const pts = KB.snapFrontal(orderPts(oprit.pts), oprit.iw, oprit.ih);
     if (oprit.Hauto) {
       const a = KB.photoAspect(pts, oprit.iw, oprit.ih, f);
       oprit.Href = a ? Math.min(4, Math.max(0.6, a * oprit.W)) : 2;
@@ -3160,7 +3190,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     const est = $('#markEst');
     if (oprit.sample || !quadOk(markPts)) { est.hidden = true; return; }
     const f = oprit.f35 / 43.27 * Math.hypot(oprit.iw, oprit.ih);
-    const w = KB.estimateWidth(orderPts(markPts), oprit.iw, oprit.ih, f);
+    const w = KB.estimateWidth(KB.snapFrontal(orderPts(markPts), oprit.iw, oprit.ih), oprit.iw, oprit.ih, f);
     if (!w || w < 2 || w > 7) { est.hidden = true; return; }
     const cm = Math.round(w * 10) * 10;
     if (!markWTouched) { $('#markW').value = cm; updateMarkHeight(); }
@@ -3211,7 +3241,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   function updateMarkHeight() {
     const W = (+$('#markW').value || st.width) / 100;
     const f = oprit.f35 / 43.27 * Math.hypot(oprit.iw, oprit.ih);
-    const a = quadOk(markPts) ? KB.photoAspect(orderPts(markPts), oprit.iw, oprit.ih, f) : null;
+    const a = quadOk(markPts) ? KB.photoAspect(KB.snapFrontal(orderPts(markPts), oprit.iw, oprit.ih), oprit.iw, oprit.ih, f) : null;
     $('#markH').placeholder = a ? String(Math.round(a * W * 20) * 5) : '';
   }
   function showLoupe(p, cx, cy) {
