@@ -251,6 +251,17 @@ p { margin: 0; text-wrap: pretty; }
 .tile__t { font: 600 0.95rem/1.2 var(--font-head); padding: 0 4px; }
 .tile__d { font-size: 0.8rem; line-height: 1.35; color: var(--ink-soft); padding: 0 4px; }
 .tile:has(input:checked) { background: var(--card); border-color: var(--sage-deep); box-shadow: 0 0 0 1px var(--sage-deep); }
+/* het gekozen model springt eruit: bovenaan, over de hele breedte, met een grote foto; de andere blijven klein */
+.tile.is-on { grid-column: 1 / -1; order: -1; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px 14px 10px 10px; }
+.tile.is-on img { margin: 0; border-radius: 10px; }
+.tile.is-on .tile__t { font-size: 1.25rem; padding: 0; }
+.tile.is-on .tile__d { font-size: 0.92rem; padding: 0; margin-top: 4px; }
+.tile.is-on .tile__tag { top: 18px; left: 18px; }
+.tile.is-on::after { content: "Jouw keuze"; grid-column: 2; align-self: start; justify-self: start; order: -1; font: 600 0.7rem/1 var(--font-head); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sage-deep); background: var(--sage-wash); padding: 5px 8px; border-radius: 999px; margin-bottom: 2px; }
+.tile.is-on .tile__t, .tile.is-on .tile__d { grid-column: 2; }
+.tile.is-on img { grid-column: 1; grid-row: 1 / 4; }
+.tiles:has(.tile.is-on) .tile:not(.is-on) img { aspect-ratio: 4 / 3; }
+@media (max-width: 1023px) { .tile.is-on { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 10px; padding: 8px 10px 8px 8px; } .tile.is-on .tile__t { font-size: 1.05rem; } .tile.is-on .tile__d { font-size: 0.82rem; } }
 .tile:has(input:disabled) { opacity: 0.38; cursor: not-allowed; }
 .modelinfo { margin-top: var(--s4); color: var(--ink-soft); max-width: 56ch; }
 .tile__tag { position: absolute; top: 12px; left: 12px; font: 600 0.72rem/1 var(--font-head); background: rgba(255, 255, 255, 0.94); color: var(--ink); padding: 5px 7px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); }
@@ -2914,6 +2925,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
   // de tegel toont altijd de foto waarmee "Foto's" opent
   function syncTiles() {
     $$('.tile').forEach((t) => {
+      t.classList.toggle('is-on', t.querySelector('input').checked);
       if (t.hidden) return;
       const m = t.querySelector('input').value, img = t.querySelector('img');
       const top = rankFor(m)[0];
