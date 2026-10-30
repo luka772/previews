@@ -688,6 +688,33 @@ window.KB_CONFIG = {
         </div>
       </section>
 
+      <section class="sec" id="s-hout" data-step="Hout of kleur">
+        <h2 id="finishTitle">Houtsoort</h2>
+        <div data-for="coatPick">
+          <p class="lede">We poederlakken de poort in de kleur die je kiest. Zo blijft ze jarenlang mooi, met weinig onderhoud.</p>
+          <div class="seg seg--wide" role="radiogroup" aria-label="Metaal">
+            <label><input type="radio" name="metal" value="alu" checked><span>Aluminium</span></label>
+            <label><input type="radio" name="metal" value="staal"><span>Gegalvaniseerd staal</span></label>
+          </div>
+          <p class="field__hint" id="metalHint"></p>
+          <div class="coats" role="radiogroup" aria-label="Kleur"><label class="coat"><input type="radio" name="coat" value="antraciet"><span class="coat__dot" style="background:#2c3236" aria-hidden="true"></span><span class="coat__t">Antraciet</span><span class="coat__d">RAL 7016</span></label><label class="coat"><input type="radio" name="coat" value="zwart"><span class="coat__dot" style="background:#111214" aria-hidden="true"></span><span class="coat__t">Zwart</span><span class="coat__d">RAL 9005</span></label><label class="coat"><input type="radio" name="coat" value="brons"><span class="coat__dot" style="background:#382c21" aria-hidden="true"></span><span class="coat__t">Donkerbrons</span><span class="coat__d">Structuurlak</span></label><label class="coat"><input type="radio" name="coat" value="grijs"><span class="coat__dot" style="background:#6b675e" aria-hidden="true"></span><span class="coat__t">Kwartsgrijs</span><span class="coat__d">RAL 7039</span></label><label class="coat"><input type="radio" name="coat" value="wit"><span class="coat__dot" style="background:#ece8dc" aria-hidden="true"></span><span class="coat__t">Gebroken wit</span><span class="coat__d">RAL 9010</span></label></div>
+          <p class="field__hint">Een andere RAL-kleur kan ook. Zet ze bij je opmerking.</p>
+        </div>
+        <div data-for="woodPick">
+          <p class="lede" id="woodLede" hidden>De houten bekleding maken we in padouk of afrormosia.</p>
+          <div class="opts" role="radiogroup" aria-label="Houtsoort">
+            <label class="opt opt--swatch"><input type="radio" name="wood" value="padouk" checked><span class="swatch" data-wood="padouk" aria-hidden="true"></span><span class="opt__body"><span class="opt__t">Padouk</span><span class="opt__d">Koraalrood dat verkleurt naar diepbruin. Duurzaamheidsklasse 1, stabiel en weinig onderhoud.</span></span></label>
+            <label class="opt opt--swatch"><input type="radio" name="wood" value="afrormosia"><span class="swatch" data-wood="afrormosia" aria-hidden="true"></span><span class="opt__body"><span class="opt__t">Afrormosia</span><span class="opt__d">Goudbruin met een fijne, rechte nerf, zoals teak. Zeer duurzaam en strak.</span></span><span class="opt__p" data-price="wood:afrormosia"></span></label>
+          </div>
+          <div class="age age--inline">
+            <label for="age2" class="age__label">Bekijk hoe je poort verkleurt</label>
+            <input type="range" id="age2" min="0" max="100" value="0" step="1" aria-valuetext="Nieuw">
+            <div class="age__ticks" aria-hidden="true"><span>Nieuw</span><span>Na 1 jaar</span><span>Na 5 jaar</span></div>
+            <p class="field__hint">Onbehandeld hout vergrijst mooi. Wil je de kleur houden, dan behandel je de poort elk jaar. Andere houtsoorten op aanvraag.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="sec" id="s-soort" data-step="Soort poort">
         <h2>Soort poort</h2>
         <div class="opts" role="radiogroup" aria-label="Soort poort">
@@ -726,6 +753,7 @@ window.KB_CONFIG = {
         <button type="button" class="linkbtn" id="modelPhotos"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 6l1.4-2.2h4.2L15.5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span id="modelPhotosT">Bekijk foto's van dit model</span></button>
       </section>
 
+
       <section class="sec" id="s-maat" data-step="Afmetingen">
         <h2>Afmetingen</h2>
         <p class="lede">Meet de breedte tussen je palen of zuilen. We komen altijd ter plaatse om exact op te meten.</p>
@@ -747,32 +775,6 @@ window.KB_CONFIG = {
         </div>
       </section>
 
-      <section class="sec" id="s-hout" data-step="Hout of kleur">
-        <h2 id="finishTitle">Houtsoort</h2>
-        <div data-for="coatPick">
-          <p class="lede">We poederlakken de poort in de kleur die je kiest. Zo blijft ze jarenlang mooi, met weinig onderhoud.</p>
-          <div class="seg seg--wide" role="radiogroup" aria-label="Metaal">
-            <label><input type="radio" name="metal" value="alu" checked><span>Aluminium</span></label>
-            <label><input type="radio" name="metal" value="staal"><span>Gegalvaniseerd staal</span></label>
-          </div>
-          <p class="field__hint" id="metalHint"></p>
-          <div class="coats" role="radiogroup" aria-label="Kleur"><label class="coat"><input type="radio" name="coat" value="antraciet"><span class="coat__dot" style="background:#2c3236" aria-hidden="true"></span><span class="coat__t">Antraciet</span><span class="coat__d">RAL 7016</span></label><label class="coat"><input type="radio" name="coat" value="zwart"><span class="coat__dot" style="background:#111214" aria-hidden="true"></span><span class="coat__t">Zwart</span><span class="coat__d">RAL 9005</span></label><label class="coat"><input type="radio" name="coat" value="brons"><span class="coat__dot" style="background:#382c21" aria-hidden="true"></span><span class="coat__t">Donkerbrons</span><span class="coat__d">Structuurlak</span></label><label class="coat"><input type="radio" name="coat" value="grijs"><span class="coat__dot" style="background:#6b675e" aria-hidden="true"></span><span class="coat__t">Kwartsgrijs</span><span class="coat__d">RAL 7039</span></label><label class="coat"><input type="radio" name="coat" value="wit"><span class="coat__dot" style="background:#ece8dc" aria-hidden="true"></span><span class="coat__t">Gebroken wit</span><span class="coat__d">RAL 9010</span></label></div>
-          <p class="field__hint">Een andere RAL-kleur kan ook. Zet ze bij je opmerking.</p>
-        </div>
-        <div data-for="woodPick">
-          <p class="lede" id="woodLede" hidden>De houten bekleding maken we in padouk of afrormosia.</p>
-          <div class="opts" role="radiogroup" aria-label="Houtsoort">
-            <label class="opt opt--swatch"><input type="radio" name="wood" value="padouk" checked><span class="swatch" data-wood="padouk" aria-hidden="true"></span><span class="opt__body"><span class="opt__t">Padouk</span><span class="opt__d">Koraalrood dat verkleurt naar diepbruin. Duurzaamheidsklasse 1, stabiel en weinig onderhoud.</span></span></label>
-            <label class="opt opt--swatch"><input type="radio" name="wood" value="afrormosia"><span class="swatch" data-wood="afrormosia" aria-hidden="true"></span><span class="opt__body"><span class="opt__t">Afrormosia</span><span class="opt__d">Goudbruin met een fijne, rechte nerf, zoals teak. Zeer duurzaam en strak.</span></span><span class="opt__p" data-price="wood:afrormosia"></span></label>
-          </div>
-          <div class="age age--inline">
-            <label for="age2" class="age__label">Bekijk hoe je poort verkleurt</label>
-            <input type="range" id="age2" min="0" max="100" value="0" step="1" aria-valuetext="Nieuw">
-            <div class="age__ticks" aria-hidden="true"><span>Nieuw</span><span>Na 1 jaar</span><span>Na 5 jaar</span></div>
-            <p class="field__hint">Onbehandeld hout vergrijst mooi. Wil je de kleur houden, dan behandel je de poort elk jaar. Andere houtsoorten op aanvraag.</p>
-          </div>
-        </div>
-      </section>
 
       <section class="sec" id="s-uitvoering" data-step="Uitvoering">
         <h2>Uitvoering</h2>
@@ -1811,6 +1813,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     'm-hout': { mat: 'metaal', fam: 'metal', infill: 'hout', curve: 'straight', slide: true },
     'm-smeed': { mat: 'metaal', fam: 'metal', infill: 'smeed', curve: 'straight', slide: false },
   };
+  if (window.KB_EXTRA_MODELS) Object.assign(MODELS, window.KB_EXTRA_MODELS); // modellen van een poortenbedrijf, uit de build
   KB.MODELS = MODELS;
 
   const POSTS = {
@@ -2028,6 +2031,23 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
           const a = ix0 + i * cw, b = a + cw;
           geo.beam2([a, ym], [b, iy1], 0.028, -0.01, 0.01, C, seed + 2 + i * 0.1);
           geo.beam2([a, iy1], [b, ym], 0.028, -0.009, 0.009, C, seed + 2.05 + i * 0.1);
+        }
+      } else if (inf === 'strips') {
+        // generiek profiel: horizontaal of verticaal, met of zonder spleet, eventueel gekanteld (louvre)
+        const Pf = MODELS[model].prof || {};
+        const w = Pf.w || 0.08, g = Pf.g == null ? 0.02 : Pf.g, d = Pf.d || 0.015;
+        if (Pf.tilt) {
+          const a = Pf.tilt, ca = Math.cos(a), sa = Math.sin(a), hw = w / 2, step = w * ca + g;
+          const span = iy1 - iy0 - 2 * hw * ca;
+          const n = Math.max(1, Math.floor(span / step) + 1);
+          const s0 = iy0 + hw * ca + (span - (n - 1) * step) / 2;
+          for (let i = 0; i < n; i++) {
+            geo.cuboid([(ix0 + ix1) / 2, s0 + i * step, 0], [[1, 0, 0], [0, ca, sa], [0, -sa, ca]], [(ix1 - ix0) / 2, hw, 0.0025], C, seed + 1 + i * 0.1, ALONG);
+          }
+        } else if (Pf.dir === 'v') {
+          slats(ix0, ix1, w, g).forEach(([a, b], i) => geo.box(a, iy0, -d, b, iy1, d, C, seed + 1 + i * 0.1, UP));
+        } else {
+          boards(iy0, iy1, w, g).forEach(([a, b], i) => geo.box(ix0, a, -d, ix1, b, d, C, seed + 1 + i * 0.13, ALONG));
         }
       } else if (inf === 'hout') {
         // steel frame clad with wood on the street side
@@ -2435,7 +2455,9 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     'm-kruis': { name: 'Kruisjes', info: 'Een metalen poort met spijlen en kruisjes bovenaan. Landelijk, met een lichte inkijk.' },
     'm-hout': { name: 'Metaal en hout', info: 'Een stalen kader met houten bekleding in padouk of afrormosia. De sterkte van metaal en de warmte van hout.' },
     'm-smeed': { name: 'Smeedijzer', info: 'Klassiek smeedwerk met spijlen en punten. Landelijk en statig. Bestaat als draaipoort.' },
-  };
+  };  if (window.KB_EXTRA_INFO) Object.assign(MODEL_INFO, window.KB_EXTRA_INFO);
+  if (window.KB_EXTRA_PRICES) Object.assign(P.modelPerM2, window.KB_EXTRA_PRICES);
+
   if (BRAND.namen) for (const k of Object.keys(BRAND.namen)) if (MODEL_INFO[k]) MODEL_INFO[k].name = BRAND.namen[k];
   const COATS = {
     antraciet: { name: 'Antraciet', ral: 'RAL 7016', hex: '#2c3236' },
@@ -2445,7 +2467,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     wit: { name: 'Gebroken wit', ral: 'RAL 9010', hex: '#ece8dc' },
   };
   const METAL_NAME = { alu: 'aluminium', staal: 'gegalvaniseerd staal' };
-  const FIRST_MODEL = { hout: 'kama-beng', metaal: 'm-plaat' };
+  const FIRST_MODEL = { hout: 'kama-beng', metaal: BRAND.eersteModel || 'm-plaat' };
   const TYPE_NAME = { enkel: 'Enkele draaipoort', dubbel: 'Dubbele draaipoort', schuif: 'Schuifpoort' };
   const WOOD_NAME = { padouk: 'padouk', afrormosia: 'afrormosia' };
   const POST_NAME = { palen: 'Houten palen 17 × 17 cm', colonnes: 'Houten colonnes 40 × 40 cm', metaal: 'Zwart metalen colonnes', mpaal: 'Metalen palen 15 × 15 cm', corten: 'Colonnes in cortenstaal', bestaand: 'Bestaande zuilen of palen' };
@@ -2754,9 +2776,9 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
       if (tag) tag.hidden = !(st.type === 'schuif' && !KB.MODELS[v].slide);
     });
     syncTiles();
-    $('#modelLede').textContent = isMetal()
+    $('#modelLede').textContent = BRAND.modelLede || (isMetal()
       ? 'Elk metalen model maken we in aluminium of staal, in de kleur die je kiest. De foto\'s zijn poorten die we plaatsten.'
-      : 'Alle houten modellen bestaan in padouk en afrormosia. De foto\'s zijn poorten die we plaatsten.';
+      : 'Alle houten modellen bestaan in padouk en afrormosia. De foto\'s zijn poorten die we plaatsten.');
     $('#modelNote').hidden = !notice;
     $('#modelNote').textContent = notice;
     $('#modelInfo').textContent = MODEL_INFO[st.model].info;
@@ -2780,6 +2802,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     setRadio('metal', st.metal);
     setRadio('coat', st.coat);
     $('#finishTitle').textContent = !isMetal() ? 'Houtsoort' : st.model === 'm-hout' ? 'Kleur en houtsoort' : 'Kleur';
+    $('#s-hout').dataset.step = $('#finishTitle').textContent;
     $('[data-for="coatPick"]').hidden = !isMetal();
     $('[data-for="woodPick"]').hidden = !hasWood();
     $('#woodLede').hidden = !isMetal();
@@ -2797,7 +2820,7 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     setRadio('plankDir', st.plankDir);
     setRadio('slideGuide', st.slideGuide);
     const bg = $('#barGap'); bg.value = st.barGap; setFill(bg); $('#barGapNum').value = st.barGap;
-    const simple = isMetal() && ['plaat', 'lamellen', 'latjes', 'kruis', 'smeed'].includes(inf);
+    const simple = isMetal() && ['plaat', 'lamellen', 'latjes', 'kruis', 'smeed', 'strips'].includes(inf);
     $('#finishHint').textContent = isMetal()
       ? (simple ? 'Bij dit model stemmen we de details samen met je af: profielen, verdeling en afwerking.' : '')
       : 'Elke poort krijgt aan de achterkant een horizontale en een diagonale ligger voor de sterkte. Draai de poort om ze te zien.';
