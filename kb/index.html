@@ -388,7 +388,7 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
   .sum__name { font-size: 0.9rem; }
   .sum__dims { font-size: 0.78rem; }
   .stage__tools { top: 10px; right: 10px; gap: 6px; }
-  .stage__tools .seg:has([data-view]) { display: none; }
+  .stage__tools .seg:has([data-view]), .stage__tools .stage__zoom { display: none; }
   .seg button { padding: 7px 11px; font-size: 0.85rem; }
   .photos__frame { padding: 8px 8px 8px; }
   .photos__img { border-radius: 8px; }
@@ -436,6 +436,9 @@ input[type="range"]:focus-visible { outline-offset: 4px; }
 .only-narrow { display: none; }
 .stage.is-oprit .stage__view, .stage.is-oprit #gl { cursor: ew-resize; }
 .stage.is-oprit .stage__view { display: none; }
+.stage__zoom button { display: inline-flex; align-items: center; gap: 7px; min-width: 112px; justify-content: center; }
+.zoom__ico { width: 13px; height: 13px; border: 2px solid currentColor; border-radius: 50%; position: relative; flex: none; }
+.zoom__ico::after { content: ""; position: absolute; width: 2px; height: 6px; background: currentColor; right: -4px; bottom: -5px; transform: rotate(-45deg); border-radius: 1px; }
 .stage.is-oprit #gl { background: #131414; }
 .oprit { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; padding: 96px var(--gutter) var(--gutter); background: rgba(236, 238, 236, 0.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .oprit__card { width: min(460px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 18px; box-shadow: 0 24px 60px -30px rgba(20, 28, 22, 0.5); }
@@ -630,6 +633,9 @@ window.KB_CONFIG = {
       <div class="stage__view seg" role="group" aria-label="Kijkrichting">
         <button type="button" data-view="front" aria-pressed="true">Voorkant</button>
         <button type="button" data-view="back" aria-pressed="false">Achterkant</button>
+      </div>
+      <div class="stage__view stage__zoom seg">
+        <button type="button" id="zoomBtn" title="Klik om dichterbij of verder te kijken"><span class="zoom__ico" aria-hidden="true"></span><span id="zoomLbl">Zoom</span></button>
       </div>
     </div>
 
@@ -2711,7 +2717,8 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     const mob = mobileMq.matches;
     const near = (p, dist, az, el) => ({ ...base, tx: p[0], ty: p[1], tz: p[2], dist: dist * (mob ? 1.35 : 1), az, el });
     switch (id) {
-      case 's-hout': return { ...base, az: 0.42, el: 0.08, dist: fitBase * 0.58, tx: cx - b.W * 0.12, ty: b.H * 0.55 };
+      // eerste stap (kleur): rustig overzicht van de hele poort, niet ingezoomd
+      case 's-hout': return { ...base, az: 0.3, el: 0.12, dist: fitBase * 1.08 };
       case 's-uitvoering':
         if (fam() === 'maya') return { ...base, az: 0.55, el: 0.1, dist: fitBase * 0.8 };
         return { ...base, az: Math.PI - 0.42, el: 0.16, dist: fitBase * 0.98 };
@@ -2946,6 +2953,18 @@ void main(){ vec3 c = mix(uHor, uTop, smoothstep(0.25, 1.0, vUv.y)); o = vec4(po
     R.goal.tx = (bb.xmin + bb.xmax) / 2; R.goal.ty = bb.ymax * 0.46; R.goal.tz = 0; R.goal.dist = fitBase;
     userCam = true; R.dirty = true;
   }));
+  // één zoomknop: elke klik één stap verder, dichtbij > ver > heel ver > dichtbij ...
+  const ZOOM = [['Dichtbij', 0.74, 0.5], ['Ver', 1.15, 0.46], ['Heel ver', 1.9, 0.46]];
+  let zoomI = -1;
+  $('#zoomBtn').addEventListener('click', () => {
+    if (!R || !scene) return;
+    zoomI = (zoomI + 1) % ZOOM.length;
+    const [lbl, k, ty] = ZOOM[zoomI], bb = scene.bounds;
+    $('#zoomLbl').textContent = lbl;
+    R.goal.dist = Math.min(R.maxDist || 30, fitBase * k);
+    R.goal.tx = (bb.xmin + bb.xmax) / 2; R.goal.ty = bb.ymax * ty; R.goal.tz = 0;
+    userCam = true; R.dirty = true;
+  });
   const setHint = () => { $('#hint').textContent = mobileMq.matches ? 'Sleep om te draaien · Knijp om te zoomen' : 'Sleep om rond je poort te kijken'; };
   setHint();
   mobileMq.addEventListener('change', () => { setHint(); if (photoMode) { photoNoteText = photoNoteFor(photoList); showPhotos(false); } if (R && scene) { fitBase = computeFit(); goCamera(activeSec); } });
