@@ -13,7 +13,7 @@ button{font:600 14px system-ui;border-radius:999px;padding:8px 15px;border:1px s
 button:disabled{opacity:.5;cursor:default}
 button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 button.stop{background:var(--rec);border-color:var(--rec);color:#fff}
-#status{font-size:13px;color:var(--soft);margin-left:auto}
+#status{font-size:13px;color:var(--soft);margin-left:auto;max-width:100%}
 #status.on::before{content:"● ";color:var(--rec)}
 main{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;padding:14px 16px;max-width:1400px;margin:0 auto}
 @media (max-width:860px){main{grid-template-columns:1fr}}
@@ -95,7 +95,7 @@ let lines=[];try{lines=JSON.parse(LS.get("gh-lines","[]"));}catch(e){}
 let result={};try{result=JSON.parse(LS.get("gh-result","{}"));}catch(e){}
 $("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("words").value=LS.get("gh-words","Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
 if(!$("key").value||!$("brief").value)$("setup").open=true;
-function saveSet(){LS.set("gh-key",$("key").value.trim());LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);$("saved").textContent="Bewaard";}
+function saveSet(){$("key").value=$("key").value.replace(/\s+/g,"");LS.set("gh-key",$("key").value);LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);$("saved").textContent="Bewaard";if($("key").value&&$("brief").value.trim())$("setup").open=false;}
 $("save").onclick=saveSet;$("model").onchange=saveSet;
 $("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");drawT();drawR();};
 const fmt=ts=>new Date(ts).toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
