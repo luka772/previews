@@ -3,48 +3,60 @@
 <meta name="robots" content="noindex,nofollow">
 <title>Gesprekshulp</title>
 <style>
-:root{--bg:#f4f2ee;--panel:#fff;--ink:#161616;--soft:#5f5b55;--line:#e1ddd6;--accent:#e2603f;--ok:#2f7d5b;--rec:#c0392b;--hl:#fff6e8}
-@media (prefers-color-scheme:dark){:root{--bg:#121212;--panel:#1b1b1b;--ink:#eeeae4;--soft:#a39e96;--line:#2e2c29;--accent:#f0805f;--ok:#5fc597;--rec:#ff6b5b;--hl:#2a2218;color-scheme:dark}}
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Regular.otf);font-weight:400}
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Medium.otf);font-weight:500}
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Bold.otf);font-weight:700}
+@font-face{font-family:MontThin;src:url(f/Montserrat-Thin.ttf);font-weight:100}
+:root{--bg:#131313;--panel:rgba(237,233,227,.06);--panel2:#3C3B39;--ink:#EDE9E3;--soft:rgba(237,233,227,.62);--line:rgba(237,233,227,.14);--accent:#F87759;--ok:#EDE9E3;--rec:#F87759;--hl:rgba(237,233,227,.09);color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:2}
-header h1{font-size:16px;margin:0 12px 0 0}
-button{font:600 14px system-ui;border-radius:999px;padding:8px 15px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
-button:disabled{opacity:.5;cursor:default}
-button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-button.stop{background:var(--rec);border-color:var(--rec);color:#fff}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Satoshi,system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);background:rgba(19,19,19,.92);backdrop-filter:blur(8px);position:sticky;top:0;z-index:2}
+header h1{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:700;margin:0 14px 0 0;letter-spacing:-.2px}
+header h1 img{height:36px;width:auto}
+header h1 span{font:100 15px MontThin,sans-serif;letter-spacing:5px;color:var(--ink);text-transform:uppercase}
+button{font:500 14px Satoshi,system-ui,sans-serif;border-radius:999px;padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+button:hover:not(:disabled){border-color:var(--accent)}
+button:disabled{opacity:.4;cursor:default}
+button.primary{background:var(--accent);border-color:var(--accent);color:#131313;font-weight:700}
+button.stop{background:var(--panel2);border-color:var(--panel2);color:var(--ink)}
 #status{font-size:13px;color:var(--soft);margin-left:auto;max-width:100%}
 #status.on::before{content:"● ";color:var(--rec)}
-main{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;padding:14px 16px;max-width:1400px;margin:0 auto}
+main{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;padding:16px 20px;max-width:1400px;margin:0 auto}
 @media (max-width:860px){main{grid-template-columns:1fr}}
-section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
-h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 8px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px}
+h2{font:700 11.5px Satoshi,sans-serif;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
 h2+*{margin-top:0}
-.gap{margin-top:16px}
-.card{background:var(--hl);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:16px}
-.card.say{border-left:4px solid var(--accent)}
+.gap{margin-top:18px}
+.card{background:var(--hl);border-radius:14px;padding:11px 14px;margin-bottom:8px;font-size:17px;font-weight:500}
+.card.say{border-left:3px solid var(--accent)}
 ul{margin:0;padding-left:18px}li{margin-bottom:4px}
 #done li{color:var(--ok)}
+#done li::marker{color:var(--accent)}
 #tip{font-size:14px;color:var(--soft)}
-#transcript{height:42vh;overflow:auto;white-space:pre-wrap;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:10px}
-#transcript time{color:var(--soft);font:12px ui-monospace,monospace;margin-right:6px}
+#transcript{height:44vh;overflow:auto;white-space:pre-wrap;font-size:14px;border:1px solid var(--line);border-radius:14px;padding:12px}
+#transcript time{color:var(--accent);font:12px ui-monospace,monospace;margin-right:6px}
 #interim{color:var(--soft);font-style:italic}
-textarea,input,select{width:100%;font:14px/1.45 system-ui;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--bg);color:var(--ink)}
+textarea,input,select{width:100%;font:14px/1.45 Satoshi,system-ui,sans-serif;border:1px solid var(--line);border-radius:12px;padding:10px;background:rgba(237,233,227,.04);color:var(--ink)}
+select option{background:#131313}
+textarea:focus,input:focus,select:focus{outline:1px solid var(--accent);border-color:var(--accent)}
 textarea{resize:vertical}
-.row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
-details{margin:0 16px 14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;max-width:1368px}
+.row{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+details{margin:16px 20px 0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:14px 18px;max-width:1360px}
 @media(min-width:1400px){details{margin-left:auto;margin-right:auto}}
-summary{cursor:pointer;font-weight:600}
-label{font-size:13px;color:var(--soft);display:block;margin:10px 0 4px}
+summary{cursor:pointer;font-weight:700}
+label{font-size:13px;color:var(--soft);display:block;margin:12px 0 4px}
 small{color:var(--soft)}
+input[type=checkbox]{accent-color:var(--accent)}
 </style></head><body>
 <header>
-  <h1>Gesprekshulp</h1>
+  <h1><img src="f/logo.png" alt="Cohezy"><span>Gesprekshulp</span></h1>
   <button class="primary" id="start">Start opname</button>
   <button class="stop" id="stop" disabled>Stop</button>
   <button id="now">Wat nu?</button>
   <label style="margin:0;display:flex;gap:6px;align-items:center;width:auto"><input type="checkbox" id="auto" checked style="width:auto"> automatisch elke</label>
   <select id="every" style="width:auto"><option value="60">1 min</option><option value="90" selected>1,5 min</option><option value="150">2,5 min</option></select>
+  <label style="margin:0;display:flex;gap:6px;align-items:center;width:auto">tekst elke</label>
+  <select id="chunk" style="width:auto"><option value="10">10 s</option><option value="15">15 s</option><option value="30">30 s</option></select>
   <span id="status">Niet aan het opnemen</span>
 </header>
 
@@ -109,7 +121,8 @@ function drawR(){if(result.next){cards($("next"),result.next);}cards($("say"),re
 drawT();drawR();
 
 /* --- opname: blokjes van 30 s naar Groq Whisper --- */
-const CHUNK_MS=30000;
+const chunkMs=()=>parseInt($("chunk").value,10)*1000;
+$("chunk").value=LS.get("gh-chunk","10");$("chunk").onchange=()=>LS.set("gh-chunk",$("chunk").value);
 const JUNK=/^(ondertiteld|ondertiteling|bedankt voor het kijken|tot de volgende|amara|subtitles|\.+$)/i;
 let stream=null,mr=null,want=false,chunkTimer=null,actx=null,an=null,peak=0,pending=0;
 function uiRec(on){$("start").disabled=on;$("stop").disabled=!on;}
@@ -120,7 +133,7 @@ function newRecorder(){
   const parts=[];const r=new MediaRecorder(stream,{mimeType:mime});const t0=Date.now();peak=0;
   r.ondataavailable=e=>{if(e.data&&e.data.size)parts.push(e.data);};
   r.onstop=()=>{const loud=peak;if(want)newRecorder();if(loud<6)return;transcribe(new Blob(parts,{type:mime}),t0);};
-  r.start();mr=r;clearTimeout(chunkTimer);chunkTimer=setTimeout(()=>{if(r.state==="recording")r.stop();},CHUNK_MS);
+  r.start();mr=r;clearTimeout(chunkTimer);chunkTimer=setTimeout(()=>{if(r.state==="recording")r.stop();},chunkMs());
 }
 async function transcribe(blob,t0){
   const key=$("key").value.trim();if(!key){$("setup").open=true;setStatus("Vul eerst je Groq-sleutel in.",want);return;}
