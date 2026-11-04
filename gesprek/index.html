@@ -68,6 +68,8 @@ input[type=checkbox]{accent-color:var(--accent)}
   <select id="model"><option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (slimst)</option><option value="llama-3.3-70b-versatile">Llama 3.3 70B</option></select>
   <label for="words">Moeilijke woorden voor het uitschrijven (namen, vaktermen)</label>
   <input id="words" placeholder="Luka Casier, Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow">
+  <label for="klant">Klant-ID voor de opslag in Google Sheets (één woord, bv. care2cover)</label>
+  <input id="klant">
   <label for="who">Klant (wie zit er tegenover je, bv. Dean en Nico van Care2Cover)</label>
   <input id="who">
   <label for="brief">Briefing: wie is het bedrijf, wat bieden we aan, welke vragen willen we zeker stellen, prijzen</label>
@@ -99,6 +101,7 @@ input[type=checkbox]{accent-color:var(--accent)}
     <label for="note">Eigen notitie of tekst uit Wispr plakken</label>
     <textarea id="note" rows="3" placeholder="bv. Dean: 40 aanvragen per maand, de helft rijdt voor niets"></textarea>
     <div class="row"><button id="addnote">Toevoegen</button><button id="copyall">Kopieer alles</button><button id="dl">Download .txt</button></div>
+    <small id="sync" style="display:block;margin-top:8px"></small>
   </section>
 </main>
 
@@ -107,13 +110,13 @@ const $=id=>document.getElementById(id);
 const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}}};
 let lines=[];try{lines=JSON.parse(LS.get("gh-lines","[]"));}catch(e){}
 let result={};try{result=JSON.parse(LS.get("gh-result","{}"));}catch(e){}
-$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("who").value=LS.get("gh-who2","Dean Dawson en Nico van Care2Cover");$("words").value=LS.get("gh-words","Luka Casier, Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
+$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("klant").value=LS.get("gh-klant","care2cover");$("who").value=LS.get("gh-who2","Dean Dawson en Nico van Care2Cover");$("words").value=LS.get("gh-words","Luka Casier, Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
 if(!$("key").value||!$("brief").value)$("setup").open=true;
-function saveSet(){$("key").value=$("key").value.replace(/\s+/g,"");LS.set("gh-key",$("key").value);LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);LS.set("gh-who2",$("who").value);$("saved").textContent="Bewaard";if($("key").value&&$("brief").value.trim())$("setup").open=false;}
+function saveSet(){$("key").value=$("key").value.replace(/\s+/g,"");LS.set("gh-key",$("key").value);LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);LS.set("gh-who2",$("who").value);LS.set("gh-klant",slug());$("saved").textContent="Bewaard";if($("key").value&&$("brief").value.trim())$("setup").open=false;}
 $("save").onclick=saveSet;$("model").onchange=saveSet;
-$("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");drawT();drawR();};
+$("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");LS.set("gh-sess","");drawT();drawR();};
 const fmt=ts=>new Date(ts).toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
-function persist(){LS.set("gh-lines",JSON.stringify(lines));}
+function persist(){LS.set("gh-lines",JSON.stringify(lines));if(typeof syncSheet==="function")syncSheet();}
 function drawT(){const t=$("transcript"),i=$("interim");t.textContent="";lines.forEach(l=>{const d=document.createElement("div");const tm=document.createElement("time");tm.textContent=fmt(l.ts);d.append(tm,document.createTextNode((l.note?"[notitie] ":"")+l.text));t.append(d);});t.append(i);t.scrollTop=t.scrollHeight;}
 function cards(el,arr,cls){el.textContent="";(arr||[]).forEach(x=>{const d=document.createElement("div");d.className="card"+(cls?" "+cls:"");d.textContent=x;el.append(d);});}
 function list(el,arr){el.textContent="";if(!arr||!arr.length){const li=document.createElement("li");li.innerHTML="<small>Nog niets.</small>";el.append(li);return;}arr.forEach(x=>{const li=document.createElement("li");li.textContent=x;el.append(li);});}
@@ -154,7 +157,23 @@ $("start").onclick=async()=>{
   want=true;actx=new (window.AudioContext||window.webkitAudioContext)();an=actx.createAnalyser();an.fftSize=1024;actx.createMediaStreamSource(stream).connect(an);levelLoop();
   newRecorder();uiRec(true);setStatus("Neemt op",true);
 };
-$("stop").onclick=()=>{want=false;clearTimeout(chunkTimer);if(mr&&mr.state==="recording")mr.stop();setTimeout(()=>{if(stream)stream.getTracks().forEach(t=>t.stop());if(actx)actx.close();an=null;},300);uiRec(false);setStatus("Gestopt");};
+$("stop").onclick=()=>{want=false;setTimeout(()=>syncSheet(true),8000);clearTimeout(chunkTimer);if(mr&&mr.state==="recording")mr.stop();setTimeout(()=>{if(stream)stream.getTracks().forEach(t=>t.stop());if(actx)actx.close();an=null;},300);uiRec(false);setStatus("Gestopt");};
+
+/* --- opslag in Google Sheets (tabblad per klant) --- */
+const SHEET_URL="https://script.google.com/macros/s/AKfycbxG9pz7vDGvQl-2hTOpTVDqITL8vdDhSrhvsLWKBK3a9t-1doEG5wv0FV1XNFgQx6p6/exec";
+function slug(){return ($("klant").value||"algemeen").toLowerCase().trim().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"")||"algemeen";}
+function sess(){let v=LS.get("gh-sess","");if(!v){const d=new Date();v=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");LS.set("gh-sess",v);}return v;}
+const sheetId=()=>"gesprek-"+slug()+"-"+sess();
+let syncT=null,lastSync=0;
+function sheetRows(){const rows=[];lines.forEach((l,i)=>rows.push(["Gesprek",i+1,new Date(l.ts).toLocaleString("nl-BE"),(l.note?"[notitie] ":"")+l.text]));
+  const r=result||{};[["Wat we al weten",r.facts],["Al beantwoord",r.done],["Nog open",r.open]].forEach(([t,a],i)=>{if(a&&a.length)rows.push(["Samenvatting",i+1,t,a.join("\n")]);});return rows;}
+function syncSheet(now){clearTimeout(syncT);syncT=setTimeout(async()=>{
+  try{await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({klant:sheetId(),state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})});lastSync=Date.now();$("sync").textContent="Opgeslagen in Google Sheets om "+fmt(lastSync);}
+  catch(e){$("sync").textContent="Opslaan in Google Sheets mislukt, tekst staat wel nog op deze laptop";}
+ },now?0:3000);}
+async function restoreSheet(){if(lines.length)return;try{const r=await fetch(SHEET_URL+"?klant="+encodeURIComponent(sheetId()),{cache:"no-store"});const j=await r.json();const st=j&&j.state;if(st&&Array.isArray(st.lines)&&st.lines.length>lines.length){lines=st.lines;result=st.result||{};persist();LS.set("gh-result",JSON.stringify(result));drawT();drawR();}}catch(e){}}
+restoreSheet();
+window.addEventListener("beforeunload",()=>{try{navigator.sendBeacon(SHEET_URL,new Blob([JSON.stringify({klant:sheetId(),state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})],{type:"text/plain;charset=utf-8"}));}catch(e){}});
 
 /* --- notities --- */
 $("addnote").onclick=()=>{const v=$("note").value.trim();if(!v)return;lines.push({ts:Date.now(),text:v,note:true});persist();$("note").value="";drawT();ask();};
@@ -192,7 +211,7 @@ Geef ENKEL geldige JSON, zonder uitleg, met:
     const j=await r.json();
     if(!r.ok)throw new Error((j.error&&j.error.message)||("fout "+r.status));
     const txt=((j.choices||[])[0]||{}).message?.content||"";const m=txt.match(/\{[\s\S]*\}/);
-    result=JSON.parse(m?m[0]:txt);LS.set("gh-result",JSON.stringify(result));drawR();lastCount=lines.length;
+    result=JSON.parse(m?m[0]:txt);LS.set("gh-result",JSON.stringify(result));drawR();syncSheet();lastCount=lines.length;
     $("status").textContent=(want?"Neemt op · ":"")+"bijgewerkt "+fmt(Date.now());$("status").className=want?"on":"";
   }catch(e){$("status").textContent="Meedenken lukte niet: "+e.message;}
   finally{busy=false;$("now").disabled=false;}
