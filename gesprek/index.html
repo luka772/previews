@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="nl-BE"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Gesprekshulp</title>
+<style>
+:root{--bg:#f4f2ee;--panel:#fff;--ink:#161616;--soft:#5f5b55;--line:#e1ddd6;--accent:#e2603f;--ok:#2f7d5b;--rec:#c0392b;--hl:#fff6e8}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--panel:#1b1b1b;--ink:#eeeae4;--soft:#a39e96;--line:#2e2c29;--accent:#f0805f;--ok:#5fc597;--rec:#ff6b5b;--hl:#2a2218;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:2}
+header h1{font-size:16px;margin:0 12px 0 0}
+button{font:600 14px system-ui;border-radius:999px;padding:8px 15px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.stop{background:var(--rec);border-color:var(--rec);color:#fff}
+#status{font-size:13px;color:var(--soft);margin-left:auto}
+#status.on::before{content:"● ";color:var(--rec)}
+main{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;padding:14px 16px;max-width:1400px;margin:0 auto}
+@media (max-width:860px){main{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 0 8px}
+h2+*{margin-top:0}
+.gap{margin-top:16px}
+.card{background:var(--hl);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:16px}
+.card.say{border-left:4px solid var(--accent)}
+ul{margin:0;padding-left:18px}li{margin-bottom:4px}
+#done li{color:var(--ok)}
+#tip{font-size:14px;color:var(--soft)}
+#transcript{height:42vh;overflow:auto;white-space:pre-wrap;font-size:14px;border:1px solid var(--line);border-radius:10px;padding:10px}
+#transcript time{color:var(--soft);font:12px ui-monospace,monospace;margin-right:6px}
+#interim{color:var(--soft);font-style:italic}
+textarea,input,select{width:100%;font:14px/1.45 system-ui;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--bg);color:var(--ink)}
+textarea{resize:vertical}
+.row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+details{margin:0 16px 14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;max-width:1368px}
+@media(min-width:1400px){details{margin-left:auto;margin-right:auto}}
+summary{cursor:pointer;font-weight:600}
+label{font-size:13px;color:var(--soft);display:block;margin:10px 0 4px}
+small{color:var(--soft)}
+</style></head><body>
+<header>
+  <h1>Gesprekshulp</h1>
+  <button class="primary" id="start">Start opname</button>
+  <button class="stop" id="stop" disabled>Stop</button>
+  <button id="now">Wat nu?</button>
+  <label style="margin:0;display:flex;gap:6px;align-items:center;width:auto"><input type="checkbox" id="auto" checked style="width:auto"> automatisch elke</label>
+  <select id="every" style="width:auto"><option value="60">1 min</option><option value="90" selected>1,5 min</option><option value="150">2,5 min</option></select>
+  <span id="status">Niet aan het opnemen</span>
+</header>
+
+<details id="setup">
+  <summary>Instellingen en briefing</summary>
+  <label for="key">Sleutel (blijft enkel op deze laptop bewaard)</label>
+  <input id="key" type="password" autocomplete="off" placeholder="sk-ant-...">
+  <label for="model">Model</label>
+  <select id="model"><option value="claude-sonnet-5-5" selected>Sonnet (beste balans)</option><option value="claude-haiku-5-5">Haiku (snelst, goedkoopst)</option></select>
+  <label for="brief">Briefing: wie is het bedrijf, wat bieden we aan, welke vragen willen we zeker stellen, prijzen</label>
+  <textarea id="brief" rows="12" placeholder="Plak hier de briefing van het bedrijf."></textarea>
+  <div class="row"><button id="save">Bewaar</button><button id="clear">Nieuw gesprek (wist de tekst)</button><small id="saved"></small></div>
+</details>
+
+<main>
+  <div>
+    <section>
+      <h2>Vraag nu</h2>
+      <div id="next"><div class="card">Vul de briefing in en druk op "Wat nu?" voor de eerste vragen.</div></div>
+      <h2 class="gap">Zeg nu</h2>
+      <div id="say"></div>
+      <p id="tip"></p>
+    </section>
+    <section class="gap" style="margin-top:14px">
+      <h2>Wat we al weten</h2>
+      <ul id="facts"><li><small>Nog niets.</small></li></ul>
+      <h2 class="gap">Al beantwoord</h2>
+      <ul id="done"><li><small>Nog niets.</small></li></ul>
+      <h2 class="gap">Nog open (belangrijk)</h2>
+      <ul id="open"><li><small>Nog niets.</small></li></ul>
+    </section>
+  </div>
+  <section>
+    <h2>Gesprek</h2>
+    <div id="transcript"><span id="interim"></span></div>
+    <label for="note">Eigen notitie of tekst uit Wispr plakken</label>
+    <textarea id="note" rows="3" placeholder="bv. Dean: 40 aanvragen per maand, de helft rijdt voor niets"></textarea>
+    <div class="row"><button id="addnote">Toevoegen</button><button id="copyall">Kopieer alles</button><button id="dl">Download .txt</button></div>
+  </section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}}};
+let lines=[];try{lines=JSON.parse(LS.get("gh-lines","[]"));}catch(e){}
+let result={};try{result=JSON.parse(LS.get("gh-result","{}"));}catch(e){}
+$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","claude-sonnet-5-5");
+if(!$("key").value||!$("brief").value)$("setup").open=true;
+function saveSet(){LS.set("gh-key",$("key").value.trim());LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);$("saved").textContent="Bewaard";}
+$("save").onclick=saveSet;$("model").onchange=saveSet;
+$("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");drawT();drawR();};
+const fmt=ts=>new Date(ts).toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
+function persist(){LS.set("gh-lines",JSON.stringify(lines));}
+function drawT(){const t=$("transcript"),i=$("interim");t.textContent="";lines.forEach(l=>{const d=document.createElement("div");const tm=document.createElement("time");tm.textContent=fmt(l.ts);d.append(tm,document.createTextNode((l.note?"[notitie] ":"")+l.text));t.append(d);});t.append(i);t.scrollTop=t.scrollHeight;}
+function cards(el,arr,cls){el.textContent="";(arr||[]).forEach(x=>{const d=document.createElement("div");d.className="card"+(cls?" "+cls:"");d.textContent=x;el.append(d);});}
+function list(el,arr){el.textContent="";if(!arr||!arr.length){const li=document.createElement("li");li.innerHTML="<small>Nog niets.</small>";el.append(li);return;}arr.forEach(x=>{const li=document.createElement("li");li.textContent=x;el.append(li);});}
+function drawR(){if(result.next){cards($("next"),result.next);}cards($("say"),result.say,"say");$("tip").textContent=result.tip||"";list($("facts"),result.facts);list($("done"),result.done);list($("open"),result.open);}
+drawT();drawR();
+
+/* --- opname --- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,want=false;
+function startRec(){
+  if(!SR){$("status").textContent="Uitschrijven werkt enkel in Google Chrome.";return false;}
+  rec=new SR();rec.lang="nl-BE";rec.continuous=true;rec.interimResults=true;
+  rec.onresult=e=>{let tmp="";for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const t=r[0].transcript.trim();if(t){lines.push({ts:Date.now(),text:t});persist();}}else tmp+=r[0].transcript;}$("interim").textContent=tmp;drawT();};
+  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){want=false;$("status").textContent="Microfoon geweigerd: sta hem toe voor deze pagina.";$("status").className="";uiRec(false);}};
+  rec.onend=()=>{if(want){setTimeout(()=>{try{rec.start();}catch(_){}} ,250);}};
+  rec.start();return true;
+}
+function uiRec(on){$("start").disabled=on;$("stop").disabled=!on;}
+$("start").onclick=()=>{want=true;if(startRec()){$("status").textContent="Neemt op";$("status").className="on";uiRec(true);}};
+$("stop").onclick=()=>{want=false;if(rec)rec.stop();$("status").textContent="Gestopt";$("status").className="";uiRec(false);};
+
+/* --- notities --- */
+$("addnote").onclick=()=>{const v=$("note").value.trim();if(!v)return;lines.push({ts:Date.now(),text:v,note:true});persist();$("note").value="";drawT();ask();};
+$("note").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey)){e.preventDefault();$("addnote").click();}});
+const allText=()=>lines.map(l=>"["+fmt(l.ts)+"] "+(l.note?"[notitie] ":"")+l.text).join("\n");
+$("copyall").onclick=async()=>{try{await navigator.clipboard.writeText(allText());$("status").textContent="Gekopieerd";}catch(e){$("status").textContent="Kopiëren lukte niet";}};
+$("dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([allText()],{type:"text/plain"}));a.download="gesprek-"+new Date().toISOString().slice(0,16).replace(/[:T]/g,"-")+".txt";a.click();};
+
+/* --- meedenken --- */
+let busy=false,lastCount=-1;
+async function ask(){
+  const key=$("key").value.trim(),brief=$("brief").value.trim();
+  if(!key||!brief){$("setup").open=true;$("status").textContent="Vul eerst de sleutel en de briefing in.";return;}
+  if(busy)return;busy=true;$("now").disabled=true;const prev=$("status").textContent;$("status").textContent="Denkt mee…";
+  const convo=allText()||"(het gesprek is nog niet begonnen)";
+  const prompt=`Je helpt Luka LIVE tijdens een verkoopgesprek met een klant. De tekst van het gesprek is automatisch uitgeschreven uit West-Vlaams en kan fouten bevatten: lees door de fouten heen. Antwoord in Vlaams Nederlands, kort, concreet, in spreektaal.
+
+BRIEFING (bedrijf, aanbod, vragen die we zeker willen stellen, prijzen; de prijzen zijn intern):
+${brief}
+
+GESPREK TOT NU:
+${convo}
+
+Geef ENKEL geldige JSON, zonder uitleg, met:
+- "next": 3 vragen die Luka NU best stelt, die logisch volgen op wat net gezegd is en op wat nog open staat; nooit iets vragen dat al beantwoord is,
+- "say": 1 of 2 zinnen die Luka NU letterlijk kan zeggen (antwoord op een vraag of bezwaar van de klant, uitleg, of een bruggetje naar de volgende stap of de prijs volgens de briefing). Zelfzeker, je-vorm. Zeg nooit dat iets met AI gemaakt is,
+- "tip": 1 korte zin over de aanpak op dit moment,
+- "facts": max 10 korte feiten die de klant zei, met cijfers,
+- "done": de vragen uit de briefing die al beantwoord zijn, kort, met het antwoord erbij (bv. "Aanvragen per maand: ±40"),
+- "open": max 5 belangrijke vragen uit de briefing die nog open staan.`;
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:$("model").value,max_tokens:1500,messages:[{role:"user",content:prompt}]})});
+    const j=await r.json();
+    if(!r.ok)throw new Error((j.error&&j.error.message)||("fout "+r.status));
+    const txt=(j.content||[]).map(c=>c.text||"").join("");const m=txt.match(/\{[\s\S]*\}/);
+    result=JSON.parse(m?m[0]:txt);LS.set("gh-result",JSON.stringify(result));drawR();lastCount=lines.length;
+    $("status").textContent=(want?"Neemt op · ":"")+"bijgewerkt "+fmt(Date.now());$("status").className=want?"on":"";
+  }catch(e){$("status").textContent="Meedenken lukte niet: "+e.message;}
+  finally{busy=false;$("now").disabled=false;}
+}
+$("now").onclick=ask;
+let tick=0;setInterval(()=>{tick++;if(!$("auto").checked||!want)return;if(tick>=parseInt($("every").value,10)){tick=0;if(lines.length!==lastCount)ask();}},1000);
+</script>
+</body></html>
