@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interieur Vandevelde | Interieur, keukens, badkamers en dressing in Wevelgem</title>
+<meta name="description" content="Interieur Vandevelde bv in Wevelgem: interieur, keukens, badkamers, dressing en maatwerk.">
+<meta name="theme-color" content="#231F20">
+<link rel="icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --oranje: #F7931F; --oranje-d: #C46A06; --zwart: #231F20; --antraciet: #2F2B2C; --steen: #F4F1EC; --lijn: #E6E1DA;
+    --ink: #231F20; --ink-soft: #5E5859; --wit: #FFFFFF;
+    --r: clamp(20px, 2.4vw, 32px); --gutter: clamp(16px, 5vw, 72px); --maxw: 1320px;
+    --ease: cubic-bezier(.23, 1, .32, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body { margin: 0; background: var(--wit); color: var(--ink); font: 400 17px/1.65 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  h1, h2, h3, p, figure { margin: 0; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--oranje); outline-offset: 3px; border-radius: 6px; }
+  .wrap { width: min(100% - 2 * var(--gutter), var(--maxw)); margin-inline: auto; }
+  .h { font-family: "Archivo", sans-serif; font-weight: 800; letter-spacing: -0.025em; line-height: 1.04; text-wrap: balance; }
+  .acc { color: var(--oranje); }
+  .eyebrow { font: 600 13px/1.2 "Inter"; letter-spacing: .14em; text-transform: uppercase; color: var(--oranje-d); display: inline-flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--oranje); }
+  .lead { color: var(--ink-soft); max-width: 48ch; }
+  section { padding: clamp(80px, 9vw, 140px) 0; }
+
+  .btn { display: inline-flex; align-items: center; gap: .55em; white-space: nowrap; text-decoration: none; font: 600 15px/1 "Inter"; padding: 16px 26px; border-radius: 999px; border: 1.5px solid transparent; cursor: pointer;
+    transition: background-color 160ms var(--ease), color 160ms var(--ease), transform 120ms var(--ease); }
+  .btn:active { transform: translateY(1px); }
+  .btn--or { background: var(--oranje); color: var(--zwart); }
+  .btn--dark { background: var(--zwart); color: var(--wit); }
+  .btn--ghost { border-color: currentColor; }
+  @media (hover: hover) and (pointer: fine) {
+    .btn--or:hover { background: #FFA43D; } .btn--dark:hover { background: #000; }
+    .btn--ghost:hover { background: rgb(35 31 32 / .06); }
+  }
+
+  .rv { opacity: 0; transform: translateY(24px); transition: opacity 800ms var(--ease), transform 800ms var(--ease); }
+  .rv.in { opacity: 1; transform: none; }
+  .ph { border-radius: var(--r); overflow: hidden; background: var(--steen); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; }
+  .open { clip-path: inset(8% 8% 8% 8% round var(--r)); transition: clip-path 1100ms var(--ease); }
+  .open img { transform: scale(1.14); transition: transform 1400ms var(--ease); }
+  .open.in { clip-path: inset(0 round var(--r)); }
+  .open.in img { transform: scale(1.02); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rv, .rv.in { opacity: 1; transform: none; transition: none; }
+    .open, .open.in { clip-path: inset(0 round var(--r)); transition: none; }
+    .open img, .open.in img { transform: none; transition: none; }
+    .hero__txt > *, .hero__media { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+
+  /* voorstel-balk + topbar */
+  .proposal { background: var(--zwart); color: #CFC9C6; font-size: 12px; text-align: center; padding: 6px 16px; letter-spacing: .04em; }
+  .topbar { background: var(--steen); font-size: 14px; color: var(--ink-soft); }
+  .topbar__in { display: flex; gap: 28px; align-items: center; justify-content: space-between; min-height: 42px; flex-wrap: wrap; }
+  .topbar__in div { display: flex; gap: 24px; flex-wrap: wrap; }
+  .topbar a { text-decoration: none; } .topbar a:hover { color: var(--ink); }
+  @media (max-width: 760px) { .topbar__addr, .topbar__fb { display: none; } .topbar__in { justify-content: center; } .topbar__in div { gap: 16px; } .topbar { font-size: 13px; } }
+
+  /* sticky header */
+  .nav { position: sticky; top: 0; z-index: 40; background: rgb(255 255 255 / .94); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color 200ms, box-shadow 200ms; }
+  .nav.scrolled { border-color: var(--lijn); box-shadow: 0 6px 24px rgb(35 31 32 / .06); }
+  .nav__in { display: flex; align-items: center; gap: 32px; height: 84px; }
+  .nav__logo { flex: none; width: 190px; }
+  .nav__logo img { width: 100%; height: auto; }
+  .nav ul { list-style: none; margin: 0 auto; padding: 0; display: flex; gap: 26px; }
+  .nav ul a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--ink-soft); }
+  .nav ul a:hover { color: var(--ink); }
+  .nav__menu { display: none; margin-left: auto; background: none; border: 1.5px solid var(--zwart); color: var(--zwart); border-radius: 999px; padding: 10px 18px; font: 600 14px "Inter"; cursor: pointer; }
+  .sheet { position: fixed; inset: 0; z-index: 60; background: var(--zwart); color: var(--wit); padding: 100px var(--gutter) 40px; display: grid; align-content: start; gap: 28px; overflow-y: auto; }
+  .sheet[hidden] { display: none; }
+  .sheet ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .sheet ul a { font: 800 30px/1.15 "Archivo"; letter-spacing: -.02em; text-decoration: none; }
+  .sheet__close { position: absolute; top: 24px; right: var(--gutter); background: none; color: inherit; border: 1.5px solid currentColor; border-radius: 999px; padding: 10px 18px; font: 600 14px "Inter"; cursor: pointer; }
+  @media (max-width: 1180px) { .nav ul, .nav .btn { display: none; } .nav__menu { display: inline-flex; } }
+  @media (max-width: 420px) { .nav__logo { width: 160px; } .nav__in { height: 72px; } }
+
+  /* hero */
+  .hero { padding: clamp(36px, 5vw, 72px) 0 clamp(70px, 8vw, 120px); }
+  .hero__in { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(36px, 6vw, 96px); align-items: center; }
+  .hero__txt { display: grid; gap: 28px; justify-items: start; }
+  .hero h1 { font-size: clamp(46px, 6vw, 92px); }
+  .hero__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero__list li { border: 1px solid var(--lijn); border-radius: 999px; padding: 8px 16px; font-size: 15px; font-weight: 500; }
+  .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero__media { position: relative; }
+  .hero__main { aspect-ratio: 4 / 5; }
+  .hero__main img { object-position: 50% 60%; }
+  .hero__detail { position: absolute; left: -12%; bottom: 8%; width: 38%; aspect-ratio: 3 / 4; border: 6px solid var(--wit); border-radius: calc(var(--r) * .8); box-shadow: 0 20px 50px rgb(35 31 32 / .18); }
+  .hero__dot { position: absolute; right: -18px; top: 9%; width: 92px; height: 92px; border-radius: 50%; background: var(--oranje); z-index: -1; }
+  .hero__txt > * { opacity: 0; transform: translateY(16px); animation: rise 900ms var(--ease) forwards; }
+  .hero__txt > *:nth-child(2) { animation-delay: 100ms; } .hero__txt > *:nth-child(3) { animation-delay: 200ms; } .hero__txt > *:nth-child(4) { animation-delay: 300ms; } .hero__txt > *:nth-child(5) { animation-delay: 400ms; }
+  .hero__media { animation: fadeIn 1300ms 150ms var(--ease) both; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(30px) scale(.98); } to { opacity: 1; transform: none; } }
+  @media (max-width: 900px) {
+    .hero__in { grid-template-columns: minmax(0, 1fr); }
+    .hero__media { margin-left: 14%; }
+    .hero__detail { left: -18%; width: 40%; }
+    .hero__dot { right: -8px; width: 64px; height: 64px; }
+  }
+
+  /* diensten */
+  .services { background: var(--steen); border-radius: var(--r); margin-inline: clamp(0px, 1.2vw, 16px); }
+  .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(36px, 4vw, 56px); }
+  .sec-head > div { display: grid; gap: 16px; }
+  .sec-head h2, .split h2, .show h2, .contact h2 { font-size: clamp(34px, 3.8vw, 56px); }
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  .card { background: var(--wit); border-radius: var(--r); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; }
+  .card__txt { padding: 26px 28px 30px; display: grid; gap: 10px; order: 1; }
+  .card__txt h3 { font: 800 26px/1.1 "Archivo"; letter-spacing: -.02em; }
+  .card__txt p { color: var(--ink-soft); font-size: 15px; }
+  .card__more { font-weight: 600; font-size: 15px; color: var(--zwart); display: inline-flex; gap: 8px; align-items: center; margin-top: 6px; }
+  .card__more::after { content: "→"; color: var(--oranje-d); transition: transform 200ms var(--ease); }
+  .card:hover .card__more::after { transform: translateX(4px); }
+  .card figure { aspect-ratio: 4 / 3; overflow: hidden; order: 2; margin-top: auto; }
+  .card figure img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
+  @media (hover: hover) and (pointer: fine) { .card:hover figure img { transform: scale(1.05); } }
+  .card--dark { background: var(--zwart); color: var(--wit); }
+  .card--dark .card__txt p { color: #CFC9C6; } .card--dark .card__more { color: var(--wit); } .card--dark .card__more::after { color: var(--oranje); }
+  .card__mark { order: 2; margin-top: auto; aspect-ratio: 4 / 3; position: relative; overflow: hidden; }
+  .card__mark span { position: absolute; border-radius: 50%; }
+  .card__mark span:nth-child(1) { width: 70%; aspect-ratio: 1; right: -14%; bottom: -26%; background: var(--oranje); }
+  .card__mark span:nth-child(2) { width: 38%; aspect-ratio: 1; left: 12%; top: 14%; border: 2px solid rgb(255 255 255 / .22); }
+  @media (max-width: 960px) { .cards { grid-template-columns: minmax(0, 1fr); } .card figure, .card__mark { aspect-ratio: 16 / 10; } }
+
+  /* split secties (tekst + beeld) */
+  .split__in { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(36px, 6vw, 96px); align-items: center; }
+  .split__txt { display: grid; gap: 22px; justify-items: start; }
+  .split__media { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; align-items: end; }
+  .split__media .ph:first-child { aspect-ratio: 4 / 5; }
+  .split__media .ph:last-child { aspect-ratio: 3 / 4; margin-bottom: 12%; }
+  .split--rev .split__in { grid-template-columns: 1.15fr 1fr; }
+  .split--rev .split__media { order: -1; }
+  .ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .ticks li { display: flex; gap: 12px; align-items: baseline; }
+  .ticks li::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--oranje); transform: translateY(-1px); }
+  @media (max-width: 900px) {
+    .split__in, .split--rev .split__in { grid-template-columns: minmax(0, 1fr); }
+    .split--rev .split__media { order: 0; }
+  }
+
+  /* realisaties */
+  .work { padding-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 15vw, 230px); gap: 16px; }
+  .grid .ph { height: 100%; }
+  .g-tall { grid-row: span 2; } .g-wide { grid-column: span 2; } .g-big { grid-column: span 2; grid-row: span 2; }
+  .grid .ph img { transition: transform 900ms var(--ease); }
+  @media (hover: hover) and (pointer: fine) { .grid .ph:hover img { transform: scale(1.05); } }
+  .grid { grid-auto-flow: dense; }
+  @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; gap: 10px; } .g-big { grid-column: span 2; } .g-tall { grid-row: span 1; } .grid .ph:last-child { grid-column: span 2; } .hero__dot { display: none; } }
+
+  /* toonzaal */
+  .show { padding: 0 0 clamp(80px, 9vw, 140px); }
+  .show__card { background: var(--zwart); color: var(--wit); border-radius: var(--r); overflow: hidden; display: grid; grid-template-columns: 1fr 1.2fr; }
+  .show__txt { padding: clamp(36px, 6vw, 88px); display: grid; gap: 22px; align-content: center; justify-items: start; }
+  .show__txt .eyebrow { color: var(--oranje); }
+  .show__txt p { color: #CFC9C6; max-width: 42ch; }
+  .show__hours { display: grid; grid-template-columns: auto auto; gap: 4px 28px; font-size: 15px; color: #E9E4E1; border-top: 1px solid rgb(255 255 255 / .14); padding-top: 18px; }
+  .show__media { position: relative; min-height: 460px; }
+  .show__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .show .btn--ghost { color: var(--wit); }
+  @media (max-width: 900px) { .show__card { grid-template-columns: minmax(0, 1fr); } .show__media { min-height: 0; aspect-ratio: 4 / 3; } }
+
+  /* over ons */
+  .about { background: var(--steen); border-radius: var(--r); margin-inline: clamp(0px, 1.2vw, 16px); }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: 100%; margin-top: 8px; }
+  .stats div { background: var(--wit); border-radius: 16px; padding: 18px 18px; }
+  .stats strong { display: block; font: 800 30px/1 "Archivo"; color: var(--zwart); }
+  .stats strong span { color: var(--oranje); }
+  .stats small { color: var(--ink-soft); font-size: 13px; }
+
+  /* contact */
+  .contact__in { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(36px, 6vw, 96px); align-items: start; }
+  .contact__txt { display: grid; gap: 22px; }
+  .info { display: grid; gap: 14px; margin-top: 8px; }
+  .info a, .info p { display: flex; gap: 14px; align-items: center; text-decoration: none; font-weight: 500; }
+  .info .ic { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--steen); display: grid; place-items: center; }
+  .info svg { width: 20px; height: 20px; stroke: var(--zwart); fill: none; stroke-width: 1.8; }
+  .form { background: var(--steen); border-radius: var(--r); padding: clamp(24px, 4vw, 48px); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+  .form .full { grid-column: 1 / -1; }
+  .form input, .form select, .form textarea { font: 400 16px "Inter"; padding: 14px 16px; border: 1px solid var(--lijn); border-radius: 12px; background: var(--wit); color: var(--ink); width: 100%; }
+  .form textarea { min-height: 130px; resize: vertical; }
+  .form input:focus, .form select:focus, .form textarea:focus { outline: 2px solid var(--oranje); outline-offset: 0; border-color: transparent; }
+  .form .check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; color: var(--ink-soft); }
+  .form .check input { width: 18px; height: 18px; margin-top: 3px; flex: none; accent-color: var(--oranje-d); }
+  .form .btn { justify-self: start; }
+  .form__note { font-size: 13px; color: var(--ink-soft); }
+  @media (max-width: 900px) { .contact__in { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 560px) { .form { grid-template-columns: minmax(0, 1fr); } }
+
+  /* footer */
+  .foot { background: var(--zwart); color: #CFC9C6; border-radius: var(--r) var(--r) 0 0; padding: clamp(56px, 6vw, 88px) 0 32px; font-size: 15px; }
+  .foot__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
+  .foot__logo { display: inline-block; background: var(--wit); border-radius: 14px; padding: 12px 16px; }
+  .foot__logo img { width: 190px; height: auto; }
+  .foot h3 { font: 600 13px/1 "Inter"; letter-spacing: .14em; text-transform: uppercase; color: var(--wit); margin-bottom: 16px; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .foot a { text-decoration: none; } .foot a:hover { color: var(--oranje); }
+  .foot__legal { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgb(255 255 255 / .12); font-size: 13px; color: #A9A2A0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 900px) { .foot__top { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .foot__top { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="proposal">Voorstel nieuwe website · Cohezy</div>
+<div class="topbar">
+  <div class="wrap topbar__in">
+    <span class="topbar__addr">Kortrijkstraat 40 · 8560 Wevelgem</span>
+    <div>
+      <a href="tel:+32468143402">0468/14.34.02</a>
+      <a href="mailto:info@interieurvandevelde.be">info@interieurvandevelde.be</a>
+      <a class="topbar__fb" href="https://www.facebook.com/David-Vandevelde-Interieur-106396587375251" target="_blank" rel="noopener">Facebook</a>
+    </div>
+  </div>
+</div>
+
+<header class="nav" id="top">
+  <div class="wrap nav__in">
+    <a class="nav__logo" href="#top" aria-label="Interieur Vandevelde, naar boven"><img src="img/logo-interieur-vandevelde.jpg" width="600" height="133" alt="Interieur Vandevelde"></a>
+    <ul>
+      <li><a href="#keukens">Keukens</a></li>
+      <li><a href="#badkamers">Badkamers</a></li>
+      <li><a href="#maatwerk">Dressing &amp; maatwerk</a></li>
+      <li><a href="#realisaties">Realisaties</a></li>
+      <li><a href="#toonzaal">Toonzaal</a></li>
+      <li><a href="#over-ons">Over ons</a></li>
+    </ul>
+    <a class="btn btn--or" href="#contact">Maak een afspraak</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+<div class="sheet" id="menu" hidden>
+  <button class="sheet__close" type="button">Sluiten</button>
+  <ul>
+    <li><a href="#keukens">Keukens</a></li>
+    <li><a href="#badkamers">Badkamers</a></li>
+    <li><a href="#maatwerk">Dressing &amp; maatwerk</a></li>
+    <li><a href="#realisaties">Realisaties</a></li>
+    <li><a href="#toonzaal">Toonzaal</a></li>
+    <li><a href="#over-ons">Over ons</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="btn btn--or" href="#contact" style="justify-self:start">Maak een afspraak</a>
+</div>
+
+<main>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__in">
+      <div class="hero__txt">
+        <span class="eyebrow">Interieur Vandevelde · Wevelgem</span>
+        <h1 class="h" id="hero-title">Van ontwerp tot afwerking<span class="acc">.</span></h1>
+        <p class="lead">Wij met ons team staan klaar om u te helpen bij uw keuze van:</p>
+        <ul class="hero__list"><li>Interieur</li><li>Keuken</li><li>Badkamer</li><li>Dressing</li><li>En zoveel meer</li></ul>
+        <div class="hero__cta">
+          <a class="btn btn--or" href="#contact">Maak een afspraak</a>
+          <a class="btn btn--ghost" href="tel:+32468143402">0468/14.34.02</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <span class="hero__dot" aria-hidden="true"></span>
+        <figure class="ph hero__main"><img src="img/keukena4.webp" width="1125" height="1500" alt="Witte keuken met kookeiland en houten lamellen."></figure>
+        <figure class="ph hero__detail"><img src="img/keukena2.webp" width="675" height="900" alt="Detail van een betonlook werkblad met houten wandplank en ledverlichting."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="diensten" aria-labelledby="dienst-title">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div><span class="eyebrow">Lorem ipsum</span><h2 class="h" id="dienst-title">Lorem ipsum dolor sit<span class="acc">.</span></h2></div>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.</p>
+      </div>
+      <div class="cards">
+        <a class="card rv" href="#keukens"><div class="card__txt"><h3>Keukens</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p><span class="card__more">Lorem ipsum</span></div><figure><img src="img/keukena3.webp" width="825" height="1100" loading="lazy" alt="Strakke witte keuken met eiland."></figure></a>
+        <a class="card card--dark rv" href="#badkamers" id="badkamers"><div class="card__txt"><h3>Badkamers</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p><span class="card__more">Lorem ipsum</span></div><div class="card__mark" aria-hidden="true"><span></span><span></span></div></a>
+        <a class="card rv" href="#maatwerk"><div class="card__txt"><h3>Dressing &amp; maatwerk</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p><span class="card__more">Lorem ipsum</span></div><figure><img src="img/sauna.webp" width="825" height="1100" loading="lazy" alt="Sauna op maat in licht hout."></figure></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="split" id="keukens" aria-labelledby="keuken-title">
+    <div class="wrap split__in">
+      <div class="split__txt rv">
+        <span class="eyebrow">Keukens</span>
+        <h2 class="h" id="keuken-title">Lorem ipsum dolor <span class="acc">sit amet.</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla.</p>
+        <ul class="ticks"><li>Lorem ipsum dolor sit amet</li><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor</li></ul>
+        <a class="btn btn--dark" href="#contact">Lorem ipsum</a>
+      </div>
+      <div class="split__media">
+        <figure class="ph open"><img src="img/keukend1.webp" width="1800" height="1350" loading="lazy" alt="Witte landelijke keuken met houten werkblad." style="object-position:40% 50%"></figure>
+        <figure class="ph open"><img src="img/keukena5.webp" width="750" height="1000" loading="lazy" alt="Spoelbak met zwarte kraan en houten wandplanken."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="split split--rev" id="maatwerk" aria-labelledby="maat-title" style="padding-top:0">
+    <div class="wrap split__in">
+      <div class="split__txt rv">
+        <span class="eyebrow">Dressing &amp; maatwerk</span>
+        <h2 class="h" id="maat-title">Lorem ipsum <span class="acc">dolor sit.</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.</p>
+        <a class="btn btn--dark" href="#contact">Lorem ipsum</a>
+      </div>
+      <div class="split__media">
+        <figure class="ph open"><img src="img/renovatieb3.webp" width="750" height="1000" loading="lazy" alt="Trap met open houten balustrade in een lichte hal."></figure>
+        <figure class="ph open"><img src="img/tv-meubel2.webp" width="960" height="942" loading="lazy" alt="Tv-wand op maat met nissen."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="realisaties" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div><span class="eyebrow">Realisaties</span><h2 class="h" id="work-title">Lorem ipsum dolor<span class="acc">.</span></h2></div>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+      </div>
+      <div class="grid">
+        <figure class="ph open g-big"><img src="img/keukenc1.webp" loading="lazy" alt="Lichte hoekkeuken met marmerlook werkblad."></figure>
+        <figure class="ph open g-tall"><img src="img/keukena1.webp" loading="lazy" alt="Witte keuken met kookeiland in hout."></figure>
+        <figure class="ph open"><img src="img/keukene1.webp" loading="lazy" alt="Grijze keuken met zwarte spoelbak."></figure>
+        <figure class="ph open"><img src="img/keukend2.webp" loading="lazy" alt="Witte hoekkeuken met houten werkblad."></figure>
+        <figure class="ph open g-tall"><img src="img/renovatieb2.webp" loading="lazy" alt="Gerenoveerde leefruimte met bakstenen muur."></figure>
+        <figure class="ph open g-wide"><img src="img/keukene2.webp" loading="lazy" alt="Keuken met grijze fronten onder een groot raam."></figure>
+        <figure class="ph open"><img src="img/keukenc3.webp" loading="lazy" alt="Witte keuken met hoge kasten en oven."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="show" id="toonzaal" aria-labelledby="show-title">
+    <div class="wrap">
+      <div class="show__card rv">
+        <div class="show__txt">
+          <span class="eyebrow">Toonzaal</span>
+          <h2 class="h" id="show-title">Lorem ipsum dolor <span class="acc">sit amet.</span></h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui.</p>
+          <div class="show__hours"><span>Lorem ipsum</span><span>00:00 – 00:00</span><span>Dolor sit</span><span>00:00 – 00:00</span><span>Amet</span><span>Lorem ipsum</span></div>
+          <a class="btn btn--or" href="#contact">Lorem ipsum</a>
+        </div>
+        <figure class="show__media"><img src="img/toonzaal3.webp" width="1600" height="1200" loading="lazy" alt="Toonzaalkeuken met donker kookeiland en houten fronten."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="about split" id="over-ons" aria-labelledby="about-title">
+    <div class="wrap split__in">
+      <div class="split__txt rv">
+        <span class="eyebrow">Over ons</span>
+        <h2 class="h" id="about-title">Lorem ipsum dolor, <span class="acc">sit amet.</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Maecenas faucibus mollis interdum.</p>
+        <div class="stats"><div><strong>00<span>+</span></strong><small>Lorem ipsum</small></div><div><strong>00<span>+</span></strong><small>Dolor sit</small></div><div><strong>0<span>.</span></strong><small>Amet elit</small></div></div>
+      </div>
+      <div class="split__media">
+        <figure class="ph open"><img src="img/toonzaal1.webp" width="1600" height="1200" loading="lazy" alt="Toonzaalkeuken met marmerlook eiland en barkrukken." style="object-position:55% 50%"></figure>
+        <figure class="ph open"><img src="img/toonzaal2.webp" width="1200" height="900" loading="lazy" alt="Houten kastenwand met ingebouwde oven."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact__in">
+      <div class="contact__txt rv">
+        <span class="eyebrow">Contact</span>
+        <h2 class="h" id="contact-title">Lorem ipsum dolor <span class="acc">sit amet?</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.</p>
+        <div class="info">
+          <p><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>Interieur Vandevelde bv · Kortrijkstraat 40, 8560 Wevelgem</p>
+          <a href="tel:+32468143402"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>0468/14.34.02</a>
+          <a href="mailto:info@interieurvandevelde.be"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>info@interieurvandevelde.be</a>
+        </div>
+      </div>
+      <form class="form rv" onsubmit="event.preventDefault()" aria-label="Contactformulier (demo)">
+        <label>Naam<input type="text" name="naam" autocomplete="name"></label>
+        <label>Telefoon<input type="tel" name="tel" autocomplete="tel"></label>
+        <label class="full">E-mail<input type="email" name="email" autocomplete="email"></label>
+        <label class="full">Interesse<select name="interesse"><option>Keuken</option><option>Badkamer</option><option>Dressing &amp; maatwerk</option><option>Interieur</option><option>Iets anders</option></select></label>
+        <label class="full">Bericht<textarea name="bericht"></textarea></label>
+        <label class="full check"><input type="checkbox" name="akkoord">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</label>
+        <button class="btn btn--or" type="submit">Verstuur</button>
+        <p class="form__note full">Demo: dit formulier verstuurt niets.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div><span class="foot__logo"><img src="img/logo-interieur-vandevelde.jpg" width="600" height="133" alt="Interieur Vandevelde" loading="lazy"></span><p style="margin-top:20px;max-width:30ch">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+      <div><h3>Contact</h3><p>Interieur Vandevelde bv<br>Kortrijkstraat 40<br>8560 Wevelgem<br><a href="tel:+32468143402">0468/14.34.02</a><br><a href="mailto:info@interieurvandevelde.be">info@interieurvandevelde.be</a></p></div>
+      <div><h3>Ontdek</h3><ul><li><a href="#keukens">Keukens</a></li><li><a href="#badkamers">Badkamers</a></li><li><a href="#maatwerk">Dressing &amp; maatwerk</a></li><li><a href="#realisaties">Realisaties</a></li><li><a href="#toonzaal">Toonzaal</a></li><li><a href="#over-ons">Over ons</a></li></ul></div>
+      <div><h3>Volg ons</h3><ul><li><a href="https://www.facebook.com/David-Vandevelde-Interieur-106396587375251" target="_blank" rel="noopener">Facebook</a></li></ul></div>
+    </div>
+    <div class="foot__legal"><span>© <span id="jaar">2026</span> Interieur Vandevelde bv</span><span>Lorem ipsum · Dolor sit</span></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+  $('#jaar').textContent = new Date().getFullYear();
+  const btn = $('.nav__menu'), sheet = $('#menu');
+  const set = o => { sheet.hidden = !o; btn.setAttribute('aria-expanded', String(o)); document.body.style.overflow = o ? 'hidden' : ''; (o ? sheet.querySelector('a') : btn).focus(); };
+  btn.addEventListener('click', () => set(true));
+  sheet.querySelector('.sheet__close').addEventListener('click', () => set(false));
+  sheet.addEventListener('click', e => { if (e.target.closest('a')) set(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) set(false); });
+  const nav = $('.nav'); const onS = () => nav.classList.toggle('scrolled', scrollY > 60); addEventListener('scroll', onS, { passive: true }); onS();
+  const els = $$('.rv, .open');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+  $$('.cards .card, .grid .ph').forEach((el, i) => el.style.transitionDelay = (i % 4) * 90 + 'ms');
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>
