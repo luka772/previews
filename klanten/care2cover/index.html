@@ -295,7 +295,7 @@ const STEPS = [
   ]}]
 },
 { id:"prijzen", nav:"Prijzen", title:"Jullie prijzen", eyebrow:"Deel 2",
-  intro:"De configurator toont een richtprijs, geen offerte. Hij rekent met een prijs per m² gevel, plus opties. Vul in wat je gemiddeld aanrekent. Geen zin om alles uit te rekenen? Stuur ons drie recente offertes, dan halen wij er de prijslogica uit en leggen we ze jullie voor. Prijzen pas je later zelf aan in een eenvoudig rekenblad.",
+  intro:"Kiezen jullie om geen prijs te tonen, dan vult de klant zijn gegevens in en sturen jullie de offerte; deze prijzen helpen ons dan enkel om de aanvragen te sorteren en mogen ruw zijn. Tonen jullie wel een richtprijs, dan rekent de configurator met een prijs per m² gevel, plus opties. Vul in wat je gemiddeld aanrekent. Geen zin om alles uit te rekenen? Stuur ons drie recente offertes, dan halen wij er de prijslogica uit en leggen we ze jullie voor. Prijzen pas je later zelf aan in een eenvoudig rekenblad.",
   groups:[
   { title:"Prijs per afwerking", qs:[
     {k:"perm2", t:"Vul per afwerking in wat jullie aanrekenen. Wat je niet aanbiedt, laat je leeg.", type:"grid",
@@ -305,7 +305,7 @@ const STEPS = [
     {k:"minimum", t:"Minimumbedrag per project, stelling- of verplaatsingskost", type:"s"},
     {k:"premies", t:"Premies die we mogen vermelden (bv. Mijn VerbouwPremie)", type:"s"},
     {k:"tonen", t:"Hoe tonen we de prijs aan de klant?", type:"r", opts:["Excl. btw","Incl. btw (6% bij renovatie)"]},
-    {k:"vorm", t:"Als een vaste richtprijs, of als een marge?", type:"r", opts:["Eén richtprijs (bv. ± 18.500 euro)","Een marge (bv. tussen 16.000 en 21.000 euro)","Een vanaf-prijs"]},
+    {k:"vorm", t:"Tonen we een prijs aan de klant?", type:"r", opts:["Geen prijs tonen: de klant laat zijn gegevens na en jullie sturen een offerte","Eén richtprijs (bv. ± 18.500 euro)","Een marge (bv. tussen 16.000 en 21.000 euro)","Een vanaf-prijs"]},
     {k:"offertes", t:"Sturen jullie drie recente offertes om de prijzen op af te stemmen?", type:"r", opts:["Ja, sturen we door","Nee, de prijzen hierboven volstaan"]}
   ]}]
 },
@@ -325,7 +325,7 @@ const STEPS = [
     {k:"mail", t:"Naar welk e-mailadres sturen we de aanvragen?", type:"s", req:true},
     {k:"systeem", t:"Ook in een ander systeem? (CRM, offertesoftware, Google Sheets, ...)", type:"s"},
     {k:"verplicht", t:"Welke gegevens moet de klant verplicht invullen?", type:"c", opts:["Naam","E-mail","Telefoon","Adres van de woning","Foto van de gevel"]},
-    {k:"prijsmoment", t:"Wanneer ziet de klant zijn prijs?", type:"r", opts:["Na het invullen van naam, e-mail en telefoon (aanbevolen: elke prijs is een aanvraag)","Meteen, zonder gegevens"]},
+    {k:"prijsmoment", t:"Tonen jullie een prijs: wanneer ziet de klant hem?", type:"r", opts:["We tonen geen prijs, we sturen een offerte","Na het invullen van naam, e-mail en telefoon (elke prijs is een aanvraag)","Meteen, zonder gegevens"]},
     {k:"bevestiging", t:"Wat moet er in de bevestigingsmail naar de klant staan? (bv. 'we bellen je binnen 2 werkdagen')"}
   ]},
   { title:"Op jullie website", qs:[
