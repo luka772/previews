@@ -55,7 +55,9 @@ small{color:var(--soft)}
   <label for="model">Model</label>
   <select id="model"><option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (slimst)</option><option value="llama-3.3-70b-versatile">Llama 3.3 70B</option></select>
   <label for="words">Moeilijke woorden voor het uitschrijven (namen, vaktermen)</label>
-  <input id="words" placeholder="Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow">
+  <input id="words" placeholder="Luka Casier, Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow">
+  <label for="who">Wie neemt deel? (één persoon per regel)</label>
+  <textarea id="who" rows="3"></textarea>
   <label for="brief">Briefing: wie is het bedrijf, wat bieden we aan, welke vragen willen we zeker stellen, prijzen</label>
   <textarea id="brief" rows="12" placeholder="Plak hier de briefing van het bedrijf."></textarea>
   <div class="row"><button id="save">Bewaar</button><button id="clear">Nieuw gesprek (wist de tekst)</button><small id="saved"></small></div>
@@ -93,9 +95,9 @@ const $=id=>document.getElementById(id);
 const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}}};
 let lines=[];try{lines=JSON.parse(LS.get("gh-lines","[]"));}catch(e){}
 let result={};try{result=JSON.parse(LS.get("gh-result","{}"));}catch(e){}
-$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("words").value=LS.get("gh-words","Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
+$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("who").value=LS.get("gh-who","Luka Casier (wij, stelt de vragen en toont de demo)\nDean Dawson (zaakvoerder Care2Cover)\nNico (Care2Cover)");$("words").value=LS.get("gh-words","Luka Casier, Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
 if(!$("key").value||!$("brief").value)$("setup").open=true;
-function saveSet(){$("key").value=$("key").value.replace(/\s+/g,"");LS.set("gh-key",$("key").value);LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);$("saved").textContent="Bewaard";if($("key").value&&$("brief").value.trim())$("setup").open=false;}
+function saveSet(){$("key").value=$("key").value.replace(/\s+/g,"");LS.set("gh-key",$("key").value);LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);LS.set("gh-who",$("who").value);$("saved").textContent="Bewaard";if($("key").value&&$("brief").value.trim())$("setup").open=false;}
 $("save").onclick=saveSet;$("model").onchange=saveSet;
 $("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");drawT();drawR();};
 const fmt=ts=>new Date(ts).toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
@@ -159,6 +161,10 @@ async function ask(){
 
 BRIEFING (bedrijf, aanbod, vragen die we zeker willen stellen, prijzen; de prijzen zijn intern):
 ${brief}
+
+DEELNEMERS:
+${$("who").value}
+De tekst bevat geen sprekers. Leid uit de inhoud af wie wat zegt: Luka Casier stelt de vragen, legt uit en toont de demo; de anderen zijn de klant. Feiten en antwoorden komen enkel van wat de klant zegt, niet van Luka's vragen.
 
 GESPREK TOT NU:
 ${convo}
