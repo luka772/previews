@@ -50,10 +50,12 @@ small{color:var(--soft)}
 
 <details id="setup">
   <summary>Instellingen en briefing</summary>
-  <label for="key">Sleutel (blijft enkel op deze laptop bewaard)</label>
-  <input id="key" type="password" autocomplete="off" placeholder="sk-ant-...">
+  <label for="key">Groq-sleutel (blijft enkel op deze laptop bewaard)</label>
+  <input id="key" type="password" autocomplete="off" placeholder="gsk_...">
   <label for="model">Model</label>
-  <select id="model"><option value="claude-sonnet-5-5" selected>Sonnet (beste balans)</option><option value="claude-haiku-5-5">Haiku (snelst, goedkoopst)</option></select>
+  <select id="model"><option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (slimst)</option><option value="llama-3.3-70b-versatile">Llama 3.3 70B</option></select>
+  <label for="words">Moeilijke woorden voor het uitschrijven (namen, vaktermen)</label>
+  <input id="words" placeholder="Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow">
   <label for="brief">Briefing: wie is het bedrijf, wat bieden we aan, welke vragen willen we zeker stellen, prijzen</label>
   <textarea id="brief" rows="12" placeholder="Plak hier de briefing van het bedrijf."></textarea>
   <div class="row"><button id="save">Bewaar</button><button id="clear">Nieuw gesprek (wist de tekst)</button><small id="saved"></small></div>
@@ -91,9 +93,9 @@ const $=id=>document.getElementById(id);
 const LS={get:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}},set:(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}}};
 let lines=[];try{lines=JSON.parse(LS.get("gh-lines","[]"));}catch(e){}
 let result={};try{result=JSON.parse(LS.get("gh-result","{}"));}catch(e){}
-$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","claude-sonnet-5-5");
+$("key").value=LS.get("gh-key","");$("brief").value=LS.get("gh-brief","");$("model").value=LS.get("gh-model","openai/gpt-oss-120b");$("words").value=LS.get("gh-words","Care2Cover, Dean, Nico, spuitkurk, crepi, kalei, steenstrips, gevelisolatie, configurator, Webflow, Poortbuilder");
 if(!$("key").value||!$("brief").value)$("setup").open=true;
-function saveSet(){LS.set("gh-key",$("key").value.trim());LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);$("saved").textContent="Bewaard";}
+function saveSet(){LS.set("gh-key",$("key").value.trim());LS.set("gh-brief",$("brief").value);LS.set("gh-model",$("model").value);LS.set("gh-words",$("words").value);$("saved").textContent="Bewaard";}
 $("save").onclick=saveSet;$("model").onchange=saveSet;
 $("clear").onclick=()=>{if(!confirm("Gesprekstekst en resultaten wissen? De briefing blijft."))return;lines=[];result={};LS.set("gh-lines","[]");LS.set("gh-result","{}");drawT();drawR();};
 const fmt=ts=>new Date(ts).toLocaleTimeString("nl-BE",{hour:"2-digit",minute:"2-digit"});
@@ -104,19 +106,40 @@ function list(el,arr){el.textContent="";if(!arr||!arr.length){const li=document.
 function drawR(){if(result.next){cards($("next"),result.next);}cards($("say"),result.say,"say");$("tip").textContent=result.tip||"";list($("facts"),result.facts);list($("done"),result.done);list($("open"),result.open);}
 drawT();drawR();
 
-/* --- opname --- */
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,want=false;
-function startRec(){
-  if(!SR){$("status").textContent="Uitschrijven werkt enkel in Google Chrome.";return false;}
-  rec=new SR();rec.lang="nl-BE";rec.continuous=true;rec.interimResults=true;
-  rec.onresult=e=>{let tmp="";for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const t=r[0].transcript.trim();if(t){lines.push({ts:Date.now(),text:t});persist();}}else tmp+=r[0].transcript;}$("interim").textContent=tmp;drawT();};
-  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){want=false;$("status").textContent="Microfoon geweigerd: sta hem toe voor deze pagina.";$("status").className="";uiRec(false);}};
-  rec.onend=()=>{if(want){setTimeout(()=>{try{rec.start();}catch(_){}} ,250);}};
-  rec.start();return true;
-}
+/* --- opname: blokjes van 30 s naar Groq Whisper --- */
+const CHUNK_MS=30000;
+const JUNK=/^(ondertiteld|ondertiteling|bedankt voor het kijken|tot de volgende|amara|subtitles|\.+$)/i;
+let stream=null,mr=null,want=false,chunkTimer=null,actx=null,an=null,peak=0,pending=0;
 function uiRec(on){$("start").disabled=on;$("stop").disabled=!on;}
-$("start").onclick=()=>{want=true;if(startRec()){$("status").textContent="Neemt op";$("status").className="on";uiRec(true);}};
-$("stop").onclick=()=>{want=false;if(rec)rec.stop();$("status").textContent="Gestopt";$("status").className="";uiRec(false);};
+function setStatus(t,on){$("status").textContent=t;$("status").className=on?"on":"";}
+function levelLoop(){if(!an)return;const b=new Uint8Array(an.fftSize);an.getByteTimeDomainData(b);let m=0;for(const v of b){m=Math.max(m,Math.abs(v-128));}peak=Math.max(peak,m);if(want)requestAnimationFrame(levelLoop);}
+function newRecorder(){
+  const mime=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":"audio/webm";
+  const parts=[];const r=new MediaRecorder(stream,{mimeType:mime});const t0=Date.now();peak=0;
+  r.ondataavailable=e=>{if(e.data&&e.data.size)parts.push(e.data);};
+  r.onstop=()=>{const loud=peak;if(want)newRecorder();if(loud<6)return;transcribe(new Blob(parts,{type:mime}),t0);};
+  r.start();mr=r;clearTimeout(chunkTimer);chunkTimer=setTimeout(()=>{if(r.state==="recording")r.stop();},CHUNK_MS);
+}
+async function transcribe(blob,t0){
+  const key=$("key").value.trim();if(!key){$("setup").open=true;setStatus("Vul eerst je Groq-sleutel in.",want);return;}
+  pending++;$("interim").textContent="(uitschrijven…)";
+  try{
+    const fd=new FormData();fd.append("file",blob,"stuk.webm");fd.append("model","whisper-large-v3");fd.append("language","nl");fd.append("temperature","0");
+    const ctx=(lines.slice(-3).map(l=>l.text).join(" ")+" "+$("words").value).slice(-600);fd.append("prompt",ctx);
+    const r=await fetch("https://api.groq.com/openai/v1/audio/transcriptions",{method:"POST",headers:{Authorization:"Bearer "+key},body:fd});
+    const j=await r.json();if(!r.ok)throw new Error((j.error&&j.error.message)||("fout "+r.status));
+    const t=(j.text||"").trim();
+    if(t&&!JUNK.test(t)){lines.push({ts:t0,text:t});lines.sort((a,b)=>a.ts-b.ts);persist();drawT();}
+  }catch(e){setStatus("Uitschrijven lukte niet: "+e.message,want);}
+  finally{pending--;if(!pending)$("interim").textContent="";}
+}
+$("start").onclick=async()=>{
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});}
+  catch(e){setStatus("Microfoon geweigerd: sta hem toe voor deze pagina.");return;}
+  want=true;actx=new (window.AudioContext||window.webkitAudioContext)();an=actx.createAnalyser();an.fftSize=1024;actx.createMediaStreamSource(stream).connect(an);levelLoop();
+  newRecorder();uiRec(true);setStatus("Neemt op",true);
+};
+$("stop").onclick=()=>{want=false;clearTimeout(chunkTimer);if(mr&&mr.state==="recording")mr.stop();setTimeout(()=>{if(stream)stream.getTracks().forEach(t=>t.stop());if(actx)actx.close();an=null;},300);uiRec(false);setStatus("Gestopt");};
 
 /* --- notities --- */
 $("addnote").onclick=()=>{const v=$("note").value.trim();if(!v)return;lines.push({ts:Date.now(),text:v,note:true});persist();$("note").value="";drawT();ask();};
@@ -130,7 +153,7 @@ let busy=false,lastCount=-1;
 async function ask(){
   const key=$("key").value.trim(),brief=$("brief").value.trim();
   if(!key||!brief){$("setup").open=true;$("status").textContent="Vul eerst de sleutel en de briefing in.";return;}
-  if(busy)return;busy=true;$("now").disabled=true;const prev=$("status").textContent;$("status").textContent="Denkt mee…";
+  if(busy)return;busy=true;$("now").disabled=true;$("status").textContent="Denkt mee…";
   const convo=allText()||"(het gesprek is nog niet begonnen)";
   const prompt=`Je helpt Luka LIVE tijdens een verkoopgesprek met een klant. De tekst van het gesprek is automatisch uitgeschreven uit West-Vlaams en kan fouten bevatten: lees door de fouten heen. Antwoord in Vlaams Nederlands, kort, concreet, in spreektaal.
 
@@ -148,10 +171,10 @@ Geef ENKEL geldige JSON, zonder uitleg, met:
 - "done": de vragen uit de briefing die al beantwoord zijn, kort, met het antwoord erbij (bv. "Aanvragen per maand: ±40"),
 - "open": max 5 belangrijke vragen uit de briefing die nog open staan.`;
   try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:$("model").value,max_tokens:1500,messages:[{role:"user",content:prompt}]})});
+    const r=await fetch("https://api.groq.com/openai/v1/chat/completions",{method:"POST",headers:{"content-type":"application/json",Authorization:"Bearer "+key},body:JSON.stringify({model:$("model").value,temperature:0.4,max_tokens:2500,messages:[{role:"user",content:prompt}]})});
     const j=await r.json();
     if(!r.ok)throw new Error((j.error&&j.error.message)||("fout "+r.status));
-    const txt=(j.content||[]).map(c=>c.text||"").join("");const m=txt.match(/\{[\s\S]*\}/);
+    const txt=((j.choices||[])[0]||{}).message?.content||"";const m=txt.match(/\{[\s\S]*\}/);
     result=JSON.parse(m?m[0]:txt);LS.set("gh-result",JSON.stringify(result));drawR();lastCount=lines.length;
     $("status").textContent=(want?"Neemt op · ":"")+"bijgewerkt "+fmt(Date.now());$("status").className=want?"on":"";
   }catch(e){$("status").textContent="Meedenken lukte niet: "+e.message;}
