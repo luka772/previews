@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verschaete bv | Ramen, deuren en poorten in Izegem</title>
+<meta name="description" content="Verschaete bv uit Izegem: ramen, deuren en poorten in kunststof, hout en aluminium. Familiebedrijf sinds 1988, Profel Expert.">
+<meta name="theme-color" content="#0B1F4A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"Verschaete bv","url":"https://verschaete.be/","telephone":"+3251308260","email":"info@verschaete.be","foundingDate":"1988","address":{"@type":"PostalAddress","streetAddress":"Kachtemsestraat 107","postalCode":"8870","addressLocality":"Izegem","addressCountry":"BE"}}
+</script>
+<style>
+  :root {
+    --navy: #0B1F4A; --navy-2: #13306B; --blue: #0A1AF0; --blue-d: #0712B8; --sky: #6FA3F0; --sun: #F6C744; --wood: #9A6B3D; --sage: #9AC3BB;
+    --mist: #F2F5FA; --line: #E1E7F0; --ink: #0B1F4A; --ink-soft: #4E5B73; --wit: #fff;
+    --r: clamp(20px, 2.4vw, 32px);
+    --gutter: clamp(16px, 5vw, 72px);
+    --maxw: 1320px;
+    --ease: cubic-bezier(.23, 1, .32, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--wit); color: var(--ink); font: 400 17px/1.65 "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  h1, h2, h3, p, figure { margin: 0; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; }
+  ::selection { background: var(--blue); color: var(--wit); }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+  .wrap { width: min(100% - 2 * var(--gutter), var(--maxw)); margin-inline: auto; }
+  h1, h2 { font-weight: 800; letter-spacing: -.025em; line-height: 1.05; text-wrap: balance; }
+  h2 { font-size: clamp(32px, 3.6vw, 52px); }
+  .blue { color: var(--blue); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 700 13px/1 "Plus Jakarta Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); }
+  .eyebrow::before { content: ""; width: 22px; height: 3px; border-radius: 3px; background: currentColor; }
+  .lead { color: var(--ink-soft); max-width: 52ch; }
+  .skip { position: fixed; left: 1rem; top: -4rem; z-index: 99; background: var(--navy); color: var(--wit); padding: .7rem 1rem; border-radius: 999px; text-decoration: none; }
+  .skip:focus { top: 1rem; }
+  section { padding: clamp(80px, 9vw, 140px) 0 0; }
+
+  .btn { display: inline-flex; align-items: center; gap: .6em; white-space: nowrap; text-decoration: none; font: 700 15px/1 "Plus Jakarta Sans"; padding: 16px 26px; border-radius: 999px; border: 1.5px solid transparent; cursor: pointer;
+    transition: background-color 160ms var(--ease), color 160ms var(--ease), transform 120ms var(--ease), border-color 160ms var(--ease); }
+  .btn:active { transform: translateY(1px); }
+  .btn svg { width: 16px; height: 16px; }
+  .btn--blue { background: var(--blue); color: var(--wit); }
+  .btn--navy { background: var(--navy); color: var(--wit); }
+  .btn--light { background: var(--wit); color: var(--navy); }
+  .btn--ghost { border-color: var(--line); color: var(--navy); background: var(--wit); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn--blue:hover { background: var(--blue-d); }
+    .btn--navy:hover { background: var(--navy-2); }
+    .btn--light:hover { background: var(--mist); }
+    .btn--ghost:hover { border-color: var(--navy); }
+  }
+
+  /* reveal */
+  .rv { opacity: 0; transform: translateY(24px); transition: opacity 800ms var(--ease), transform 800ms var(--ease); }
+  .rv.in { opacity: 1; transform: none; }
+  .open { clip-path: inset(8% 8% 8% 8% round var(--r)); transition: clip-path 1100ms var(--ease); }
+  .open.in { clip-path: inset(0 0 0 0 round var(--r)); }
+  .open img { transform: scale(1.14); transition: transform 1400ms var(--ease); }
+  .open.in img { transform: scale(1.01); }
+  @media (prefers-reduced-motion: reduce) {
+    .rv { transform: none; transition-duration: 200ms; }
+    .open, .open.in { clip-path: inset(0 0 0 0 round var(--r)); transition: none; }
+    .open img, .open.in img { transform: none; transition: none; }
+  }
+
+  /* ---------- topbalken ---------- */
+  .proposal { background: var(--mist); color: var(--ink-soft); font-size: 12px; text-align: center; padding: 6px 16px; letter-spacing: .02em; }
+  .topbar { background: var(--navy); color: #C9D3E6; font-size: 14px; }
+  .topbar__in { display: flex; gap: 28px; align-items: center; height: 42px; }
+  .topbar a { text-decoration: none; color: var(--wit); }
+  .topbar span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .topbar svg { width: 15px; height: 15px; color: var(--sky); flex: none; }
+  .topbar__right { margin-left: auto; display: flex; gap: 28px; }
+  @media (max-width: 1000px) { .topbar__addr { display: none !important; } }
+  @media (max-width: 620px) { .topbar__mail { display: none !important; } .topbar__right { margin-left: 0; width: 100%; justify-content: space-between; gap: 12px; } .topbar__in { gap: 12px; } }
+
+  /* ---------- sticky header ---------- */
+  .nav { position: sticky; top: 0; z-index: 40; background: rgb(255 255 255 / .96); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid transparent; transition: border-color 200ms, box-shadow 200ms; }
+  .nav.scrolled { border-color: var(--line); box-shadow: 0 8px 30px -18px rgb(11 31 74 / .35); }
+  .nav__in { display: flex; align-items: center; gap: 32px; height: 92px; transition: height 250ms var(--ease); }
+  .nav.scrolled .nav__in { height: 76px; }
+  .nav__logo { flex: none; width: 255px; }
+  .nav__logo img { width: 100%; height: auto; }
+  .nav ul { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; gap: 26px; }
+  .nav ul a { text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink-soft); transition: color 160ms var(--ease); }
+  .nav ul a:hover { color: var(--blue); }
+  .nav__menu { display: none; margin-left: auto; background: none; border: 1.5px solid var(--line); color: var(--navy); border-radius: 999px; padding: 10px 18px; font: 700 14px "Plus Jakarta Sans"; cursor: pointer; }
+  .sheet { position: fixed; inset: 0; z-index: 60; background: var(--navy); color: var(--wit); padding: 100px var(--gutter) 40px; display: grid; align-content: start; gap: 28px; overflow-y: auto; }
+  .sheet[hidden] { display: none; }
+  .sheet ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .sheet ul a { font: 800 30px/1.15 "Plus Jakarta Sans"; text-decoration: none; letter-spacing: -.02em; }
+  .sheet__close { position: absolute; top: 24px; right: var(--gutter); background: none; color: inherit; border: 1.5px solid rgb(255 255 255 / .4); border-radius: 999px; padding: 10px 18px; font: 700 14px "Plus Jakarta Sans"; cursor: pointer; }
+  .sheet :focus-visible { outline-color: var(--wit); }
+  @media (max-width: 1220px) { .nav ul, .nav .btn { display: none; } .nav__menu { display: inline-flex; } }
+  @media (max-width: 520px) { .nav__in { height: 74px; gap: 12px; } .nav.scrolled .nav__in { height: 66px; } .nav__logo { width: 200px; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: clamp(28px, 4vw, 64px); }
+  .hero__grid { display: grid; grid-template-columns: 1fr 1.08fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .hero__txt { display: grid; gap: 26px; justify-items: start; }
+  .hero h1 { font-size: clamp(42px, 5.2vw, 78px); }
+  .hero h1 .mat { display: block; font-size: .5em; letter-spacing: -.015em; line-height: 1.2; margin-top: .35em; color: var(--ink-soft); font-weight: 700; }
+  .hero h1 .mat b:nth-child(1) { color: #C99A12; } .hero h1 .mat b:nth-child(2) { color: var(--wood); } .hero h1 .mat b:nth-child(3) { color: #3F7BD8; }
+  .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero__facts { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 4px 0 0; padding: 0; }
+  .hero__facts li { font-size: 14px; font-weight: 600; color: var(--navy); background: var(--mist); border-radius: 999px; padding: 8px 14px; }
+  .hero__media { position: relative; }
+  .hero__photo { border-radius: var(--r); overflow: hidden; aspect-ratio: 5 / 4.4; background: var(--mist); }
+  .hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; animation: settle 1800ms var(--ease) both; }
+  @keyframes settle { from { transform: scale(1.12); } to { transform: scale(1.01); } }
+  .hero__badge { position: absolute; left: clamp(-28px, -2vw, -12px); bottom: 28px; background: var(--wit); border-radius: 20px; padding: 16px 20px; box-shadow: 0 20px 50px -20px rgb(11 31 74 / .45); display: flex; align-items: center; gap: 14px; }
+  .hero__badge strong { font-size: 30px; font-weight: 800; color: var(--blue); letter-spacing: -.02em; line-height: 1; }
+  .hero__badge span { font-size: 13px; line-height: 1.35; color: var(--ink-soft); font-weight: 600; }
+  .hero__txt > * { opacity: 0; transform: translateY(16px); animation: rise 900ms var(--ease) forwards; }
+  .hero__txt > *:nth-child(2) { animation-delay: 100ms; } .hero__txt > *:nth-child(3) { animation-delay: 200ms; } .hero__txt > *:nth-child(4) { animation-delay: 300ms; } .hero__txt > *:nth-child(5) { animation-delay: 400ms; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero__photo img, .hero__txt > * { animation: none; opacity: 1; transform: none; } }
+  @media (max-width: 900px) { .hero__grid { grid-template-columns: 1fr; } .hero__badge { left: 14px; bottom: 14px; } .hero__photo { aspect-ratio: 4 / 3; } }
+
+  /* ---------- materialen-strip ---------- */
+  .strip { padding-top: clamp(56px, 6vw, 88px); }
+  .strip__in { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .strip__item { padding: 26px 24px; display: grid; gap: 6px; }
+  .strip__item + .strip__item { border-left: 1px solid var(--line); }
+  .strip__item i { display: block; width: 44px; height: 4px; border-radius: 4px; }
+  .strip__item h3 { font-size: 20px; font-weight: 800; margin-top: 10px; }
+  .strip__item p { color: var(--ink-soft); font-size: 15px; }
+  @media (max-width: 760px) { .strip__in { grid-template-columns: 1fr; } .strip__item + .strip__item { border-left: 0; border-top: 1px solid var(--line); } .strip__item { padding: 22px 4px; } }
+
+  /* ---------- section-kop ---------- */
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 44px; }
+  .head > div { display: grid; gap: 16px; }
+
+  /* ---------- ramen ---------- */
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+  .card { display: grid; gap: 16px; text-decoration: none; min-width: 0; }
+  .card figure { border-radius: var(--r); overflow: hidden; aspect-ratio: 4 / 5; background: var(--mist); }
+  .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
+  @media (hover: hover) and (pointer: fine) { .card:hover img { transform: scale(1.05); } }
+  .card h3 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+  .card h3::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--dot, var(--blue)); flex: none; }
+  .card p { color: var(--ink-soft); font-size: 15px; margin-top: -8px; }
+  @media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 520px) { .cards { grid-template-columns: minmax(0, 1fr); } .card figure { aspect-ratio: 4 / 3; } }
+
+  /* ---------- deuren ---------- */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .split__txt { display: grid; gap: 24px; justify-items: start; }
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .checks li { display: flex; gap: 12px; align-items: baseline; color: var(--ink-soft); }
+  .checks li::before { content: ""; width: 9px; height: 9px; border-radius: 3px; background: var(--blue); flex: none; transform: translateY(-1px); }
+  .mosaic { display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; aspect-ratio: 1 / 1; }
+  .mosaic figure { border-radius: var(--r); overflow: hidden; background: var(--mist); }
+  .mosaic figure:first-child { grid-row: 1 / -1; }
+  .mosaic img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } .mosaic { aspect-ratio: 4 / 3.4; } .over__photo { order: 2; } }
+
+  /* ---------- poorten band ---------- */
+  .band { position: relative; overflow: hidden; min-height: clamp(460px, 42vw, 600px); display: flex; align-items: center; background: var(--navy); border-radius: var(--r); }
+  .band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  .band__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(11 31 74 / .94) 0%, rgb(11 31 74 / .78) 38%, rgb(11 31 74 / .05) 72%); }
+  .band__txt { position: relative; z-index: 2; color: var(--wit); padding: clamp(32px, 6vw, 88px); max-width: 640px; display: grid; gap: 22px; justify-items: start; }
+  .band .eyebrow { color: var(--sun); }
+  .band p { color: #D5DDEC; max-width: 44ch; }
+  .band__thumbs { display: flex; gap: 12px; }
+  .band__thumbs img { width: 120px; height: 84px; object-fit: cover; border-radius: 14px; border: 2px solid rgb(255 255 255 / .25); }
+  .band :focus-visible { outline-color: var(--wit); }
+  @media (max-width: 760px) {
+    .band { align-items: end; min-height: 660px; }
+    .band > img { height: 55%; object-position: 50% 50%; }
+    .band__shade { background: linear-gradient(0deg, rgb(11 31 74 / 1) 0%, rgb(11 31 74 / 1) 52%, rgb(11 31 74 / 0) 70%); }
+    .band__thumbs img { width: 96px; height: 68px; }
+  }
+
+  /* ---------- referenties ---------- */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .filters button { font: 600 14px "Plus Jakarta Sans"; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--wit); color: var(--ink-soft); cursor: pointer; transition: all 160ms var(--ease); }
+  .filters button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--wit); }
+  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(160px, 15vw, 230px); gap: 16px; }
+  .gallery figure { position: relative; border-radius: calc(var(--r) * .8); overflow: hidden; background: var(--mist); transition: opacity 300ms var(--ease); }
+  .gallery figure.big { grid-column: span 2; grid-row: span 2; }
+  .gallery figure.tall { grid-row: span 2; }
+  .gallery figure.hide { display: none; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
+  .gallery figcaption { position: absolute; left: 12px; bottom: 12px; background: rgb(255 255 255 / .94); color: var(--navy); font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 999px; }
+  @media (hover: hover) and (pointer: fine) { .gallery figure:hover img { transform: scale(1.05); } }
+  @media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 180px; } }
+  @media (max-width: 520px) { .gallery { grid-auto-rows: 150px; gap: 10px; } .gallery figure.big { grid-row: span 2; } }
+
+  /* ---------- premies ---------- */
+  .prem { background: var(--mist); border-radius: var(--r); padding: clamp(36px, 6vw, 88px); display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .prem__intro { display: grid; gap: 22px; justify-items: start; position: sticky; top: 120px; }
+  .prem__intro figure { border-radius: calc(var(--r) * .8); overflow: hidden; aspect-ratio: 16 / 10; width: 100%; }
+  .prem__intro img { width: 100%; height: 100%; object-fit: cover; }
+  .prem__list { display: grid; gap: 16px; }
+  .pcard { background: var(--wit); border-radius: 20px; padding: 26px 28px; display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; border: 1px solid var(--line); }
+  .pcard b { grid-row: span 2; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 18px; font-weight: 800; color: var(--wit); background: var(--blue); }
+  .pcard:nth-child(2) b { background: var(--navy); } .pcard:nth-child(3) b { background: var(--sage); color: var(--navy); }
+  .pcard h3 { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+  .pcard p { color: var(--ink-soft); font-size: 15px; }
+  @media (max-width: 900px) { .prem { grid-template-columns: 1fr; } .prem__intro { position: static; } }
+  @media (max-width: 520px) { .prem { padding: 28px 18px; } .pcard { grid-template-columns: 1fr; padding: 22px; } .pcard b { grid-row: auto; } }
+
+  /* ---------- over ons ---------- */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+  .stats div { border-top: 3px solid var(--line); padding-top: 14px; }
+  .stats div:nth-child(1) { border-color: var(--sun); } .stats div:nth-child(2) { border-color: var(--wood); } .stats div:nth-child(3) { border-color: var(--sky); }
+  .stats strong { display: block; font-size: clamp(26px, 2.6vw, 36px); font-weight: 800; letter-spacing: -.02em; }
+  .stats span { font-size: 14px; color: var(--ink-soft); }
+  .over__photo { border-radius: var(--r); overflow: hidden; aspect-ratio: 5 / 4; }
+  .over__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* ---------- contact ---------- */
+  .contact { padding-bottom: clamp(80px, 9vw, 130px); }
+  .contact__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(24px, 4vw, 56px); }
+  .info { background: var(--navy); color: #D5DDEC; border-radius: var(--r); padding: clamp(32px, 4.5vw, 56px); display: grid; gap: 26px; align-content: start; }
+  .info h2 { color: var(--wit); }
+  .info dl { margin: 0; display: grid; gap: 18px; }
+  .info dt { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--sky); font-weight: 700; margin-bottom: 4px; }
+  .info dd { margin: 0; color: var(--wit); font-size: 17px; font-weight: 600; }
+  .info a { text-decoration: none; }
+  .info a:hover { text-decoration: underline; }
+  .info :focus-visible { outline-color: var(--wit); }
+  .form { border: 1px solid var(--line); border-radius: var(--r); padding: clamp(28px, 4vw, 52px); display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+  .form h3 { grid-column: 1 / -1; font-size: 24px; font-weight: 800; letter-spacing: -.01em; }
+  .form label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: var(--navy); min-width: 0; }
+  .form .full { grid-column: 1 / -1; }
+  .form input, .form select, .form textarea { width: 100%; font: 400 16px "Plus Jakarta Sans"; color: var(--ink); padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--wit); }
+  .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--blue); }
+  .form textarea { min-height: 120px; resize: vertical; }
+  .form .consent { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; color: var(--ink-soft); }
+  .form .consent input { width: 18px; height: 18px; margin-top: 3px; flex: none; }
+  .form .btn { justify-self: start; }
+  @media (max-width: 900px) { .contact__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .form { grid-template-columns: 1fr; } }
+
+  /* ---------- footer ---------- */
+  .foot { background: #081739; color: #B9C4DA; border-radius: var(--r) var(--r) 0 0; padding: clamp(56px, 6vw, 84px) 0 32px; font-size: 15px; }
+  .foot__top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+  .foot__logo { display: inline-block; background: var(--wit); border-radius: 16px; padding: 12px 16px; }
+  .foot__logo img { width: 220px; height: auto; }
+  .foot h3 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--wit); margin-bottom: 14px; font-weight: 700; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .foot a { text-decoration-color: rgb(185 196 218 / .4); text-underline-offset: .22em; }
+  .foot :focus-visible { outline-color: var(--wit); }
+  .foot__legal { margin-top: 52px; padding-top: 24px; border-top: 1px solid rgb(255 255 255 / .12); font-size: 13px; color: #8F9CB8; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  @media (max-width: 900px) { .foot__top { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .foot__top { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#inhoud">Spring naar de inhoud</a>
+
+<div class="proposal">Voorstel nieuwe website · Cohezy</div>
+<div class="topbar">
+  <div class="wrap topbar__in">
+    <span class="topbar__addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>Kachtemsestraat 107, 8870 Izegem</span>
+    <div class="topbar__right">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg><a href="tel:+3251308260">051 30 82 60</a></span>
+      <span class="topbar__mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><a href="mailto:info@verschaete.be">info@verschaete.be</a></span>
+      <span>Profel Expert</span>
+    </div>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="nav__logo" href="#inhoud" aria-label="Verschaete bv, startpagina"><img src="img/verschaete-logo.jpg" width="1013" height="200" alt="Verschaete bv – ramen, deuren, poorten – sinds 1988 uw expert"></a>
+    <ul>
+      <li><a href="#ramen">Ramen</a></li>
+      <li><a href="#deuren">Deuren</a></li>
+      <li><a href="#poorten">Poorten</a></li>
+      <li><a href="#referenties">Referenties</a></li>
+      <li><a href="#premies">Premies</a></li>
+      <li><a href="#over-ons">Over ons</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="btn btn--blue" href="#contact">Offerte aanvragen</a>
+    <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+<div class="sheet" id="menu" hidden>
+  <button class="sheet__close" type="button">Sluiten</button>
+  <ul>
+    <li><a href="#ramen">Ramen</a></li>
+    <li><a href="#deuren">Deuren</a></li>
+    <li><a href="#poorten">Poorten</a></li>
+    <li><a href="#referenties">Referenties</a></li>
+    <li><a href="#premies">Premies</a></li>
+    <li><a href="#over-ons">Over ons</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="btn btn--light" href="#contact" style="justify-self:start">Offerte aanvragen</a>
+</div>
+
+<main id="inhoud">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__grid">
+      <div class="hero__txt">
+        <span class="eyebrow">Familiebedrijf in Izegem sinds 1988</span>
+        <h1 id="hero-title">Ramen, deuren <span class="blue">&amp; poorten</span><span class="mat">in <b>kunststof</b>, <b>hout</b> en <b>aluminium</b></span></h1>
+        <p class="lead">Een totaaloplossing voor alles wat met buitenschrijnwerk te maken heeft, altijd met de volledige afwerking.</p>
+        <div class="hero__cta">
+          <a class="btn btn--blue" href="#contact">Vraag uw offerte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn--ghost" href="#contact">Bezoek onze toonzaal</a>
+        </div>
+        <ul class="hero__facts"><li>Profel Expert</li><li>Toonzaal in Izegem</li></ul>
+      </div>
+      <div class="hero__media">
+        <figure class="hero__photo"><img src="img/hero.webp" width="1000" height="667" alt="Moderne woning met grote aluminium raampartijen, geplaatst door Verschaete."></figure>
+        <div class="hero__badge"><strong>1988</strong><span>Sinds 1988<br>uw expert</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap strip__in rv">
+      <div class="strip__item"><i style="background:var(--sun)"></i><h3>Kunststof</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+      <div class="strip__item"><i style="background:var(--wood)"></i><h3>Hout</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+      <div class="strip__item"><i style="background:var(--sky)"></i><h3>Aluminium</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+    </div>
+  </div>
+
+  <section id="ramen" aria-labelledby="ramen-title">
+    <div class="wrap">
+      <div class="head rv">
+        <div><span class="eyebrow">Ramen</span><h2 id="ramen-title">Lorem ipsum <span class="blue">dolor sit amet.</span></h2><p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+        <a class="btn btn--navy" href="#referenties">Bekijk realisaties</a>
+      </div>
+      <div class="cards">
+        <a class="card rv" href="#contact" style="--dot:var(--sun)"><figure class="open"><img src="img/raam-kunststof.webp" loading="lazy" alt="Witte kunststof ramen in een bakstenen gevel."></figure><h3>Kunststof</h3><p>Lorem ipsum dolor sit amet, consectetur.</p></a>
+        <a class="card rv" href="#contact" style="--dot:var(--sky)"><figure class="open"><img src="img/raam-aluminium.webp" loading="lazy" alt="Donker aluminium raam met roedeverdeling."></figure><h3>Aluminium</h3><p>Lorem ipsum dolor sit amet, consectetur.</p></a>
+        <a class="card rv" href="#contact" style="--dot:var(--wood)"><figure class="open"><img src="img/raam-hout.webp" loading="lazy" alt="Houten dakkapel met nieuw raam."></figure><h3>Hout</h3><p>Lorem ipsum dolor sit amet, consectetur.</p></a>
+        <a class="card rv" href="#contact" style="--dot:var(--navy)"><figure class="open"><img src="img/raam-stratolo.webp" loading="lazy" alt="Slanke ramen met steellook in een klassieke gevel."></figure><h3>Stratolo</h3><p>Lorem ipsum dolor sit amet, consectetur.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="deuren" aria-labelledby="deuren-title">
+    <div class="wrap split">
+      <div class="split__txt rv">
+        <span class="eyebrow">Deuren</span>
+        <h2 id="deuren-title">Lorem ipsum dolor, <span class="blue">sit amet.</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum.</p>
+        <ul class="checks"><li>Voordeuren in aluminium, kunststof en hout</li><li>Interna-greep</li><li>Lorem ipsum dolor sit amet</li></ul>
+        <a class="btn btn--blue" href="#contact">Vraag uw offerte</a>
+      </div>
+      <div class="mosaic rv">
+        <figure><img src="img/deur-main.webp" loading="lazy" alt="Antraciet aluminium voordeur tussen houten gevelbekleding."></figure>
+        <figure><img src="img/deur-hout.webp" loading="lazy" alt="Eiken voordeur met bloempotten."></figure>
+        <figure><img src="img/deur-alu.webp" loading="lazy" alt="Lichte aluminium voordeur met zijlicht."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="poorten" aria-labelledby="poorten-title">
+    <div class="wrap">
+      <div class="band open">
+        <img src="img/poort-band.webp" loading="lazy" alt="">
+        <div class="band__shade" aria-hidden="true"></div>
+        <div class="band__txt">
+          <span class="eyebrow">Poorten</span>
+          <h2 id="poorten-title">Sectionaalpoorten, <span style="color:var(--sky)">lorem ipsum.</span></h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper, aenean lacinia bibendum nulla sed consectetur.</p>
+          <div class="band__thumbs"><img src="img/poort-1.webp" loading="lazy" alt="Grijze sectionaalpoort naast voordeur."><img src="img/poort-2.webp" loading="lazy" alt="Twee sectionaalpoorten in boogvorm."></div>
+          <a class="btn btn--light" href="#contact">Lorem ipsum</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="referenties" aria-labelledby="ref-title">
+    <div class="wrap">
+      <div class="head rv">
+        <div><span class="eyebrow">Referenties</span><h2 id="ref-title">Lorem ipsum <span class="blue">dolor sit.</span></h2></div>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+      </div>
+      <div class="filters rv" role="group" aria-label="Filter referenties">
+        <button type="button" aria-pressed="true" data-f="all">Alles</button>
+        <button type="button" aria-pressed="false" data-f="alu">Aluminium</button>
+        <button type="button" aria-pressed="false" data-f="pvc">Kunststof</button>
+        <button type="button" aria-pressed="false" data-f="hout">Hout</button>
+      </div>
+      <div class="gallery rv">
+        <figure class="big" data-m="alu"><img src="img/ref-1.webp" loading="lazy" alt="Moderne woning met grote aluminium ramen en tuin."><figcaption>Ramen aluminium</figcaption></figure>
+        <figure data-m="alu"><img src="img/ref-2.webp" loading="lazy" alt="Moderne woning met hoge glaspartij."><figcaption>Ramen aluminium</figcaption></figure>
+        <figure class="tall" data-m="alu"><img src="img/ref-9.webp" loading="lazy" alt="Zwarte aluminium deur in houten gevel."><figcaption>Deuren aluminium</figcaption></figure>
+        <figure data-m="pvc"><img src="img/ref-3.webp" loading="lazy" alt="Landelijke woning met kunststof ramen."><figcaption>Ramen kunststof</figcaption></figure>
+        <figure data-m="hout"><img src="img/ref-4.webp" loading="lazy" alt="Witte woning met houten ramen en luiken."><figcaption>Ramen hout</figcaption></figure>
+        <figure data-m="alu"><img src="img/ref-5.webp" loading="lazy" alt="Woning met rode baksteen en aluminium ramen."><figcaption>Ramen aluminium</figcaption></figure>
+        <figure data-m="pvc"><img src="img/ref-6.webp" loading="lazy" alt="Bakstenen woning met kunststof ramen en boogdeur."><figcaption>Ramen kunststof</figcaption></figure>
+        <figure data-m="hout"><img src="img/ref-7.webp" loading="lazy" alt="Houten poortdeur in boogvorm."><figcaption>Deuren hout</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="premies" aria-labelledby="prem-title">
+    <div class="wrap">
+      <div class="prem">
+        <div class="prem__intro rv">
+          <span class="eyebrow">Premies</span>
+          <h2 id="prem-title">Lorem ipsum <span class="blue">dolor sit amet.</span></h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.</p>
+          <figure><img src="img/premies.webp" loading="lazy" alt="Grote raampartij met steellook naar een overdekt terras."></figure>
+        </div>
+        <div class="prem__list">
+          <div class="pcard rv"><b>01</b><h3>Mijn VerbouwPremie</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo.</p></div>
+          <div class="pcard rv"><b>02</b><h3>6% btw bij renovatie</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio dui, cras justo odio dapibus.</p></div>
+          <div class="pcard rv"><b>03</b><h3>Premiezoeker</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum.</p></div>
+          <a class="btn btn--navy rv" href="#contact" style="justify-self:start">Lorem ipsum</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="over-ons" aria-labelledby="over-title">
+    <div class="wrap split">
+      <figure class="over__photo open"><img src="img/over.webp" loading="lazy" alt="Bakstenen woning met nieuwe ramen en deuren."></figure>
+      <div class="split__txt rv">
+        <span class="eyebrow">Over ons</span>
+        <h2 id="over-title">Lorem ipsum dolor <span class="blue">sit amet.</span></h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui. Aenean lacinia bibendum nulla sed consectetur.</p>
+        <div class="stats"><div><strong>Lorem</strong><span>Lorem ipsum</span></div><div><strong>Ipsum</strong><span>Dolor sit amet</span></div><div><strong>Dolor</strong><span>Consectetur</span></div></div>
+        <a class="btn btn--ghost" href="#contact">Lorem ipsum</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact__grid">
+      <div class="info rv">
+        <span class="eyebrow" style="color:var(--sun)">Contact</span>
+        <h2 id="contact-title">Lorem ipsum dolor sit.</h2>
+        <dl>
+          <div><dt>Adres</dt><dd>Verschaete bv<br>Kachtemsestraat 107<br>8870 Izegem</dd></div>
+          <div><dt>Telefoon</dt><dd><a href="tel:+3251308260">051 30 82 60</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href="mailto:info@verschaete.be">info@verschaete.be</a></dd></div>
+        </dl>
+      </div>
+      <form class="form rv" onsubmit="return false" aria-label="Contactformulier (demo)">
+        <h3>Lorem ipsum dolor</h3>
+        <label>Naam<input type="text" name="naam" autocomplete="name"></label>
+        <label>Telefoon<input type="tel" name="tel" autocomplete="tel"></label>
+        <label class="full">E-mail<input type="email" name="email" autocomplete="email"></label>
+        <label class="full">Onderwerp<select name="onderwerp"><option>Ramen</option><option>Deuren</option><option>Poorten</option><option>Andere</option></select></label>
+        <label class="full">Bericht<textarea name="bericht"></textarea></label>
+        <label class="full consent"><input type="checkbox" name="akkoord">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</label>
+        <button class="btn btn--blue full" type="submit">Verstuur</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div><span class="foot__logo"><img src="img/verschaete-logo.jpg" width="1013" height="200" alt="Verschaete bv" loading="lazy"></span><p style="margin-top:20px; max-width:32ch">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+      <div><h3>Contact</h3><p>Kachtemsestraat 107<br>8870 Izegem<br><a href="tel:+3251308260">051 30 82 60</a><br><a href="mailto:info@verschaete.be">info@verschaete.be</a></p></div>
+      <div><h3>Aanbod</h3><ul><li><a href="#ramen">Ramen</a></li><li><a href="#deuren">Deuren</a></li><li><a href="#poorten">Poorten</a></li><li><a href="#premies">Premies</a></li></ul></div>
+      <div><h3>Volg ons</h3><ul><li><a href="https://www.facebook.com/pages/Verschaete-BVBA/399757100201272" rel="noopener">Facebook</a></li><li><a href="https://www.instagram.com/verschaeteramendeuren/" rel="noopener">Instagram</a></li></ul></div>
+    </div>
+    <div class="foot__legal">
+      <p>© <span id="jaar">2026</span> Verschaete bv · Kachtemsestraat 107, 8870 Izegem</p>
+      <p>Lorem ipsum · Dolor sit</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+  $('#jaar').textContent = new Date().getFullYear();
+
+  const btn = $('.nav__menu'), sheet = $('#menu');
+  const set = o => { sheet.hidden = !o; btn.setAttribute('aria-expanded', String(o)); document.body.style.overflow = o ? 'hidden' : ''; (o ? sheet.querySelector('a') : btn).focus(); };
+  btn.addEventListener('click', () => set(true));
+  sheet.querySelector('.sheet__close').addEventListener('click', () => set(false));
+  sheet.addEventListener('click', e => { if (e.target.closest('a')) set(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) set(false); });
+
+  const nav = $('.nav');
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 60);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  $$('.filters button').forEach(b => b.addEventListener('click', () => {
+    $$('.filters button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    const f = b.dataset.f;
+    $$('.gallery figure').forEach(fig => fig.classList.toggle('hide', f !== 'all' && fig.dataset.m !== f));
+  }));
+
+  $$('.cards .card, .prem__list > *').forEach((el, i) => el.style.transitionDelay = (i % 4) * 90 + 'ms');
+  const els = $$('.rv, .open');
+  if (reduce || !('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>
