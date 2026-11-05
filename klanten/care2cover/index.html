@@ -792,7 +792,7 @@ function buildRows(){
     s.groups.forEach((g, gi) => g.qs.forEach((q, qi) => {
       n++;
       const a = answerText(q, qKey(si, gi, qi));
-      if (a) rows.push([deel, n, q.t, a.startsWith("\n") ? a.slice(1) : a]);
+      if (a) rows.push([deel, n + ". " + q.t, a.startsWith("\n") ? a.slice(1) : a]);
     }));
   });
   return rows;

@@ -165,8 +165,8 @@ function slug(){return ($("klant").value||"algemeen").toLowerCase().trim().repla
 function sess(){let v=LS.get("gh-sess","");if(!v){const d=new Date();v=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");LS.set("gh-sess",v);}return v;}
 const sheetId=()=>"gesprek-"+slug()+"-"+sess();
 let syncT=null,lastSync=0;
-function sheetRows(){const rows=[];lines.forEach((l,i)=>rows.push(["Gesprek",i+1,new Date(l.ts).toLocaleString("nl-BE"),(l.note?"[notitie] ":"")+l.text]));
-  const r=result||{};[["Wat we al weten",r.facts],["Al beantwoord",r.done],["Nog open",r.open]].forEach(([t,a],i)=>{if(a&&a.length)rows.push(["Samenvatting",i+1,t,a.join("\n")]);});return rows;}
+function sheetRows(){const rows=[];lines.forEach((l,i)=>rows.push(["Gesprek",new Date(l.ts).toLocaleString("nl-BE"),(l.note?"[notitie] ":"")+l.text]));
+  const r=result||{};[["Wat we al weten",r.facts],["Al beantwoord",r.done],["Nog open",r.open]].forEach(([t,a],i)=>{if(a&&a.length)rows.push(["Samenvatting",t,a.join("\n")]);});return rows;}
 function syncSheet(now){clearTimeout(syncT);syncT=setTimeout(async()=>{
   try{await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({klant:sheetId(),state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})});lastSync=Date.now();$("sync").textContent="Opgeslagen in Google Sheets om "+fmt(lastSync);}
   catch(e){$("sync").textContent="Opslaan in Google Sheets mislukt, tekst staat wel nog op deze laptop";}
