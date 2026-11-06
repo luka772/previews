@@ -93,7 +93,7 @@ footer{padding:30px 0 50px;color:var(--soft);font-size:13px;display:flex;justify
 <section id="talking"><div class="wrap">
   <div class="sh"><p class="eb">Praatvideo's</p><h2>Een gezicht dat <span class="co">vertrouwen</span> geeft.</h2>
   <p class="lead">Talking-head video's waarin de vakman zelf aan het woord is. We draaien op één voormiddag (8:30 tot 12:30). Hoe meer video's per shoot, hoe voordeliger per stuk.</p></div>
-  <div class="vids">
+  <div class="vids" id="talk-v">
     <div class="v ig"><div class="fr"><iframe src="https://www.instagram.com/reel/DcDNw5fjC88/embed" loading="lazy" title="Praatvideo poortenbedrijf" allowtransparency="true"></iframe></div><b>Poortenbedrijf</b><span>Instagram Reel</span></div>
     <div class="v ig"><div class="fr"><iframe src="https://www.instagram.com/reel/DV20XDKj79I/embed" loading="lazy" title="Praatvideo Gard'or" allowtransparency="true"></iframe></div><b>Gard'or</b><span>Instagram Reel</span></div>
   </div>
@@ -169,16 +169,19 @@ const ADS=[
  ['TIxJ0D8IsVs','Configurator','Advertentievideo met configurator'],
  ['eYmHM0JGh_I','Vacaturevideo','Advertentievideo voor rekrutering'],
  ['c9LgbunDZX4',"Gard'or",'Advertentievideo'],
- ['g4X_IdpyZH0','Naert Inspireert','Advertentievideo'],
- ['4zs7zka34Lk','Ambachtelijk Koffiehuis','Advertentievideo'],
- ['KM5yXUxs3Xc','Kroketco','Advertentievideo'],
- ['USFxTykHvh0','Updo','Advertentievideo']
+ ['g4X_IdpyZH0','Naert Inspireert','Advertentievideo']
 ];
-const box=document.getElementById('ads-v');
-ADS.forEach(([id,n,s])=>{const d=document.createElement('div');d.className='v';
- d.innerHTML=`<div class="fr"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="tg">${s.includes('configurator')?'Configurator':s.includes('rekrutering')?'Vacature':'Ad'}</span><span class="pl"></span><button type="button" aria-label="Speel ${n}"></button></div><b>${n}</b><span>${s}</span>`;
+const TALK=[
+ ['4zs7zka34Lk','Ambachtelijk Koffiehuis','Praatvideo'],
+ ['KM5yXUxs3Xc','Kroketco','Praatvideo'],
+ ['USFxTykHvh0','Updo','Praatvideo']
+];
+function vids(list,box,tag){list.forEach(([id,n,s])=>{const d=document.createElement('div');d.className='v';
+ d.innerHTML=`<div class="fr"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="tg">${tag||(s.includes('configurator')?'Configurator':s.includes('rekrutering')?'Vacature':'Ad')}</span><span class="pl"></span><button type="button" aria-label="Speel ${n}"></button></div><b>${n}</b><span>${s}</span>`;
  d.querySelector('button').onclick=()=>{d.querySelector('.fr').innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${n}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;};
- box.append(d);});
+ box.append(d);});}
+vids(ADS,document.getElementById('ads-v'));
+vids(TALK,document.getElementById('talk-v'),'Praatvideo');
 </script>
 </body>
 </html>
