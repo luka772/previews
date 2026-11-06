@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cohezy · Video & online marketing</title>
+<style>
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Regular.otf);font-weight:400}
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Medium.otf);font-weight:500}
+@font-face{font-family:Satoshi;src:url(f/Satoshi-Bold.otf);font-weight:700}
+@font-face{font-family:Mont;src:url("f/Montserrat Thin.ttf");font-weight:100}
+:root{--ch:#131313;--co:#F87759;--gr:#3C3B39;--cr:#EDE9E3;--pa:#FCFAF6;--soft:#8d8984;--line:rgba(237,233,227,.14);--card:rgba(237,233,227,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ch);color:var(--cr);font:16px/1.6 Satoshi,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
+.eb{font-family:Mont,sans-serif;font-weight:100;opacity:1;letter-spacing:5px;text-transform:uppercase;color:var(--co);font-size:13px}
+h1,h2,h3{font-weight:700;letter-spacing:-1px;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(48px,7vw,96px);letter-spacing:-3px}
+h2{font-size:clamp(34px,4.4vw,56px);letter-spacing:-2px;margin-top:14px}
+h3{font-size:22px;letter-spacing:-.5px}
+.co{color:var(--co)}
+.lead{color:#cfcac2;font-size:18px;max-width:640px;margin-top:20px}
+.rule{width:60px;height:5px;border-radius:5px;background:var(--co);margin-top:26px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+nav img{height:38px}
+nav .links{display:flex;gap:26px;font-size:14.5px;color:#cfcac2}
+nav .links a{text-decoration:none}nav .links a:hover{color:var(--cr)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--co);color:var(--ch);border-radius:999px;padding:14px 24px;font-weight:700;text-decoration:none;font-size:15px}
+.btn.ghost{background:transparent;color:var(--cr);border:1px solid var(--line)}
+header.hero{padding:70px 0 90px}
+header.hero .bt{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+section{padding:90px 0;border-top:1px solid var(--line)}
+.sh{max-width:720px}
+.grid{display:grid;gap:16px;margin-top:40px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px}
+.card p{color:#cfcac2;font-size:15px;margin-top:8px}
+.price{font-size:40px;font-weight:700;letter-spacing:-1.5px;line-height:1;color:var(--co);margin-top:6px}
+.price small{display:block;font-size:13px;letter-spacing:0;color:var(--soft);font-weight:400;margin-top:8px}
+.best{position:relative}.best:after{content:"Beste waarde";position:absolute;top:-11px;right:18px;background:var(--co);color:var(--ch);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
+.calc{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:34px;font-size:20px}
+.calc div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 22px}
+.calc b{display:block;font-size:30px;letter-spacing:-1px}.calc small{color:var(--soft);font-size:13px}
+.calc .t{background:var(--co);color:var(--ch);border-color:var(--co)}.calc .t small{color:var(--ch)}
+.note{color:var(--soft);font-size:14px;margin-top:16px;max-width:760px}
+/* video's */
+.vids{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:900px;gap:18px;margin-top:40px}
+.v{display:grid;gap:10px}
+.v .fr{position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:var(--gr);border:1px solid var(--line)}
+.v .fr img,.v .fr iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0}
+.v button{all:unset;cursor:pointer;position:absolute;inset:0}
+.v .pl{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--co);display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.v .pl:after{content:"";border-left:18px solid var(--ch);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+.v .tg{position:absolute;left:12px;top:12px;background:rgba(19,19,19,.8);color:var(--cr);font-size:12px;border-radius:999px;padding:5px 11px}
+.v b{font-size:16px}.v span{color:var(--soft);font-size:13.5px;display:block}
+.ig .fr{aspect-ratio:auto;height:640px;background:#fff}
+.inc{list-style:none;display:grid;gap:10px;margin-top:16px}.inc li{padding-left:22px;position:relative;color:#cfcac2}.inc li:before{content:"";position:absolute;left:0;top:9px;width:10px;height:10px;border-radius:50%;background:var(--co)}
+.promo{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.cta{background:var(--co);color:var(--ch);border-radius:32px;padding:60px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:end;margin:90px 0 40px}
+.cta .eb{color:var(--ch)}.cta h2{color:var(--ch)}
+.cta .btn{background:var(--ch);color:var(--cr)}
+.cta p{font-size:16px;margin-top:10px}
+footer{padding:30px 0 50px;color:var(--soft);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media (max-width:900px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.promo,.cta{grid-template-columns:1fr}nav .links{display:none}.cta{padding:36px 26px}}
+@media (max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}section{padding:64px 0}.vids{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ig .fr{height:560px}.ig{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><img src="f/cohezy-logo-cream.png" alt="Cohezy"><div class="links"><a href="#video">Video's</a><a href="#ads">Lead abonnement</a><a href="#content">Content</a><a href="#web">Web & SEO</a></div><a class="btn" href="#contact">Contact</a></nav>
+
+<header class="hero">
+  <p class="eb">Video & online marketing · 2026</p>
+  <h1>Groeien doe je <span class="co">samen.</span></h1>
+  <p class="lead">Video's die de aandacht grijpen, advertenties die leads opleveren en een online aanwezigheid die vertrouwen schept. Hier zie je ons werk en wat het kost.</p>
+  <div class="bt"><a class="btn" href="#video">Bekijk onze video's</a><a class="btn ghost" href="#ads">Prijzen & pakketten</a></div>
+</header>
+</div>
+
+<section id="video"><div class="wrap">
+  <div class="sh"><p class="eb">Advertentievideo's</p><h2>Video's die <span class="co">stoppen met scrollen.</span></h2>
+  <p class="lead">Van concept en script tot regie, opname en montage, met drone waar het past. Elke productie stemmen we af op je verhaal, je locatie en je doel.</p></div>
+  <div class="vids" id="ads-v"></div>
+  <div class="grid g2">
+    <div class="card"><h3>Cinematische advertentievideo</h3><p>Geregisseerde productie op maat. Omdat de scope sterk verschilt per project, werken we via offerte.</p><div class="price">€1.000–2.000<small>gemiddeld per video · op offerte</small></div></div>
+    <div class="card"><h3>Advertentievideo met je configurator</h3><p>Je configurator in actie, als hook voor Meta en Google. Mensen krijgen iets tastbaars in handen.</p><div class="price">€1.000<small>per video</small></div></div>
+  </div>
+</div></section>
+
+<section id="talking"><div class="wrap">
+  <div class="sh"><p class="eb">Praatvideo's</p><h2>Een gezicht dat <span class="co">vertrouwen</span> geeft.</h2>
+  <p class="lead">Talking-head video's waarin de vakman zelf aan het woord is. We draaien op één voormiddag (8:30 tot 12:30). Hoe meer video's per shoot, hoe voordeliger per stuk.</p></div>
+  <div class="vids">
+    <div class="v ig"><div class="fr"><iframe src="https://www.instagram.com/reel/DcDNw5fjC88/embed" loading="lazy" title="Praatvideo poortenbedrijf" allowtransparency="true"></iframe></div><b>Poortenbedrijf</b><span>Instagram Reel</span></div>
+    <div class="v ig"><div class="fr"><iframe src="https://www.instagram.com/reel/DV20XDKj79I/embed" loading="lazy" title="Praatvideo Gard'or" allowtransparency="true"></iframe></div><b>Gard'or</b><span>Instagram Reel</span></div>
+  </div>
+  <div class="grid g4">
+    <div class="card"><h3>1 video</h3><div class="price">€300<small>per shoot</small></div></div>
+    <div class="card"><h3>2 video's</h3><div class="price">€550<small>€275 per video</small></div></div>
+    <div class="card"><h3>3 video's</h3><div class="price">€700<small>€233 per video</small></div></div>
+    <div class="card best"><h3>4 video's</h3><div class="price">€800<small>€200 per video</small></div></div>
+  </div>
+  <p class="note">Verplaatsing: 1 of 2 video's tot 25 km, 3 of 4 video's tot 70 km van Roeselare. Daarbuiten €0,50/km (heen en terug) of we spreken samenrijden af.</p>
+</div></section>
+
+<section id="ads"><div class="wrap">
+  <div class="sh"><p class="eb">Ons kernaanbod</p><h2>Het <span class="co">Lead Abonnement.</span></h2>
+  <p class="lead">Awareness-video's en foto's die je merk laten groeien en leads binnenbrengen. Simpel en eerlijk: je maandelijkse agencykost is gelijk aan je advertentiebudget bij Meta, Google of YouTube.</p></div>
+  <div class="calc"><div><small>Advertentiebudget</small><b>€1.000</b></div><span>+</span><div><small>Agencykost (= budget)</small><b>€1.000</b></div><span>=</span><div class="t"><small>Totaal per maand</small><b>€2.000</b></div></div>
+  <p class="note">Het advertentiebudget betaal je rechtstreeks aan het platform. Meer budget betekent meer campagnes tegelijk, dus meer bereik en meer leads.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Meebewegend</h3><p>Je kost schaalt mee met je advertentiebudget. Geen vaste, logge fee.</p></div>
+    <div class="card"><h3>Awareness eerst</h3><p>Video's en foto's die de aandacht trekken en je merk top-of-mind maken.</p></div>
+    <div class="card"><h3>Gericht op leads</h3><p>Alles staat in functie van échte klanten, niet enkel mooie cijfers.</p></div>
+  </div>
+  <div class="sh" style="margin-top:80px"><p class="eb">In-house begeleiding</p><h2>Ads <span class="co">Consultancy.</span></h2>
+  <p class="lead">Beheer je je advertenties liever zelf? Dan komt onze digital marketeer Maxime, met 4 jaar ervaring, maandelijks langs om je Meta- en Google-campagnes te overlopen en je de nieuwste platform-updates mee te geven.</p></div>
+  <div class="grid g4">
+    <div class="card"><h3>1 uur</h3><div class="price">€200<small>€200 per uur</small></div></div>
+    <div class="card"><h3>2 uur</h3><div class="price">€350<small>€175 per uur</small></div></div>
+    <div class="card"><h3>3 uur</h3><div class="price">€450<small>€150 per uur</small></div></div>
+    <div class="card best"><h3>4 uur</h3><div class="price">€500<small>€125 per uur</small></div></div>
+  </div>
+  <p class="note">Prijs per maandelijkse sessie. Begeleiding voor LinkedIn-advertenties kan op aanvraag.</p>
+</div></section>
+
+<section id="content"><div class="wrap">
+  <div class="sh"><p class="eb">Content productie</p><h2>Social media & <span class="co">fotoshoot.</span></h2>
+  <p class="lead">Een consistente feed die vertrouwen schept, en vers beeldmateriaal om maandenlang uit te putten.</p></div>
+  <div class="grid g2">
+    <div class="card"><h3>Social media management</h3><p>Elke maand 8 posts in één consistente, herkenbare stijl. Een strakke pagina schept meteen vertrouwen.</p><div class="price">€600<small>per maand · 8 posts</small></div></div>
+    <div class="card"><h3>Fotoshoot</h3><p>Een shoot van 2 uur met 50 à 80 foto's, goed voor ongeveer 6 maanden vers beeldmateriaal.</p><div class="price">€600<small>eenmalig · 2 uur</small></div></div>
+  </div>
+  <div class="card promo" style="margin-top:16px">
+    <div><p class="eb">Promo</p><h3 style="font-size:30px;margin-top:8px">Het Alles-in-één pakket</h3>
+      <ul class="inc"><li>Fotoshoot om mee te starten (50–80 foto's)</li><li>8 social media posts per maand</li><li>4 talking-head video's per maand</li></ul></div>
+    <div><div class="price">€1.200<small>per maand + €600 fotoshoot eenmalig · los €1.400 per maand</small></div></div>
+  </div>
+</div></section>
+
+<section id="web"><div class="wrap">
+  <div class="sh"><p class="eb">Web, tracking & vindbaarheid</p><h2>Gevonden worden en <span class="co">meten</span> wat het oplevert.</h2></div>
+  <div class="grid g3">
+    <div class="card"><h3>One pager + design</h3><div class="price">€1.000<small>extra pagina €250</small></div></div>
+    <div class="card"><h3>CMS-website</h3><div class="price">€1.250<small>homepage · extra pagina €500</small></div></div>
+    <div class="card"><h3>SEO basics · AEO & GEO basics</h3><div class="price">€500<small>per onderdeel</small></div></div>
+    <div class="card"><h3>Online marketing setup</h3><p>GA4, Google Tag Manager, conversietracking en je advertentiekanalen.</p><div class="price">vanaf €1.000<small>eenmalig · €1.500 vanaf nul voor 1 kanaal</small></div></div>
+    <div class="card"><h3>GEO audit</h3><p>Hoe AI-zoekmachines zoals ChatGPT en Gemini je merk zien, met een actieplan.</p><div class="price">€2.500<small>eenmalig</small></div></div>
+    <div class="card"><h3>SEO- of GEO-traject</h3><p>Doorlopend werken aan content, techniek en structuur.</p><div class="price">€750–1.000<small>per maand</small></div></div>
+    <div class="card"><h3>Configurator</h3><p>Een interactieve configurator op je website waarmee bezoekers zelf hun product samenstellen.</p><div class="price">op maat</div></div>
+    <div class="card"><h3>Rebranding</h3><p>Logo, kleuren en typografie die je merk scherp neerzetten.</p><div class="price">vanaf €500</div></div>
+    <div class="card"><h3>Merchant Center & webshop</h3><p>Productfeed en koppelingen met je marketingkanalen.</p><div class="price">op maat</div></div>
+  </div>
+</div></section>
+
+<div class="wrap" id="contact">
+  <div class="cta"><div><p class="eb">Klaar om te groeien?</p><h2>Laten we eens samenzitten.</h2><p>We komen graag langs met onze bedenkingen bij je huidige online marketing en een voorstel op maat.</p></div>
+  <div><p><b>Luka Casier</b><br>0470 92 56 43<br>luka@cohezy.agency</p><p style="margin-top:16px"><a class="btn" href="mailto:luka@cohezy.agency">Mail ons</a></p></div></div>
+  <footer><img src="f/cohezy-logo-cream.png" alt="Cohezy" style="height:22px"><span>Alle prijzen excl. btw · © 2026 Cohezy</span></footer>
+</div>
+
+<script>
+const ADS=[
+ ['IMiAHot22qY','Vabo Deuren','Advertentievideo'],
+ ['J_9gs5yf3RA','Babycompany','Advertentievideo'],
+ ['TIxJ0D8IsVs','Configurator','Advertentievideo met configurator'],
+ ['eYmHM0JGh_I','Vacaturevideo','Advertentievideo voor rekrutering'],
+ ['c9LgbunDZX4',"Gard'or",'Advertentievideo'],
+ ['g4X_IdpyZH0','Naert Inspireert','Advertentievideo']
+];
+const box=document.getElementById('ads-v');
+ADS.forEach(([id,n,s])=>{const d=document.createElement('div');d.className='v';
+ d.innerHTML=`<div class="fr"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy"><span class="tg">${s.includes('configurator')?'Configurator':s.includes('rekrutering')?'Vacature':'Ad'}</span><span class="pl"></span><button type="button" aria-label="Speel ${n}"></button></div><b>${n}</b><span>${s}</span>`;
+ d.querySelector('button').onclick=()=>{d.querySelector('.fr').innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="${n}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;};
+ box.append(d);});
+</script>
+</body>
+</html>
