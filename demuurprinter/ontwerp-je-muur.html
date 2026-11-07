@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontwerp je muur | Drie voorbeelden van je muurprint | De Muurprinter</title>
+<meta name="description" content="Geef je muur op, stuur een voorbeeld van wat je wil en bekijk meteen drie voorstellen van je muurprint. Vrijblijvend, voor particulieren en bedrijven in heel België.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F3F1EC">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="De Muurprinter">
+<meta property="og:locale" content="nl_BE">
+<meta property="og:title" content="Ontwerp je muur | De Muurprinter">
+<meta property="og:description" content="Stuur je muur en een voorbeeld, en bekijk meteen drie voorstellen van je muurprint.">
+<meta property="og:url" content="https://demuurprinter.be/ontwerp-je-muur.html">
+<meta property="og:image" content="https://demuurprinter.be/images/hero-muur-print.jpg">
+<link rel="icon" href="images/logo-icon.png">
+<link rel="preload" href="fonts/Fraunces-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+body{background:var(--cream)}
+.cf{padding:120px 0 96px}
+.cf-kop{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.cf-kop h1{font-size:clamp(2.4rem,5.2vw,4.2rem)}
+.cf-kop p{color:var(--grey-ink);max-width:46ch;margin-top:14px}
+.voortgang{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.voortgang li{font:600 .78rem/1 var(--f-text);padding:.7em 1em;border-radius:999px;color:var(--grey-ink);background:rgba(10,10,10,.05)}
+.voortgang li.nu{background:var(--ink);color:var(--cream)}
+.voortgang li.klaar{background:rgba(46,127,255,.12);color:var(--blue-deep)}
+@media (max-width:700px){.voortgang li span{display:none}.voortgang li{padding:.7em .85em}}
+
+.cf-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,56px);align-items:start}
+.cf-grid>*{min-width:0}
+@media (max-width:960px){.cf-grid{grid-template-columns:1fr}}
+.paneel{background:var(--paper);border-radius:24px;padding:clamp(22px,3.4vw,40px);box-shadow:0 0 0 1px var(--line)}
+.stap{display:none}.stap.nu{display:block;animation:op .45s var(--ease)}
+@keyframes op{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.stap h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:8px}
+.stap .uitleg{color:var(--grey-ink);margin-bottom:28px}
+fieldset{border:0;margin:0 0 28px;padding:0;min-width:0}
+legend,.lbl{display:block;font-weight:620;font-size:.95rem;margin-bottom:12px;padding:0}
+.lbl small,legend small{font-weight:450;color:var(--grey-ink)}
+
+.keuzes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.keuze{position:relative}
+.keuze input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.keuze span{display:flex;align-items:center;gap:10px;min-height:52px;padding:12px 14px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);font-size:.95rem;font-weight:520;transition:box-shadow .2s,background .2s}
+.keuze input:checked+span{box-shadow:inset 0 0 0 2px var(--blue);background:rgba(46,127,255,.06)}
+.keuze input:focus-visible+span{outline:3px solid var(--blue);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips .keuze span{min-height:44px;border-radius:999px;padding:10px 16px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.maat{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.veld{display:block}
+.veld input,.veld textarea,.veld select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:0;border-radius:12px;box-shadow:inset 0 0 0 1.5px var(--line);padding:14px 16px;transition:box-shadow .2s}
+.veld input:focus,.veld textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--blue)}
+.veld textarea{min-height:110px;resize:vertical}
+.veld .met-eenheid{position:relative}
+.veld .met-eenheid input{padding-right:48px}
+.veld .met-eenheid em{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--grey);font-size:.9rem}
+.veld .lbl{margin-bottom:8px;font-size:.88rem}
+.velden{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.velden .vol{grid-column:1/-1}
+@media (max-width:560px){.velden,.maat{grid-template-columns:1fr}}
+
+.randen{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.randen .keuze span{justify-content:space-between}
+.randen .keuze b{font-weight:620}
+.randen .keuze small{color:var(--grey-ink);font-size:.8rem;font-weight:450}
+
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;border-radius:16px;border:1.5px dashed rgba(10,10,10,.25);background:#fff;padding:26px 18px;cursor:pointer;transition:border-color .2s,background .2s}
+.drop:hover,.drop.over{border-color:var(--blue);background:rgba(46,127,255,.04)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop b{font-size:.98rem}.drop span{font-size:.86rem;color:var(--grey-ink)}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.thumb{position:relative;width:86px;height:86px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(10,10,10,.75);color:#fff;cursor:pointer;font-size:.9rem;line-height:1}
+
+.check{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;font-size:.9rem;color:var(--grey-ink)}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--blue)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.acties{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;padding-top:24px;border-top:1px solid var(--line)}
+.acties .terug{background:none;border:0;font:600 .95rem var(--f-text);color:var(--grey-ink);cursor:pointer;padding:12px 4px}
+.acties .terug:hover{color:var(--ink)}
+.melding{margin-top:16px;padding:12px 16px;border-radius:12px;background:#fdecec;color:#9b1c1c;font-size:.92rem;display:none}
+.melding.toon{display:block}
+
+/* live voorbeeld van de muur */
+.preview{position:sticky;top:100px}
+.pv-kaart{background:var(--ink);color:var(--cream);border-radius:24px;padding:24px;overflow:hidden}
+.pv-kop{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px}
+.pv-kop b{font-family:var(--f-display);font-weight:540;font-size:1.3rem}
+.pv-kop span{font-size:.85rem;color:#a9a9a2}
+.pv-muur{position:relative;margin:8px auto 0;max-width:100%;background:#e9e5dd;border-radius:4px;transition:aspect-ratio .3s}
+.pv-muur .zone{position:absolute;background:#d9d3c8 center/cover no-repeat;transition:all .3s var(--ease)}
+.pv-muur .zone.leeg{background-image:repeating-linear-gradient(45deg,rgba(46,127,255,.18) 0 10px,rgba(46,127,255,.08) 10px 20px)}
+.pv-muur .rand{position:absolute;background:repeating-linear-gradient(-45deg,rgba(10,10,10,.12) 0 4px,transparent 4px 9px)}
+.pv-muur .mt{position:absolute;font:600 .66rem/1 var(--f-text);color:#5d5d57;background:#e9e5dd;padding:2px 4px;border-radius:3px;white-space:nowrap}
+.pv-maat{display:flex;justify-content:space-between;margin-top:14px;font-size:.84rem;color:#a9a9a2}
+.pv-maat b{color:var(--cream);font-weight:600}
+.pv-legende{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-dark);font-size:.8rem;color:#a9a9a2}
+.pv-legende i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.pv-tip{margin-top:16px;font-size:.88rem;color:var(--grey-ink)}
+@media (max-width:960px){.preview{position:relative;top:0;order:-1}.pv-kaart{padding:18px}}
+
+/* resultaat */
+.res{display:none}.res.toon{display:block}
+.res h2{font-size:clamp(2rem,4.4vw,3.4rem)}
+.res .uitleg{color:var(--grey-ink);max-width:60ch;margin:14px 0 36px}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.res-grid{grid-template-columns:1fr}}
+.vs{background:var(--paper);border-radius:20px;padding:12px;box-shadow:0 0 0 1px var(--line)}
+.vs .beeld{position:relative;aspect-ratio:3/2;border-radius:12px;overflow:hidden;background:#e7e3db}
+.vs .beeld img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.vs .laden{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-size:.86rem;color:var(--grey-ink);background:linear-gradient(100deg,#e7e3db 30%,#f2efe9 50%,#e7e3db 70%) 0 0/300% 100%;animation:shim 1.6s linear infinite}
+@keyframes shim{to{background-position:-300% 0}}
+@media (prefers-reduced-motion:reduce){.vs .laden{animation:none}}
+.vs .info{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 6px 4px}
+.vs .info b{font-size:.95rem}
+.vs .info small{display:block;color:var(--grey-ink);font-size:.8rem}
+.vs .knop{font:600 .84rem var(--f-text);border:0;border-radius:999px;padding:.75em 1.1em;cursor:pointer;background:var(--ink);color:var(--cream);white-space:nowrap}
+.vs .knop.gekozen{background:var(--blue)}
+.vs .dl{font-size:.8rem;color:var(--grey-ink);margin-left:6px}
+.res-voet{margin-top:36px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;color:var(--grey-ink);font-size:.92rem}
+.zoom{position:fixed;inset:0;z-index:80;background:rgba(10,10,10,.92);display:none;place-items:center;padding:24px;cursor:zoom-out}
+.zoom.toon{display:grid}
+.zoom img{max-height:90vh;width:auto;border-radius:12px}
+</style>
+</head>
+<body>
+
+<header class="nav licht vast" id="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="De Muurprinter, naar de startpagina">
+      <img class="l-wit" src="images/muurprinter-logo-wit.png" alt="" width="300" height="78">
+      <img class="l-zwart" src="images/muurprinter-logo-zwart.png" alt="De Muurprinter" width="300" height="78">
+    </a>
+    <nav aria-label="Hoofdmenu"><ul>
+      <li><a href="index.html#projecten">Projecten</a></li><li><a href="index.html#werkwijze">Werkwijze</a></li><li><a href="index.html#faq">Vragen</a></li>
+    </ul></nav>
+    <a class="btn btn-ghost" href="tel:+32496082484">Bel ons</a>
+  </div>
+</header>
+
+<main class="cf">
+  <div class="wrap">
+
+    <!-- ================= FORMULIER ================= -->
+    <div id="configurator">
+      <div class="cf-kop">
+        <div>
+          <h1>Ontwerp je <em>muur</em>.</h1>
+          <p>Vier korte stappen. Daarna zie je meteen drie voorbeelden van hoe jouw muur eruit kan zien.</p>
+        </div>
+        <ol class="voortgang" id="voortgang" aria-label="Stappen">
+          <li class="nu">1<span> · Ruimte</span></li><li>2<span> · Muur</span></li><li>3<span> · Ontwerp</span></li><li>4<span> · Gegevens</span></li>
+        </ol>
+      </div>
+
+      <div class="cf-grid">
+        <form class="paneel" id="form" novalidate>
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <!-- STAP 1 -->
+          <section class="stap nu" data-stap="1" aria-labelledby="s1">
+            <h2 id="s1">Waar komt de print?</h2>
+            <p class="uitleg">Zo weten we welke sfeer past en hoe we je voorbeelden in beeld brengen.</p>
+            <fieldset>
+              <legend>Voor wie?</legend>
+              <div class="duo">
+                <label class="keuze"><input type="radio" name="klanttype" value="particulier" checked><span>Particulier</span></label>
+                <label class="keuze"><input type="radio" name="klanttype" value="bedrijf"><span>Bedrijf of organisatie</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Welke ruimte?</legend>
+              <div class="keuzes">
+                <label class="keuze"><input type="radio" name="ruimte" value="woonkamer" checked><span>Woonkamer</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="slaapkamer"><span>Slaapkamer</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="kinderkamer"><span>Kinderkamer</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="hal"><span>Hal of trapgat</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="kantoor"><span>Kantoor</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="horeca"><span>Horeca of winkel</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="buiten"><span>Buitenmuur</span></label>
+                <label class="keuze"><input type="radio" name="ruimte" value="andere"><span>Iets anders</span></label>
+              </div>
+            </fieldset>
+          </section>
+
+          <!-- STAP 2 -->
+          <section class="stap" data-stap="2" aria-labelledby="s2">
+            <h2 id="s2">Vertel ons over je muur</h2>
+            <p class="uitleg">Een schatting is goed genoeg. We meten later altijd zelf na.</p>
+            <fieldset>
+              <legend>Afmetingen</legend>
+              <div class="maat">
+                <label class="veld"><span class="lbl">Breedte</span><span class="met-eenheid"><input type="number" name="breedte" id="breedte" inputmode="numeric" min="50" max="5000" value="400" required><em>cm</em></span></label>
+                <label class="veld"><span class="lbl">Hoogte</span><span class="met-eenheid"><input type="number" name="hoogte" id="hoogte" inputmode="numeric" min="50" max="1000" value="260" required><em>cm</em></span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Waar ligt je muur tegenaan? <small>Daar blijft een rand onbedrukt.</small></legend>
+              <div class="randen">
+                <label class="keuze"><input type="checkbox" name="rand_links" value="1" checked><span><b>Links</b><small>hoek of muur</small></span></label>
+                <label class="keuze"><input type="checkbox" name="rand_rechts" value="1" checked><span><b>Rechts</b><small>hoek of muur</small></span></label>
+                <label class="keuze"><input type="checkbox" name="rand_boven" value="1" checked><span><b>Boven</b><small>plafond</small></span></label>
+                <label class="keuze"><input type="checkbox" name="rand_onder" value="1" checked><span><b>Onder</b><small>vloer</small></span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Zit er iets op de muur? <small>Optioneel</small></legend>
+              <div class="chips">
+                <label class="keuze"><input type="checkbox" name="obst_stopcontacten" value="1"><span>Stopcontact of schakelaar</span></label>
+                <label class="keuze"><input type="checkbox" name="obst_raam_deur" value="1"><span>Raam of deur</span></label>
+                <label class="keuze"><input type="checkbox" name="obst_lamp" value="1"><span>Wandlamp</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Ondergrond</legend>
+              <div class="chips">
+                <label class="keuze"><input type="radio" name="ondergrond" value="geschilderd" checked><span>Geschilderd</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="baksteen"><span>Baksteen</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="beton"><span>Beton</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="hout"><span>Hout</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="tegels"><span>Tegels</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="glas"><span>Glas</span></label>
+                <label class="keuze"><input type="radio" name="ondergrond" value="anders"><span>Weet ik niet</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Foto van je muur <small>Optioneel, maar dan zie je het resultaat op je eigen muur</small></legend>
+              <label class="drop" id="dropMuur"><input type="file" id="muurfoto" accept="image/*"><b>Kies of sleep een foto</b><span>Sta recht voor de muur, met de hele muur in beeld</span></label>
+              <div class="thumbs" id="thumbsMuur"></div>
+            </fieldset>
+          </section>
+
+          <!-- STAP 3 -->
+          <section class="stap" data-stap="3" aria-labelledby="s3">
+            <h2 id="s3">Wat wil je op je muur?</h2>
+            <p class="uitleg">Stuur een voorbeeld dat je mooi vindt: een foto, een beeld van Pinterest, je logo. Of beschrijf het gewoon.</p>
+            <fieldset>
+              <legend>Referentiebeelden <small>Tot 3 beelden</small></legend>
+              <label class="drop" id="dropRef"><input type="file" id="referentie" accept="image/*" multiple><b>Kies of sleep je beelden</b><span>JPG, PNG of WEBP</span></label>
+              <div class="thumbs" id="thumbsRef"></div>
+              <p class="pv-tip" style="margin-top:12px">Een beeld van het internet gebruiken we als inspiratie. Wil je dat exacte beeld op je muur, dan heb je de rechten erop nodig; anders maken we een eigen ontwerp in dezelfde sfeer.</p>
+            </fieldset>
+            <fieldset>
+              <legend>Stijl <small>Optioneel, kies wat past</small></legend>
+              <div class="chips">
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Natuur"><span>Natuur</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Abstract"><span>Abstract</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Minimalistisch"><span>Minimalistisch</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Kleurrijk"><span>Kleurrijk</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Foto"><span>Foto</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Logo of branding"><span>Logo of branding</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Typografie"><span>Tekst of quote</span></label>
+                <label class="keuze"><input type="checkbox" name="stijl[]" value="Kinderen"><span>Voor kinderen</span></label>
+              </div>
+            </fieldset>
+            <label class="veld"><span class="lbl">Omschrijving <small style="font-weight:450;color:var(--grey-ink)">Kleuren, sfeer, wat het moet uitstralen</small></span>
+              <textarea name="omschrijving" maxlength="800" placeholder="Bijv. rustige groene bladeren, past bij onze lichte houten vloer"></textarea></label>
+          </section>
+
+          <!-- STAP 4 -->
+          <section class="stap" data-stap="4" aria-labelledby="s4">
+            <h2 id="s4">Waar mogen we je voorbeelden naartoe sturen?</h2>
+            <p class="uitleg">Je ziet ze zo meteen hier, en je krijgt ze ook per mail.</p>
+            <div class="velden">
+              <label class="veld"><span class="lbl">Naam</span><input type="text" name="naam" autocomplete="name" required maxlength="120"></label>
+              <label class="veld" id="veldBedrijf" hidden><span class="lbl">Bedrijf</span><input type="text" name="bedrijf" autocomplete="organization" maxlength="120"></label>
+              <label class="veld"><span class="lbl">E-mail</span><input type="email" name="email" autocomplete="email" required maxlength="160"></label>
+              <label class="veld"><span class="lbl">Telefoon</span><input type="tel" name="telefoon" autocomplete="tel" required maxlength="40" placeholder="+32 4.."></label>
+              <label class="veld"><span class="lbl">Gemeente van de muur</span><input type="text" name="gemeente" autocomplete="address-level2" required maxlength="80"></label>
+              <label class="veld vol"><span class="lbl">Nog iets dat we moeten weten? <small style="font-weight:450;color:var(--grey-ink)">Optioneel</small></span><textarea name="bericht" maxlength="1500" style="min-height:80px"></textarea></label>
+              <label class="check vol"><input type="checkbox" name="akkoord" value="1" required><span>Ik ga akkoord dat De Muurprinter mijn gegevens en foto's gebruikt om voorbeelden te maken en mijn aanvraag op te volgen. De beelden worden daarvoor verwerkt door een externe beelddienst en na 90 dagen van onze server gewist. Lees de <a href="privacy.html" target="_blank" rel="noopener">privacyverklaring</a>.</span></label>
+            </div>
+          </section>
+
+          <div class="melding" id="melding" role="alert"></div>
+          <div class="acties">
+            <button type="button" class="terug" id="terug" hidden>← Terug</button>
+            <span></span>
+            <button type="button" class="btn btn-blue" id="verder">Volgende <span class="pijl" aria-hidden="true">→</span></button>
+          </div>
+        </form>
+
+        <!-- LIVE VOORBEELD -->
+        <aside class="preview" aria-label="Voorbeeld van je muur">
+          <div class="pv-kaart">
+            <div class="pv-kop"><b>Jouw muur</b><span id="pvRuimte">Woonkamer</span></div>
+            <div class="pv-muur" id="pvMuur" role="img" aria-label="Schets van je muur met het bedrukbare vlak">
+              <div class="zone leeg" id="pvZone"></div>
+            </div>
+            <div class="pv-maat"><span>Muur <b id="pvTotaal">400 × 260 cm</b></span><span>Bedrukbaar <b id="pvPrint">3,3 × 1,9 m</b></span></div>
+            <div class="pv-legende"><span><i style="background:repeating-linear-gradient(-45deg,#9a978f 0 3px,#e9e5dd 3px 6px)"></i>Rand die vrij blijft</span><span><i style="background:#2E7FFF;opacity:.5"></i>Bedrukbaar vlak</span></div>
+          </div>
+          <p class="pv-tip" id="pvTip">Tip: aan een open kant, waar niets tegen je muur ligt, kan de print tot aan de rand lopen.</p>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ================= RESULTAAT ================= -->
+    <section class="res" id="resultaat" aria-live="polite">
+      <div class="eyebrow" id="resEyebrow">Jouw voorstellen</div>
+      <h2 id="resTitel" style="margin-top:14px">We maken je <em>voorbeelden</em>.</h2>
+      <p class="uitleg" id="resUitleg">Dat duurt meestal één à twee minuten. Je mag deze pagina open laten of sluiten: je krijgt ze ook per mail.</p>
+      <div class="res-grid" id="resGrid"></div>
+      <div class="res-voet">
+        <span>Dit zijn automatisch gemaakte schetsen om een richting te kiezen. Het definitieve ontwerp werken we samen met jou uit.</span>
+        <a class="btn btn-ghost" href="tel:+32496082484">Bel ons</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="zoom" id="zoom" role="dialog" aria-label="Voorbeeld vergroot"><img alt=""></div>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <a class="logo" href="index.html"><img src="images/muurprinter-logo-wit.png" alt="De Muurprinter" width="300" height="78" loading="lazy"></a>
+        <p>Print op jouw muur. Voor bedrijven en particulieren in heel België.</p>
+      </div>
+      <div><h4>Navigatie</h4><ul>
+        <li><a href="index.html#projecten">Projecten</a></li><li><a href="index.html#werkwijze">Werkwijze</a></li>
+        <li><a href="index.html#faq">Vragen</a></li><li><a href="ontwerp-je-muur.html">Ontwerp je muur</a></li></ul></div>
+      <div><h4>Contact</h4><ul>
+        <li><a href="mailto:info@demuurprinter.be">info@demuurprinter.be</a></li>
+        <li><a href="tel:+32496082484">+32 496 08 24 84</a></li><li>Plasstraat 2, 8800 Roeselare</li></ul></div>
+      <div><h4>Juridisch</h4><ul>
+        <li><a href="privacy.html">Privacy en cookies</a></li>
+        <li><a href="#" onclick="window.openCookieSettings&&openCookieSettings();return false;">Cookievoorkeuren</a></li></ul></div>
+    </div>
+    <div class="onder">
+      <span>De Muurprinter is een handelsnaam van Michel Bonte (CL Agency BV) · Plasstraat 2, 8800 Roeselare · KBO/BTW BE 0799.306.625</span>
+      <span>© 2026 De Muurprinter</span>
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+(() => {
+  const MARGE = { links: 35, rechts: 35, boven: 30, onder: 36 };
+  const LABELS = { woonkamer:'Woonkamer', slaapkamer:'Slaapkamer', kinderkamer:'Kinderkamer', hal:'Hal of trapgat', kantoor:'Kantoor', horeca:'Horeca of winkel', buiten:'Buitenmuur', andere:'Jouw ruimte' };
+  const form = document.getElementById('form'), melding = document.getElementById('melding');
+  const stappen = [...form.querySelectorAll('.stap')], voortgang = [...document.querySelectorAll('#voortgang li')];
+  const btnVerder = document.getElementById('verder'), btnTerug = document.getElementById('terug');
+  let stap = 1;
+  const bestanden = { muur: null, ref: [] };
+
+  // ---------- stappen ----------
+  function toonStap(n) {
+    stap = n;
+    stappen.forEach(s => s.classList.toggle('nu', +s.dataset.stap === n));
+    voortgang.forEach((li, i) => { li.classList.toggle('nu', i + 1 === n); li.classList.toggle('klaar', i + 1 < n); });
+    btnTerug.hidden = n === 1;
+    btnVerder.innerHTML = n === 4 ? 'Maak mijn voorbeelden <span class="pijl" aria-hidden="true">→</span>' : 'Volgende <span class="pijl" aria-hidden="true">→</span>';
+    zegHet('');
+    const kop = document.getElementById('configurator');
+    if (kop.getBoundingClientRect().top < -40) kop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    stappen[n - 1].querySelector('h2').focus({ preventScroll: true });
+  }
+  stappen.forEach(s => s.querySelector('h2').setAttribute('tabindex', '-1'));
+  function zegHet(t) { melding.textContent = t; melding.classList.toggle('toon', !!t); }
+
+  function controleer(n) {
+    const f = form.elements;
+    if (n === 2) {
+      const b = +f.breedte.value, h = +f.hoogte.value;
+      if (!(b >= 50 && b <= 5000)) return 'Geef een breedte tussen 50 en 5000 cm.';
+      if (!(h >= 50 && h <= 1000)) return 'Geef een hoogte tussen 50 en 1000 cm.';
+    }
+    if (n === 3) {
+      const stijl = form.querySelectorAll('input[name="stijl[]"]:checked').length;
+      if (!bestanden.ref.length && !f.omschrijving.value.trim() && !stijl) return 'Voeg een referentiebeeld toe, kies een stijl of beschrijf wat je wil.';
+    }
+    if (n === 4) {
+      if (!f.naam.value.trim()) return 'Vul je naam in.';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) return 'Vul een geldig e-mailadres in.';
+      if (f.telefoon.value.replace(/\D/g, '').length < 8) return 'Vul je telefoonnummer in.';
+      if (!f.gemeente.value.trim()) return 'Vul de gemeente in.';
+      if (!f.akkoord.checked) return 'Vink aan dat je akkoord gaat, dan kunnen we je voorbeelden maken.';
+    }
+    return '';
+  }
+  btnVerder.addEventListener('click', () => {
+    const fout = controleer(stap);
+    if (fout) return zegHet(fout);
+    if (stap < 4) toonStap(stap + 1); else verstuur();
+  });
+  btnTerug.addEventListener('click', () => toonStap(Math.max(1, stap - 1)));
+  form.addEventListener('submit', e => e.preventDefault());
+  form.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type !== 'checkbox') { e.preventDefault(); btnVerder.click(); } });
+  form.addEventListener('change', e => {
+    if (e.target.name === 'klanttype') document.getElementById('veldBedrijf').hidden = e.target.value !== 'bedrijf';
+    tekenMuur();
+  });
+  form.addEventListener('input', tekenMuur);
+
+  // ---------- live muur ----------
+  const pvMuur = document.getElementById('pvMuur'), pvZone = document.getElementById('pvZone');
+  function tekenMuur() {
+    const f = form.elements;
+    const B = Math.min(5000, Math.max(50, +f.breedte.value || 400)), H = Math.min(1000, Math.max(50, +f.hoogte.value || 260));
+    const m = {}; ['links', 'rechts', 'boven', 'onder'].forEach(k => m[k] = f['rand_' + k].checked ? MARGE[k] : 0);
+    const ratio = B / H;
+    const maxW = pvMuur.parentElement.clientWidth - 0, maxH = Math.min(420, innerWidth < 960 ? 260 : 420);
+    let w = maxW, h = w / ratio; if (h > maxH) { h = maxH; w = h * ratio; }
+    pvMuur.style.width = w + 'px'; pvMuur.style.height = h + 'px';
+    const sx = w / B, sy = h / H;
+    pvZone.style.left = m.links * sx + 'px'; pvZone.style.right = m.rechts * sx + 'px';
+    pvZone.style.top = m.boven * sy + 'px'; pvZone.style.bottom = m.onder * sy + 'px';
+    pvMuur.querySelectorAll('.rand,.mt').forEach(n => n.remove());
+    const rand = (css, label, pos) => {
+      const d = document.createElement('div'); d.className = 'rand'; Object.assign(d.style, css); pvMuur.appendChild(d);
+      if (label) { const t = document.createElement('span'); t.className = 'mt'; t.textContent = label; Object.assign(t.style, pos); pvMuur.appendChild(t); }
+    };
+    if (m.links) rand({ left: 0, top: 0, bottom: 0, width: m.links * sx + 'px' }, m.links + ' cm', { left: '3px', top: '50%' });
+    if (m.rechts) rand({ right: 0, top: 0, bottom: 0, width: m.rechts * sx + 'px' }, null);
+    if (m.boven) rand({ left: 0, right: 0, top: 0, height: m.boven * sy + 'px' }, m.boven + ' cm', { left: '50%', top: '2px' });
+    if (m.onder) rand({ left: 0, right: 0, bottom: 0, height: m.onder * sy + 'px' }, m.onder + ' cm', { left: '50%', bottom: '2px' });
+    const pb = Math.max(0, B - m.links - m.rechts), ph = Math.max(0, H - m.boven - m.onder);
+    const nl = v => (v / 100).toLocaleString('nl-BE', { maximumFractionDigits: 1 });
+    document.getElementById('pvTotaal').textContent = `${B} × ${H} cm`;
+    document.getElementById('pvPrint').textContent = `${nl(pb)} × ${nl(ph)} m`;
+    const r = form.querySelector('input[name="ruimte"]:checked');
+    document.getElementById('pvRuimte').textContent = LABELS[r ? r.value : 'andere'];
+    const eersteRef = bestanden.ref[0];
+    pvZone.classList.toggle('leeg', !eersteRef);
+    pvZone.style.backgroundImage = eersteRef ? `url(${eersteRef.url})` : '';
+  }
+  addEventListener('resize', tekenMuur);
+
+  // ---------- uploads (verkleind in de browser) ----------
+  async function verklein(file, max = 2048) {
+    try {
+      const bmp = await createImageBitmap(file);
+      const s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+      const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+      const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height); ctx.drawImage(bmp, 0, 0, c.width, c.height);
+      const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .86));
+      return blob ? new File([blob], (file.name || 'beeld').replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : file;
+    } catch (e) { return file; }
+  }
+  async function voegToe(files, soort) {
+    for (const f of files) {
+      if (!/^image\//.test(f.type) && !/\.(heic|heif)$/i.test(f.name)) { zegHet('Enkel foto\'s zijn mogelijk.'); continue; }
+      if (soort === 'ref' && bestanden.ref.length >= 3) { zegHet('Maximaal 3 referentiebeelden.'); break; }
+      const klein = await verklein(f);
+      const item = { file: klein, url: URL.createObjectURL(klein) };
+      if (soort === 'muur') { if (bestanden.muur) URL.revokeObjectURL(bestanden.muur.url); bestanden.muur = item; }
+      else bestanden.ref.push(item);
+    }
+    toonThumbs(); tekenMuur();
+  }
+  function toonThumbs() {
+    const maak = (doel, lijst, soort) => {
+      doel.replaceChildren(...lijst.map((it, i) => {
+        const d = document.createElement('div'); d.className = 'thumb';
+        const img = document.createElement('img'); img.src = it.url; img.alt = soort === 'muur' ? 'Foto van je muur' : 'Referentiebeeld ' + (i + 1);
+        const x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', 'Verwijder ' + img.alt);
+        x.onclick = () => { URL.revokeObjectURL(it.url); if (soort === 'muur') bestanden.muur = null; else bestanden.ref.splice(i, 1); toonThumbs(); tekenMuur(); };
+        d.append(img, x); return d;
+      }));
+    };
+    maak(document.getElementById('thumbsMuur'), bestanden.muur ? [bestanden.muur] : [], 'muur');
+    maak(document.getElementById('thumbsRef'), bestanden.ref, 'ref');
+  }
+  [['muurfoto', 'dropMuur', 'muur'], ['referentie', 'dropRef', 'ref']].forEach(([id, dropId, soort]) => {
+    const inp = document.getElementById(id), drop = document.getElementById(dropId);
+    inp.addEventListener('change', () => { voegToe([...inp.files], soort); inp.value = ''; });
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); voegToe([...e.dataTransfer.files], soort); });
+  });
+
+  // ---------- versturen ----------
+  // ===== PREVIEW-DEMO (enkel op GitHub Pages: geen PHP, voorbeelden worden in de browser gemaakt) =====
+  async function demoVerstuur() {
+    btnVerder.disabled = true; btnVerder.textContent = 'Voorbeelden maken…';
+    const laad = src => new Promise((ok, nok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = nok; i.src = src; });
+    const f = form.elements;
+    const B = +f.breedte.value || 400, H = +f.hoogte.value || 260;
+    const m = {}; ['links', 'rechts', 'boven', 'onder'].forEach(k => m[k] = f['rand_' + k].checked ? MARGE[k] : 0);
+    const eigenMuur = !!bestanden.muur;
+    const bg = await laad(eigenMuur ? bestanden.muur.url : 'images/hero-muur-kaal.jpg');
+    const ref = await laad(bestanden.ref[0] ? bestanden.ref[0].url : 'images/project-garage.jpg');
+    const W = 1500, Hc = 1000;
+    let x, y, w, h;
+    if (eigenMuur) {
+      let ww = W * .8, wh = Math.min(Hc * .75, ww * H / B); ww = wh * B / H;
+      const wx = (W - ww) / 2, wy = (Hc - wh) / 2, sx = ww / B, sy = wh / H;
+      x = wx + m.links * sx; y = wy + m.boven * sy; w = ww - (m.links + m.rechts) * sx; h = wh - (m.boven + m.onder) * sy;
+    } else { // muur van de voorbeeld-woonkamer
+      x = W * .21; y = Hc * .17; w = W * .615; h = Hc * .42;
+    }
+    const urls = [];
+    for (const n of [1, 2, 3]) {
+      const c = document.createElement('canvas'); c.width = W; c.height = Hc; const ctx = c.getContext('2d');
+      const s = Math.max(W / bg.width, Hc / bg.height);
+      const ox = (W - bg.width * s) / 2, oy = (Hc - bg.height * s) / 2;
+      ctx.drawImage(bg, ox, oy, bg.width * s, bg.height * s);
+      const l = document.createElement('canvas'); l.width = Math.round(w); l.height = Math.round(h); const lc = l.getContext('2d');
+      const sc = Math.max(w / ref.width, h / ref.height) * (n === 2 ? 1.35 : 1);
+      const cw = w / sc, ch = h / sc, cx = n === 2 ? 0 : (ref.width - cw) / 2, cy = n === 2 ? (ref.height - ch) * .2 : (ref.height - ch) / 2;
+      if (n === 2) { lc.translate(l.width, 0); lc.scale(-1, 1); }
+      lc.drawImage(ref, cx, cy, cw, ch, 0, 0, l.width, l.height);
+      if (n === 3) {
+        lc.setTransform(1, 0, 0, 1, 0, 0); lc.globalCompositeOperation = 'destination-in';
+        const g = lc.createRadialGradient(l.width / 2, l.height / 2, Math.min(l.width, l.height) * .25, l.width / 2, l.height / 2, Math.max(l.width, l.height) * .62);
+        g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)'); lc.fillStyle = g; lc.fillRect(0, 0, l.width, l.height);
+      }
+      ctx.globalAlpha = .93; ctx.globalCompositeOperation = 'multiply'; ctx.drawImage(l, x, y);
+      if (!eigenMuur) { // zetel en stoelen terug vóór de print leggen
+        ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+        const yb = Hc * .575; ctx.drawImage(bg, 0, (yb - oy) / s, bg.width, (Hc - yb) / s, 0, yb, W, Hc - yb);
+      }
+      urls.push(c.toDataURL('image/jpeg', .86));
+    }
+    document.getElementById('configurator').hidden = true;
+    document.getElementById('resultaat').classList.add('toon'); scrollTo({ top: 0 });
+    const naam = f.naam.value.trim().split(' ')[0] || '';
+    titel('We maken je ', 'voorbeelden', '.');
+    const lijst = [[1, 'Dicht bij je voorbeeld', 'standaard'], [2, 'Andere compositie', 'standaard'], [3, 'Creatief, met zachte fade-out', 'fade']];
+    const j = { status: 'bezig', favoriet: null, varianten: lijst.map(([n, label, type]) => ({ n, label, type, status: 'bezig', beeld: null })) };
+    tekenResultaat('demo', j);
+    document.getElementById('resUitleg').textContent = 'PREVIEW: hier maakt een eenvoudige demo de voorbeelden in je browser. Op de echte site maakt de beeldgenerator ze en krijgt de klant ze ook per mail.';
+    for (let i = 0; i < 3; i++) {
+      await new Promise(r => setTimeout(r, 1400));
+      j.varianten[i].status = 'klaar'; j.varianten[i].beeld = urls[i];
+      tekenResultaat('demo', j);
+    }
+    titel((naam ? naam + ', hier' : 'Hier') + ' zijn je ', 'voorbeelden', '.');
+  }
+
+  async function verstuur() {
+    return demoVerstuur();
+    btnVerder.disabled = true; btnVerder.textContent = 'Versturen…';
+    const fd = new FormData(form);
+    if (bestanden.muur) fd.append('muurfoto', bestanden.muur.file);
+    bestanden.ref.forEach(r => fd.append('referentie[]', r.file));
+    try {
+      const res = await fetch('api/aanvraag.php', { method: 'POST', body: fd });
+      const j = await res.json().catch(() => ({ ok: false, bericht: 'Er ging iets mis. Probeer opnieuw of mail info@demuurprinter.be.' }));
+      if (!j.ok) throw new Error(j.bericht);
+      try { if (window.fbq) fbq('track', 'Lead'); if (window.gtag) gtag('event', 'generate_lead', { form: 'configurator' }); } catch (e) {}
+      history.replaceState(null, '', '?t=' + j.token);
+      startResultaat(j.token, j.genereren && j.tonen);
+      if (j.genereren) [1, 2, 3].forEach(n => genereer(j.token, n));
+    } catch (e) {
+      zegHet(e.message || 'Er ging iets mis. Probeer opnieuw.');
+      btnVerder.disabled = false; btnVerder.innerHTML = 'Maak mijn voorbeelden <span class="pijl" aria-hidden="true">→</span>';
+    }
+  }
+  const bezig = new Set();
+  async function genereer(t, n) {
+    if (bezig.has(n)) return; bezig.add(n);
+    const fd = new FormData(); fd.append('t', t); fd.append('n', n);
+    try { await fetch('api/genereer.php', { method: 'POST', body: fd }); } catch (e) {}
+    bezig.delete(n);
+  }
+
+  // ---------- resultaat ----------
+  const resGrid = document.getElementById('resGrid');
+  let poll = null, start = Date.now();
+  function startResultaat(t, live) {
+    document.getElementById('configurator').hidden = true;
+    const res = document.getElementById('resultaat'); res.classList.add('toon');
+    document.getElementById('nav').scrollIntoView ? scrollTo({ top: 0 }) : 0;
+    if (!live) {
+      document.getElementById('resTitel').innerHTML = 'Bedankt, we gaan voor je <em>aan de slag</em>.';
+      document.getElementById('resUitleg').textContent = 'We hebben je aanvraag goed ontvangen. We maken je voorbeelden en sturen ze zo snel mogelijk per mail. Vragen? Bel gerust.';
+    }
+    haal(t); poll = setInterval(() => haal(t), 4000);
+  }
+  // titel veilig opbouwen (naam komt van de klant: nooit als HTML invoegen)
+  function titel(voor, nadruk, na) {
+    const h = document.getElementById('resTitel'), em = document.createElement('em'); em.textContent = nadruk;
+    h.replaceChildren(document.createTextNode(voor), em, document.createTextNode(na));
+  }
+  async function haal(t) {
+    let j;
+    try { j = await (await fetch('api/status.php?t=' + encodeURIComponent(t), { cache: 'no-store' })).json(); } catch (e) { return; }
+    if (!j.ok) { clearInterval(poll); document.getElementById('resTitel').textContent = 'Deze link is verlopen.'; document.getElementById('resUitleg').textContent = 'Stuur gerust een nieuwe aanvraag, of mail ons op info@demuurprinter.be.'; return; }
+    if (!j.tonen || j.status === 'manueel') {
+      resGrid.replaceChildren();
+      titel((j.naam ? j.naam + ', bedankt' : 'Bedankt') + '. We gaan voor je ', 'aan de slag', '.');
+      document.getElementById('resUitleg').textContent = 'We maken je voorbeelden en sturen ze zo snel mogelijk per mail. Vragen? Bel gerust.';
+      clearInterval(poll); return;
+    }
+    if (j.status === 'klaar') titel((j.naam ? j.naam + ', hier' : 'Hier') + ' zijn je ', 'voorbeelden', '.'); else titel('We maken je ', 'voorbeelden', '.');
+    if (j.status === 'klaar') document.getElementById('resUitleg').textContent = 'Twee blijven dicht bij je idee, de derde is een creatieve variant die zacht uitloopt in de muur. Kies je favoriet, dan nemen we contact op om het verder uit te werken.';
+    tekenResultaat(t, j);
+    const open = j.varianten.filter(v => v.status === 'wacht' || v.status === 'bezig');
+    if (!open.length) clearInterval(poll);
+    // her-start varianten die opnieuw moeten (bv. na een fout), enkel zolang de pagina open is
+    j.varianten.filter(v => v.status === 'wacht').forEach(v => { if (Date.now() - start > 15000) genereer(t, v.n); });
+  }
+  function tekenResultaat(t, j) {
+    j.varianten.forEach(v => {
+      let el = resGrid.querySelector(`[data-n="${v.n}"]`);
+      if (!el) {
+        el = document.createElement('article'); el.className = 'vs'; el.dataset.n = v.n;
+        el.innerHTML = `<div class="beeld"><div class="laden">Voorbeeld ${v.n} wordt gemaakt…</div></div>
+          <div class="info"><div><b></b><small></small></div><div><button type="button" class="knop" hidden>Deze wil ik</button></div></div>`;
+        el.querySelector('b').textContent = v.n + ' · ' + v.label;
+        el.querySelector('small').textContent = v.type === 'fade' ? 'Creatieve extra' : 'Zonder fade-out';
+        el.querySelector('.knop').addEventListener('click', () => kies(t, v.n));
+        resGrid.appendChild(el);
+      }
+      const beeld = el.querySelector('.beeld');
+      if (v.status === 'klaar' && v.beeld && !beeld.querySelector('img')) {
+        const img = new Image(); img.alt = 'Voorbeeld ' + v.n + ': ' + v.label; img.src = v.beeld;
+        img.onload = () => { beeld.replaceChildren(img); };
+        img.addEventListener('click', () => { const z = document.getElementById('zoom'); z.querySelector('img').src = v.beeld; z.classList.add('toon'); });
+        el.querySelector('.knop').hidden = false;
+        const dl = document.createElement('a'); dl.className = 'dl'; dl.href = v.beeld.startsWith('data:') ? v.beeld : v.beeld + '&dl=1'; dl.download = 'muurvoorstel-' + v.n + '.jpg'; dl.textContent = 'Download'; el.querySelector('.info>div:last-child').appendChild(dl);
+      }
+      if (v.status === 'fout' && !beeld.dataset.fout) { beeld.dataset.fout = 1; beeld.querySelector('.laden').textContent = 'Dit voorbeeld maken we zelf en sturen we je per mail.'; beeld.querySelector('.laden').style.animation = 'none'; }
+      el.querySelector('.knop').classList.toggle('gekozen', j.favoriet === v.n);
+      el.querySelector('.knop').textContent = j.favoriet === v.n ? 'Gekozen ✓' : 'Deze wil ik';
+    });
+  }
+  async function kies(t, n) {
+    const fd = new FormData(); fd.append('t', t); fd.append('n', n);
+    resGrid.querySelectorAll('.knop').forEach(b => { const s = +b.closest('.vs').dataset.n === n; b.classList.toggle('gekozen', s); b.textContent = s ? 'Gekozen ✓' : 'Deze wil ik'; });
+    if (t !== 'demo') { try { await fetch('api/favoriet.php', { method: 'POST', body: fd }); } catch (e) {} }
+    document.getElementById('resUitleg').textContent = 'Top, we hebben je keuze doorgekregen en nemen snel contact op om je ontwerp verder uit te werken.';
+  }
+  document.getElementById('zoom').addEventListener('click', e => e.currentTarget.classList.remove('toon'));
+  addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('zoom').classList.remove('toon'); });
+
+  // ---------- start ----------
+  const tok = new URLSearchParams(location.search).get('t');
+  if (tok && /^[a-f0-9]{32}$/.test(tok)) startResultaat(tok, true);
+  tekenMuur();
+})();
+</script>
+</body>
+</html>
