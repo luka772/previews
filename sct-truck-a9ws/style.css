@@ -95,39 +95,91 @@ body[data-mode="int"] #btnReal { display: none; }
 
 /* ---------- interieur (fotobeelden met crossfade) ---------- */
 #intView { position: fixed; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 92px 44px 64px calc(var(--pw) + 64px);
-  background: rgba(236, 238, 240, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); opacity: 0; visibility: hidden; transition: opacity .7s, visibility .7s; --pan: 34%; }
+  background: rgba(236, 238, 240, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); opacity: 0; visibility: hidden; transition: opacity .7s, visibility .7s; }
 #intView.on { opacity: 1; visibility: visible; }
-.ivf { position: relative; margin: 0; width: min(100%, calc((100vh - 170px) * 16 / 9)); aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #d9dcdf;
-  box-shadow: 0 30px 70px rgba(20, 30, 40, 0.22), 0 0 0 1px rgba(20, 26, 32, 0.06); touch-action: pan-y; }
-.ivf img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pan) 50%; opacity: 0; transition: opacity .65s ease; }
-.ivf img.on { opacity: 1; }
+.ivf { position: relative; margin: 0; width: min(100%, calc((100vh - 170px) * 16 / 9)); aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #1a1d20;
+  box-shadow: 0 30px 70px rgba(20, 30, 40, 0.22), 0 0 0 1px rgba(20, 26, 32, 0.06); touch-action: none; perspective: 1400px; cursor: grab; user-select: none; -webkit-user-select: none; }
+.ivf.drag { cursor: grabbing; }
+.ivtilt { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.ivcam { position: absolute; left: 0; top: 0; width: 100%; height: 100%; transform-origin: 0 0; will-change: transform; }
+.ivcam img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .65s ease; pointer-events: none; }
+.ivcam img.on { opacity: 1; }
+.ivvig { position: absolute; inset: 0; pointer-events: none; z-index: 2; background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.22)); }
+/* sfeerlicht: zachte, pulserende gloed op de LED-strips in de gekozen kleur */
+.ivglow { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen; transition: opacity .8s;
+  background:
+    radial-gradient(ellipse 7% 2.2% at 36% 13.5%, var(--amb), transparent 70%),
+    radial-gradient(ellipse 10% 2.2% at 80% 12.5%, var(--amb), transparent 70%),
+    radial-gradient(ellipse 30% 3.5% at 64% 51%, var(--amb), transparent 72%),
+    radial-gradient(ellipse 9% 4% at 44% 40%, var(--amb), transparent 72%),
+    radial-gradient(ellipse 7% 5% at 22% 56%, var(--amb), transparent 72%),
+    radial-gradient(ellipse 16% 8% at 44% 76%, var(--amb), transparent 72%),
+    radial-gradient(ellipse 60% 45% at 52% 55%, color-mix(in srgb, var(--amb) 35%, transparent), transparent 75%); }
+.ivglow.on { opacity: 1; animation: ambPulse 4.2s ease-in-out infinite; }
+@keyframes ambPulse { 0%, 100% { opacity: 0.32; } 50% { opacity: 0.78; } }
+/* sterrenhemel */
+.ivstars { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .8s; }
+.ivstars.on { opacity: 1; }
+.ivstars.on.day { opacity: 0.5; }
+.ivstars i { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 0 4px 1px rgba(220, 235, 255, 0.85); animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: 0.15; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.15); } }
+#ivReset { position: absolute; right: 14px; top: 14px; z-index: 3; display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px; border-radius: 30px; background: rgba(255, 255, 255, 0.9); color: var(--txt); font: 700 13px BC, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity .35s, transform .35s, background .2s; }
+#ivReset.on { opacity: 1; transform: none; pointer-events: auto; }
+#ivReset:hover { background: #fff; color: var(--blue); }
+#ivReset svg { width: 16px; height: 16px; }
 .ivtag { position: absolute; left: 16px; bottom: 16px; z-index: 3; display: flex; flex-direction: column; padding: 8px 14px; border-radius: 6px; background: rgba(255, 255, 255, 0.9); color: var(--txt); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12); }
 .ivtag small { font: 700 11px BC, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); }
 .ivtag span { font: 600 15px BC, sans-serif; letter-spacing: 0.02em; }
 body[data-mode="int"] .hint { display: none; }
 
 /* ---------- realisaties ---------- */
-#gallery { position: fixed; top: var(--top); right: 0; bottom: 0; width: 460px; max-width: 100%; z-index: 6; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); transform: translateX(105%); transition: transform .45s cubic-bezier(.2, .8, .2, 1); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(20, 30, 40, 0.2); }
+#gallery { position: fixed; top: var(--top); right: 0; bottom: 0; width: min(880px, calc(100vw - var(--pw) - 60px)); max-width: 100%; z-index: 6; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(12px); transform: translateX(105%); transition: transform .45s cubic-bezier(.2, .8, .2, 1); display: flex; flex-direction: column; box-shadow: -20px 0 60px rgba(20, 30, 40, 0.2); }
 #gallery.open { transform: none; }
 .ghead { display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 22px 6px; }
 .ghead small, .kick { font: 700 13px BC, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); }
 .ghead h2, .ovcard h2 { font: 700 italic 32px/1.05 BC, sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
 #galClose, #ovClose { width: 40px; height: 40px; font-size: 30px; line-height: 1; color: var(--txt); border-radius: 50%; background: rgba(20, 26, 32, 0.06); }
-#lbClose { width: 40px; height: 40px; font-size: 30px; line-height: 1; color: #fff; border-radius: 50%; background: rgba(255, 255, 255, 0.12); }
-.gintro { padding: 4px 22px 16px; color: #59626a; font-size: 14px; }
-.rgrid { flex: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 22px 24px; align-content: start; }
-.ph { position: relative; display: block; text-align: left; border-radius: 3px; overflow: hidden; background: #111; aspect-ratio: 16 / 10; }
-.ph img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
-.ph:hover img { transform: scale(1.05); }
-.ph span { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 9px 7px; font-size: 12px; line-height: 1.25; color: #fff; background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent); }
-#lightbox { position: fixed; inset: 0; z-index: 9; background: rgba(0, 0, 0, 0.92); display: none; align-items: center; justify-content: center; }
+#lbClose { width: 42px; height: 42px; font-size: 30px; line-height: 1; color: #fff; border-radius: 50%; background: rgba(255, 255, 255, 0.12); flex: none; }
+.gintro { padding: 4px 22px 12px; color: #59626a; font-size: 14px; max-width: 640px; }
+.gintro b { color: var(--txt); font: 600 14px BC, sans-serif; letter-spacing: 0.04em; white-space: nowrap; }
+.chips { display: flex; gap: 8px; padding: 2px 22px 14px; overflow-x: auto; scrollbar-width: none; flex: none; border-bottom: 1px solid var(--line); }
+.chips::-webkit-scrollbar { display: none; }
+.chips button { flex: none; display: inline-flex; align-items: baseline; gap: 6px; height: 34px; padding: 0 14px; border-radius: 30px; border: 1px solid rgba(20, 26, 32, 0.16); background: #fff; font: 700 14px/32px BC, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; color: #3b434a; transition: background .2s, color .2s, border-color .2s; }
+.chips button small { font: 600 12px Barlow, sans-serif; color: var(--mut); letter-spacing: 0; }
+.chips button:hover { border-color: var(--blue); }
+.chips button.on { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 4px 14px rgba(7, 163, 252, 0.3); }
+.chips button.on small { color: rgba(255, 255, 255, 0.85); }
+.rgrid { flex: 1; overflow-y: auto; overscroll-behavior: contain; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; padding: 16px 22px 28px; align-content: start; grid-auto-rows: max-content; }
+.rgrid .more { grid-column: 1 / -1; height: 1px; }
+.alb { display: flex; flex-direction: column; text-align: left; border-radius: 4px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px rgba(20, 26, 32, 0.08), 0 6px 18px rgba(20, 30, 40, 0.06); transition: box-shadow .25s, transform .25s; padding: 0; width: 100%; }
+.alb:hover, .alb:focus-visible { outline: none; transform: translateY(-2px); box-shadow: 0 0 0 2px var(--blue), 0 14px 30px rgba(7, 100, 160, 0.16); }
+.alb .cv { position: relative; display: block; width: 100%; height: 0; padding-bottom: 62.5%; background: #1d1f22; overflow: hidden; flex: none; }
+.alb .cv img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+.alb:hover .cv img { transform: scale(1.05); }
+.alb .cap { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 12px; border-top: 3px solid var(--blue); }
+.alb .cap b { font: 700 17px/1.15 BC, sans-serif; letter-spacing: 0.02em; text-transform: uppercase; }
+.alb .cap small { color: var(--mut); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.alb .cap em { font: 700 11px BC, sans-serif; font-style: normal; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); background: rgba(7, 163, 252, 0.1); padding: 2px 7px; border-radius: 3px; }
+#lightbox { position: fixed; inset: 0; z-index: 12; background: rgba(8, 10, 12, 0.985); display: none; flex-direction: column; color: #fff; }
 #lightbox.open { display: flex; }
-#lightbox figure { max-width: min(1280px, 92vw); }
-#lightbox img { width: 100%; max-height: 80vh; object-fit: contain; display: block; }
-#lightbox figcaption { padding: 12px 2px; color: #cfd6db; }
-#lbPrev, #lbNext { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; font-size: 34px; color: #fff; background: rgba(255, 255, 255, 0.1); }
+.lbhead { display: flex; align-items: center; gap: 16px; padding: 14px 18px 10px 22px; flex: none; }
+.lbhead > div { flex: 1; min-width: 0; }
+.lbhead small { font: 700 12px BC, sans-serif; text-transform: uppercase; letter-spacing: 0.14em; color: var(--blue); }
+.lbhead h3 { font: 700 italic 26px/1.1 BC, sans-serif; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#lbCount { font: 600 16px BC, sans-serif; letter-spacing: 0.08em; color: #cfd6db; }
+.lbstage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0 84px; touch-action: pan-y; user-select: none; }
+#lbImg { max-width: 100%; max-height: 100%; object-fit: contain; display: block; border-radius: 2px; opacity: 0; transition: opacity .35s ease, filter .4s; }
+#lbImg.l { transform: translateX(-28px); } #lbImg.r { transform: translateX(28px); }
+#lbImg.in { opacity: 1; transform: none; transition: opacity .35s ease, transform .45s cubic-bezier(.2, .8, .2, 1), filter .4s; }
+#lbImg.ld { filter: blur(6px); }
+#lbPrev, #lbNext { position: absolute; top: 50%; transform: translateY(-50%); width: 54px; height: 54px; border-radius: 50%; font-size: 34px; line-height: 1; color: #fff; background: rgba(255, 255, 255, 0.1); transition: background .2s; z-index: 2; }
+#lbPrev:hover, #lbNext:hover { background: var(--blue); }
 #lbPrev { left: 16px; } #lbNext { right: 16px; }
-#lbClose { position: absolute; top: 16px; right: 16px; }
+.lbstrip { flex: none; display: flex; gap: 6px; padding: 12px 18px calc(14px + env(safe-area-inset-bottom)); overflow-x: auto; scrollbar-width: thin; scrollbar-color: #444 transparent; justify-content: safe center; }
+.lbstrip button { flex: none; width: 84px; height: 52px; border-radius: 3px; overflow: hidden; opacity: 0.45; outline: 2px solid transparent; outline-offset: -2px; transition: opacity .2s, outline-color .2s; background: #222; }
+.lbstrip button.on { opacity: 1; outline-color: var(--blue); }
+.lbstrip button:hover { opacity: 0.85; }
+.lbstrip img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ---------- overzicht ---------- */
 #overview { position: fixed; inset: 0; z-index: 8; background: rgba(20, 24, 28, 0.55); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; }
@@ -195,7 +247,16 @@ form label.ck input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; ac
   .hint { left: 0; bottom: calc(var(--sheet) + 30px); font-size: 12px; }
   .foot { right: 0; left: 0; text-align: center; bottom: calc(var(--sheet) + 6px); font-size: 11px; }
   #gallery { top: 0; width: 100%; z-index: 10; }
-  .rgrid { grid-template-columns: 1fr; }
+  .ghead { padding: 16px 16px 4px; } .ghead h2 { font-size: 26px; }
+  .gintro { padding: 2px 16px 10px; font-size: 13px; }
+  .chips { padding: 2px 16px 12px; }
+  .rgrid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px calc(24px + env(safe-area-inset-bottom)); }
+  .alb .cap { padding: 8px 9px 10px; } .alb .cap b { font-size: 15px; } .alb .cap small { font-size: 12px; gap: 6px; }
+  .lbhead { padding: 12px 12px 8px 16px; gap: 10px; } .lbhead h3 { font-size: 20px; } #lbCount { font-size: 14px; }
+  .lbstage { padding: 0; }
+  #lbPrev, #lbNext { width: 42px; height: 42px; font-size: 28px; background: rgba(0, 0, 0, 0.35); }
+  #lbPrev { left: 8px; } #lbNext { right: 8px; }
+  .lbstrip button { width: 64px; height: 42px; }
   #overview { padding: 0; }
   .ovcard { grid-template-columns: 1fr; max-height: 100vh; height: 100%; }
   .ovl, .ovr { padding: 22px 18px; }
@@ -203,6 +264,7 @@ form label.ck input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; ac
   #ovClose { position: fixed; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.9); }
   #intView { bottom: var(--sheet); padding: 0; background: #e9ebed; }
   .ivf { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; box-shadow: none; }
+  #ivReset { top: calc(var(--top) + 8px); right: 12px; height: 32px; font-size: 12px; }
   .ivtag { left: 12px; bottom: 40px; padding: 6px 10px; }
   body[data-mode="int"] .foot { color: rgba(255, 255, 255, 0.8); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
   .ivtag span { font-size: 13px; }

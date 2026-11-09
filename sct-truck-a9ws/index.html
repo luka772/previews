@@ -12,7 +12,7 @@
 </head>
 <body data-mode="ext">
 <div id="stage" aria-label="3D-weergave van de truck"></div>
-<div id="intView" aria-label="Beeld van de cabine"><figure class="ivf"><img id="ivA" alt="Cabine-interieur"><img id="ivB" alt=""><figcaption class="ivtag"><small>Jouw cabine</small><span id="ivCap"></span></figcaption></figure></div>
+<div id="intView" aria-label="Beeld van de cabine"><figure class="ivf"><div class="ivtilt"><div class="ivcam"><img id="ivA" alt="Cabine-interieur" draggable="false"><img id="ivB" alt="" draggable="false"><div class="ivglow" aria-hidden="true"></div><div class="ivstars" aria-hidden="true"></div></div></div><div class="ivvig" aria-hidden="true"></div><figcaption class="ivtag"><small>Jouw cabine</small><span id="ivCap"></span></figcaption><button id="ivReset" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Totaalbeeld</button></figure></div>
 
 <header class="top">
   <img class="logo" src="assets/sct-logo.svg" alt="SCT Truck Design" width="229" height="35">
@@ -49,15 +49,17 @@
 
 <aside id="gallery" aria-label="Realisaties">
   <div class="ghead"><div><small>Realisaties</small><h2>Zo deden we het al</h2></div><button id="galClose" type="button" aria-label="Sluiten">×</button></div>
-  <p class="gintro">Een greep uit de trucks die onlangs onze werkplaats verlieten: spuitwerk, lichtbalken, zonnekleppen, bullbars en inox op maat.</p>
+  <p class="gintro">Trucks die onze werkplaats in Wingene verlieten: spuitwerk, lichtbalken, zonnekleppen, bullbars en inox op maat. Kies een merk en open een project voor alle foto's. <b id="realCount"></b></p>
+  <div id="realChips" class="chips" role="toolbar" aria-label="Filter op merk"></div>
   <div id="realGrid" class="rgrid"></div>
 </aside>
 
-<div id="lightbox" role="dialog" aria-label="Foto">
-  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
-  <button id="lbPrev" type="button" aria-label="Vorige">‹</button>
-  <button id="lbNext" type="button" aria-label="Volgende">›</button>
-  <button id="lbClose" type="button" aria-label="Sluiten">×</button>
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Fotoalbum">
+  <div class="lbhead"><div><small id="lbKick">Zo deden we het al</small><h3 id="lbTitle"></h3></div><span id="lbCount"></span><button id="lbClose" type="button" aria-label="Sluiten">×</button></div>
+  <div class="lbstage"><img id="lbImg" alt="" draggable="false"></div>
+  <button id="lbPrev" type="button" aria-label="Vorige foto">‹</button>
+  <button id="lbNext" type="button" aria-label="Volgende foto">›</button>
+  <div id="lbStrip" class="lbstrip"></div>
 </div>
 
 <div id="overview" role="dialog" aria-label="Overzicht en aanvraag">
