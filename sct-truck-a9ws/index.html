@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>SCT Truck Design – Truck configurator</title>
+<meta name="description" content="Stel je truck samen: lakwerk, lichtbalken, zonneklep, bullbar, sidebars, achterbumper en interieur, in 3D.">
+<meta name="theme-color" content="#0d0f12">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="ext">
+<div id="stage" aria-label="3D-weergave van de truck"></div>
+
+<header class="top">
+  <img class="logo" src="assets/sct-logo-wit.svg" alt="SCT Truck Design" width="229" height="35">
+  <span class="tag">Truck configurator</span>
+  <span class="sp"></span>
+  <button id="btnReal" class="ghost" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 15l4.5-4.5 3.5 3.5 2.5-2.5L20 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Zo deden we het al</span></button>
+  <div class="total"><span>Richtprijs vanaf</span><b id="tot">€ 0</b></div>
+  <button id="btnOffer" class="cta" type="button">Overzicht &amp; aanvraag</button>
+</header>
+
+<aside id="panel">
+  <div class="banner">
+    <img src="assets/sct-logo-wit.svg" alt="" width="229" height="35">
+    <span>Truck styling op maat · Wingene</span>
+  </div>
+  <div class="tabs" role="tablist">
+    <button type="button" data-mode="ext" class="on" role="tab">Exterieur</button>
+    <button type="button" data-mode="int" role="tab">Interieur</button>
+  </div>
+  <div class="bar">
+    <button id="back" type="button" aria-label="Terug" hidden>‹</button>
+    <span id="barTitle">Exterieur</span>
+    <span id="barCount"></span>
+  </div>
+  <div id="list" class="list"></div>
+  <p id="desc" class="desc"></p>
+  <div class="pfoot">
+    <button id="next" class="next" type="button">Volgende ›</button>
+    <button id="btnOffer2" class="cta small" type="button">Aanvraag <b id="tot2"></b></button>
+  </div>
+</aside>
+
+<div class="hint"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Sleep om rond te draaien</span></div>
+
+<aside id="gallery" aria-label="Realisaties">
+  <div class="ghead"><div><small>Realisaties</small><h2>Zo deden we het al</h2></div><button id="galClose" type="button" aria-label="Sluiten">×</button></div>
+  <p class="gintro">Een greep uit de trucks die onlangs onze werkplaats verlieten: spuitwerk, lichtbalken, zonnekleppen, bullbars en inox op maat.</p>
+  <div id="realGrid" class="rgrid"></div>
+</aside>
+
+<div id="lightbox" role="dialog" aria-label="Foto">
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button id="lbPrev" type="button" aria-label="Vorige">‹</button>
+  <button id="lbNext" type="button" aria-label="Volgende">›</button>
+  <button id="lbClose" type="button" aria-label="Sluiten">×</button>
+</div>
+
+<div id="overview" role="dialog" aria-label="Overzicht en aanvraag">
+  <div class="ovcard">
+    <button id="ovClose" type="button" aria-label="Sluiten">×</button>
+    <div class="ovl">
+      <small class="kick">Jouw configuratie</small>
+      <h2>Overzicht</h2>
+      <img id="ovImg" alt="Jouw samengestelde truck">
+      <div id="ovList"></div>
+      <div class="ovtot"><span>Richtprijs vanaf</span><b id="ovTot">€ 0</b></div>
+      <p class="note">Richtprijs excl. btw, inclusief montage in onze werkplaats. De definitieve offerte maken we op maat na een bezoek of na het bekijken van je truck.</p>
+    </div>
+    <div class="ovr">
+      <form id="ovForm" novalidate>
+        <small class="kick">Vrijblijvend</small>
+        <h2>Vraag je offerte aan</h2>
+        <p class="lead">We nemen binnen twee werkdagen contact op om een moment af te spreken.</p>
+        <label>Naam *<input name="naam" required autocomplete="name"></label>
+        <label>Bedrijf<input name="bedrijf" autocomplete="organization"></label>
+        <div class="two">
+          <label>E-mail *<input name="email" type="email" required autocomplete="email"></label>
+          <label>Telefoon *<input name="tel" type="tel" required autocomplete="tel"></label>
+        </div>
+        <label>Merk en model van je truck<input id="f-model" name="model" placeholder="bv. Scania S 500 Highline"></label>
+        <label>Opmerking<textarea name="opmerking" rows="3" placeholder="Bouwjaar, wensen, timing…"></textarea></label>
+        <label class="ck"><input type="checkbox" name="ok" required> Ik ga akkoord dat SCT Truck Design mijn gegevens gebruikt om deze aanvraag te beantwoorden.</label>
+        <button class="cta big" type="submit">Verstuur aanvraag</button>
+      </form>
+      <div id="ovDone" hidden>
+        <div class="okmark">✓</div>
+        <h2>Bedankt, <span id="doneName"></span>!</h2>
+        <p>Je aanvraag en je volledige configuratie zijn goed ontvangen. We bekijken je wensen en bellen je binnenkort om een afspraak te maken in Wingene.</p>
+        <p class="demo">Demo: in deze versie wordt er niets verstuurd. In de live versie komt elke aanvraag met het overzicht en de afbeelding rechtstreeks in jullie mailbox.</p>
+        <button id="ovBack" class="ghost" type="button">Verder configureren</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">Demo enkel voor SCT Truck Design. © 2026 Poortbuilder.</footer>
+<div id="loader"><div><img src="assets/sct-logo-wit.svg" alt="" width="229" height="35"><i></i><p>De showroom wordt klaargezet…</p></div></div>
+<script src="app.js"></script>
+</body>
+</html>
