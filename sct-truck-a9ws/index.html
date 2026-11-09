@@ -6,15 +6,16 @@
 <meta name="robots" content="noindex,nofollow">
 <title>SCT Truck Design – Truck configurator</title>
 <meta name="description" content="Stel je truck samen: lakwerk, lichtbalken, zonneklep, bullbar, sidebars, achterbumper en interieur, in 3D.">
-<meta name="theme-color" content="#0d0f12">
+<meta name="theme-color" content="#eef0f2">
 <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 <link rel="stylesheet" href="style.css">
 </head>
 <body data-mode="ext">
 <div id="stage" aria-label="3D-weergave van de truck"></div>
+<div id="intView" aria-label="Beeld van de cabine"><figure class="ivf"><img id="ivA" alt="Cabine-interieur"><img id="ivB" alt=""><figcaption class="ivtag"><small>Jouw cabine</small><span id="ivCap"></span></figcaption></figure></div>
 
 <header class="top">
-  <img class="logo" src="assets/sct-logo-wit.svg" alt="SCT Truck Design" width="229" height="35">
+  <img class="logo" src="assets/sct-logo.svg" alt="SCT Truck Design" width="229" height="35">
   <span class="tag">Truck configurator</span>
   <span class="sp"></span>
   <button id="btnReal" class="ghost" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 15l4.5-4.5 3.5 3.5 2.5-2.5L20 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>Zo deden we het al</span></button>
@@ -65,7 +66,7 @@
     <div class="ovl">
       <small class="kick">Jouw configuratie</small>
       <h2>Overzicht</h2>
-      <img id="ovImg" alt="Jouw samengestelde truck">
+      <img id="ovImg" alt="Jouw samengestelde truck"><img id="ovInt" alt="Jouw gekozen interieur">
       <div id="ovList"></div>
       <div class="ovtot"><span>Richtprijs vanaf</span><b id="ovTot">€ 0</b></div>
       <p class="note">Richtprijs excl. btw, inclusief montage in onze werkplaats. De definitieve offerte maken we op maat na een bezoek of na het bekijken van je truck.</p>
@@ -98,7 +99,7 @@
 </div>
 
 <footer class="foot">Demo enkel voor SCT Truck Design. © 2026 Poortbuilder.</footer>
-<div id="loader"><div><img src="assets/sct-logo-wit.svg" alt="" width="229" height="35"><i></i><p>De showroom wordt klaargezet…</p></div></div>
+<div id="loader"><div><img src="assets/sct-logo.svg" alt="" width="229" height="35"><div class="ldbar"><i id="ldBar"></i></div><p><span>De showroom wordt klaargezet</span> <b id="ldPct">0%</b></p></div></div>
 <script src="app.js"></script>
 </body>
 </html>
