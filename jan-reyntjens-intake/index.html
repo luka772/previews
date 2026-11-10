@@ -255,8 +255,8 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbx0GTZM6i2XBU854MBidg
 const TEST_MODE = /[?&]test\b/.test(location.search);
 const CLIENT_ID = TEST_MODE ? "TEST" : "jan-reyntjens";
 /* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
-const PREFILL_V = 2;
-const PREFILL = {"start.bedrijf": "Schildersbedrijf Jan Reyntjens", "bedrijf.team": "Van jullie huidige website: 9 specialisten, elk in zijn eigen vakgebied. Wie zijn ze en wie doet wat?", "bedrijf.diensten": ["Binnenschilderwerken", "Buitenschilderwerken en gevels", "Behangwerken", "Spuit- en decoratietechnieken", "Raamdecoratie (gordijnen, shutters, lamellen, ...)", "Zachte vloerbekleding", "Renovatie en restauratie"], "bedrijf.diensten.extra": "Van jullie huidige website: binnen- en buitenschilderwerken, behang en schildersdoek, verf- en spuittechnieken, gevel- en houtwerk bij nieuwbouw, renovatie en restauratie, raamdecoratie (klassieke gordijnen, American stores, schuifpanelen, shutters, houten lamellen) en zachte vloerbekleding (linoleum, vinyl, kamerbreed tapijt, traplopers). Klopt dit nog allemaal?", "bedrijf.onderscheid": "Van jullie huidige website: gratis offertes, gratis en correct technisch advies, hoog geschoold personeel, strikte opvolging van de werken, en jullie volgen de nieuwste trends in woningdecoratie. Wat zou je hier zelf aan toevoegen?", "bedrijf.bewijs": "Van jullie huidige website: 15 jaar ervaring in raamdecoratie, merken als Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, en Copahome voor raamdecoratie. Bij technische vragen schakelen jullie de fabrikant in voor gratis advies. Zijn er ook reviews of keurmerken?", "nieuw.doel": ["Offerteaanvragen"], "praktisch.domein": "Van jullie huidige website: gebouwd door 2design. Wie beheert vandaag de domeinnaam en de hosting?", "praktisch.socials": "Van jullie huidige website: een Facebookpagina (Schildersbedrijf Jan Reyntjens). Zijn er nog andere kanalen?", "nieuw.paginas": ["Home", "Binnenschilderwerk", "Buitenschilderwerk", "Raamdecoratie", "Vloerbekleding", "Realisaties", "Een pagina per gemeente", "Over ons", "Contact en offerte", "Privacy en cookies"], "nieuw.paginas.extra": "Voorstel volgens de aanbevolen versie. Nieuws en acties en Vacatures zitten in de volledige versie. Ontbreekt er een pagina?"};
+const PREFILL_V = 3;
+const PREFILL = {"start.bedrijf": "Schildersbedrijf Jan Reyntjens", "bedrijf.team": "Van jullie huidige website: 9 specialisten, elk in zijn eigen vakgebied. Wie zijn ze en wie doet wat?", "bedrijf.diensten": ["Binnenschilderwerken", "Buitenschilderwerken en gevels", "Behangwerken", "Spuit- en decoratietechnieken", "Raamdecoratie (gordijnen, shutters, lamellen, ...)", "Zachte vloerbekleding", "Renovatie en restauratie"], "bedrijf.diensten.extra": "Van jullie huidige website: binnen- en buitenschilderwerken, behang en schildersdoek, verf- en spuittechnieken, gevel- en houtwerk bij nieuwbouw, renovatie en restauratie, raamdecoratie (klassieke gordijnen, American stores, schuifpanelen, shutters, houten lamellen) en zachte vloerbekleding (linoleum, vinyl, kamerbreed tapijt, traplopers). Klopt dit nog allemaal?", "bedrijf.onderscheid": "Van jullie huidige website: gratis offertes, gratis en correct technisch advies, hoog geschoold personeel, strikte opvolging van de werken, en jullie volgen de nieuwste trends in woningdecoratie. Wat zou je hier zelf aan toevoegen?", "bedrijf.bewijs": "Van jullie huidige website: 15 jaar ervaring in raamdecoratie, merken als Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, en Copahome voor raamdecoratie. Bij technische vragen schakelen jullie de fabrikant in voor gratis advies. Zijn er ook reviews of keurmerken?", "nieuw.doel": ["Offerteaanvragen"], "praktisch.domein": "Van jullie huidige website: gebouwd door 2design. Wie beheert vandaag de domeinnaam en de hosting?", "praktisch.socials": "Van jullie huidige website: een Facebookpagina (Schildersbedrijf Jan Reyntjens). Zijn er nog andere kanalen?", "nieuw.paginas": ["Home", "Binnenschilderwerk", "Buitenschilderwerk", "Raamdecoratie", "Vloerbekleding", "Realisaties", "Een pagina per gemeente", "Over ons", "Contact en offerte", "Privacy en cookies"], "nieuw.paginas.extra": "Voorstel volgens de aanbevolen versie. Nieuws en acties en Vacatures zitten in de volledige versie. Ontbreekt er een pagina?", "praktisch.juridisch": "Van jullie huidige website: BVBA Reyntjens Jan, Stationsdreef 36, 8800 Roeselare. Ondernemingsnummer? Is er al een privacyverklaring of algemene voorwaarden?", "nieuw.contactopties": ["Offerteformulier", "Bellen"]};
 /* waarden uit een vorige versie die vervangen mogen worden zolang niemand ze aanpaste */
 const PREFILL_OLD = {};
 
@@ -273,47 +273,63 @@ const STEPS = [
     {k:"tel", t:"Telefoonnummer", type:"s"}
   ]}]
 },
-{ id:"bedrijf", nav:"Bedrijf en aanbod", title:"Jullie bedrijf en aanbod", eyebrow:"Deel 1",
+{ id:"huidig", nav:"Huidige website", title:"Jullie huidige website", eyebrow:"Deel 1",
+  intro:"Wat we behouden, wat beter moet en wat er vandaag ontbreekt.",
+  groups:[{ title:"Huidige website", qs:[
+    {k:"oordeel", t:"Wat vinden jullie goed aan de huidige website, en wat stoort jullie?"},
+    {k:"vragen", t:"Welke vragen krijgen jullie vaak van klanten die de website nu niet beantwoordt? Die beantwoorden we op de nieuwe site."},
+    {k:"cijfers", t:"Hoeveel aanvragen komen er vandaag via de website binnen? Is Google Analytics, Search Console of een Meta-pixel actief?"}
+  ]}]
+},
+{ id:"bedrijf", nav:"Bedrijf en aanbod", title:"Jullie bedrijf en aanbod", eyebrow:"Deel 2",
   intro:"Wie jullie zijn, wat jullie doen en voor wie. Hieruit schrijven we de teksten.",
   groups:[
   { title:"Het bedrijf", qs:[
     {k:"verhaal", t:"Hoe en wanneer is het bedrijf ontstaan? Wat is het verhaal van Jan?"},
-    {k:"team", t:"Wie zit er vandaag in het team (aantal mensen, wie doet wat)?"}
+    {k:"team", t:"Wie zit er vandaag in het team (aantal mensen, wie doet wat)? Wie mag met naam en foto op de website?"}
   ]},
   { title:"Aanbod", qs:[
     {k:"diensten", t:"Welke diensten moeten op de nieuwe website?", type:"c", opts:["Binnenschilderwerken","Buitenschilderwerken en gevels","Behangwerken","Spuit- en decoratietechnieken","Raamdecoratie (gordijnen, shutters, lamellen, ...)","Zachte vloerbekleding","Renovatie en restauratie"], extra:true},
-    {k:"focus", t:"Met welke dienst willen jullie de komende jaren het meest groeien? Is er iets dat jullie liever minder doen?"},
+    {k:"focus", t:"Met welke dienst willen jullie de komende jaren het meest groeien? Welke moet het meest in de kijker staan? Is er iets dat jullie liever minder doen?"},
     {k:"regio", t:"In welke gemeenten of regio werken jullie?"},
-    {k:"klant", t:"Wie is jullie typische klant?", type:"c", opts:["Particulieren met een bestaande woning","Nieuwbouw","Renovatie en restauratie","Aannemers en architecten","Bedrijven en winkels"], extra:true}
+    {k:"klant", t:"Wie is jullie typische klant?", type:"c", opts:["Particulieren met een bestaande woning","Nieuwbouw","Renovatie en restauratie","Aannemers en architecten","Bedrijven en winkels"], extra:true},
+    {k:"werkwijze", t:"Hoe verloopt een opdracht, van eerste contact tot oplevering? (plaatsbezoek, offerte, kleuradvies, planning, uitvoering, nazicht) Hoe snel krijgt een klant zijn offerte?"}
   ]},
   { title:"Waarom jullie", qs:[
-    {k:"onderscheid", t:"Waarom kiezen klanten voor jullie en niet voor een andere schilder? Noem gerust de drie belangrijkste redenen."},
-    {k:"bewijs", t:"Wat mogen we tonen als bewijs: reviews, merken waarmee jullie werken, keurmerken, garanties, aantal jaren ervaring?"}
+    {k:"onderscheid", t:"Waarom kiezen klanten voor jullie en niet voor een andere schilder? Noem gerust de drie belangrijkste redenen. Wie zijn jullie belangrijkste concurrenten?"},
+    {k:"twijfels", t:"Waar twijfelen klanten over voor ze tekenen? (prijs, timing, stof en rommel, kleurkeuze, ...) Hoe stellen jullie hen gerust?"},
+    {k:"bewijs", t:"Wat mogen we tonen als bewijs: Google-reviews, klanten die een getuigenis willen geven, merken waarmee jullie werken, keurmerken, garanties, aantal jaren ervaring?"}
   ]}]
 },
-{ id:"nieuw", nav:"Nieuwe website", title:"De nieuwe website", eyebrow:"Deel 2",
-  intro:"Wat de website moet opleveren en wat er zeker op moet.",
+{ id:"nieuw", nav:"Nieuwe website", title:"De nieuwe website", eyebrow:"Deel 3",
+  intro:"Wat de website moet opleveren, welke pagina's erop komen en hoe aanvragen binnenkomen.",
   groups:[
   { title:"Doel", qs:[
     {k:"doel", t:"Wat moet de website vooral opleveren?", type:"c", opts:["Offerteaanvragen","Telefoontjes","Bezoek aan de toonzaal","Nieuwe medewerkers","Vertrouwen bij wie ons al kent"], extra:true},
-    {k:"offerte", t:"Wat willen jullie weten bij een offerteaanvraag? (soort werk, adres, binnen of buiten, oppervlakte, foto's, gewenste timing, ...)"}
+    {k:"succes", t:"Wanneer is de nieuwe website over een jaar geslaagd voor jullie? (bv. aantal aanvragen per maand, meer werk in een bepaalde dienst of regio)"}
   ]},
   { title:"Pagina's", qs:[
     {k:"paginas", t:"Welke pagina's moeten er op de website komen?", type:"c", opts:["Home","Binnenschilderwerk","Buitenschilderwerk","Raamdecoratie","Vloerbekleding","Realisaties","Een pagina per gemeente","Over ons","Contact en offerte","Nieuws en acties","Vacatures","Privacy en cookies"], extra:true},
-    {k:"gemeenten", t:"Voor welke gemeenten willen jullie gevonden worden? Daarvoor maken we elk een eigen pagina."},
-    {k:"belangrijkst", t:"Welke pagina of dienst moet het meest in de kijker staan?"}
+    {k:"gemeenten", t:"Voor welke gemeenten en zoektermen willen jullie gevonden worden in Google? (bv. schilder Roeselare, gordijnen Izegem) Per gemeente maken we een eigen pagina."},
+    {k:"talen", t:"In welke talen komt de website?", type:"r", opts:["Enkel Nederlands","Nederlands en Frans","Nederlands, Frans en Engels"]}
   ]},
-  { title:"Inhoud", qs:[
-    {k:"realisaties", t:"Willen jullie zelf realisaties (foto's, voor en na) kunnen toevoegen?", type:"r", opts:["Ja","Nee, dat mag Cohezy doen","Weet ik nog niet"]},
-    {k:"toonzaal", t:"Kunnen klanten langskomen (toonzaal of winkel, bv. voor raamdecoratie)? Zo ja: waar en wanneer?"},
-    {k:"vacatures", t:"Zoeken jullie personeel? Moet er een vacaturepagina komen?", type:"r", opts:["Ja","Nee","Later misschien"]}
+  { title:"Aanvragen", qs:[
+    {k:"offerte", t:"Wat willen jullie weten bij een offerteaanvraag? (soort werk, adres, binnen of buiten, oppervlakte, foto's, gewenste timing, ...)"},
+    {k:"opvolging", t:"Wat gebeurt er als iemand een aanvraag doet? Naar welk e-mailadres gaat ze, wie volgt op en binnen hoeveel tijd?"},
+    {k:"contactopties", t:"Welke manieren om contact op te nemen willen jullie op de website?", type:"c", opts:["Offerteformulier","Bellen","WhatsApp-knop","Terugbelverzoek","Zelf een afspraak inplannen"], extra:true}
+  ]},
+  { title:"Inhoud en beheer", qs:[
+    {k:"realisaties", t:"Willen jullie zelf realisaties (foto's, voor en na) kunnen toevoegen? Mogen we woningen van klanten tonen, en met of zonder gemeente?", type:"r", opts:["Ja, wij voegen ze zelf toe","Nee, dat mag Cohezy doen","Weet ik nog niet"], extra:true},
+    {k:"beheer", t:"Wie gaat de website beheren en moet kunnen inloggen?"},
+    {k:"toonzaal", t:"Kunnen klanten langskomen (toonzaal of winkel, bv. voor raamdecoratie)? Zo ja: waar en wanneer?"}
   ]},
   { title:"Stijl", qs:[
-    {k:"logo", t:"Wat doen we met het logo en de kleuren?", type:"r", opts:["Behouden zoals ze zijn","Behouden, maar mag opgefrist worden","Mag volledig nieuw"]},
-    {k:"voorbeelden", t:"Welke websites vinden jullie mooi, ook uit andere sectoren? Wat spreekt je erin aan?"}
+    {k:"logo", t:"Wat doen we met het logo en de kleuren? Hebben jullie het logo in een vectorbestand (AI, EPS, SVG of PDF)?", type:"r", opts:["Behouden zoals ze zijn","Behouden, maar mag opgefrist worden","Mag volledig nieuw"], extra:true},
+    {k:"aanspreken", t:"Hoe spreken we de bezoeker aan?", type:"r", opts:["Je","U","Geen voorkeur"]},
+    {k:"voorbeelden", t:"Welke websites vinden jullie mooi, ook uit andere sectoren? Wat spreekt je erin aan? Zijn er websites waar jullie absoluut niet op willen lijken?"}
   ]}]
 },
-{ id:"beeld", nav:"Beeld en teksten", title:"Beeld en teksten", eyebrow:"Deel 3",
+{ id:"beeld", nav:"Beeld en teksten", title:"Beeld en teksten", eyebrow:"Deel 4",
   intro:"Goede foto's verkopen een schilder. Hier bekijken we wat er al is en wat we nog maken.",
   groups:[{ title:"Materiaal", qs:[
     {k:"fotos", t:"Welke foto's of video's hebben jullie al (realisaties, team, toonzaal)? Van wie zijn de rechten?"},
@@ -321,15 +337,22 @@ const STEPS = [
     {k:"teksten", t:"Wie schrijft de teksten?", type:"r", opts:["Cohezy schrijft ze op basis van deze antwoorden","Wij leveren ze zelf aan","Samen"]}
   ]}]
 },
-{ id:"praktisch", nav:"Praktisch", title:"Praktisch en technisch", eyebrow:"Deel 4",
+{ id:"praktisch", nav:"Praktisch", title:"Praktisch en technisch", eyebrow:"Deel 5",
   intro:"Een paar praktische vragen zodat de overstap vlot verloopt en er niets uitvalt.",
-  groups:[{ title:"Overstap", qs:[
+  groups:[
+  { title:"Overstap", qs:[
     {k:"domein", t:"Wie beheert vandaag de domeinnaam janreyntjens.be en de hosting? Hebben jullie de logingegevens (die hoeven hier niet, enkel of jullie ze hebben)?"},
     {k:"mail", t:"Loopt jullie e-mail (info@janreyntjens.be) via dezelfde partij? Dat is belangrijk zodat jullie mail blijft werken bij de overstap.", type:"r", opts:["Ja","Nee, via een andere partij","Weet ik niet"], extra:true},
     {k:"socials", t:"Welke kanalen hebben jullie (Facebook, Instagram, Google Bedrijfsprofiel, ...)? Wie beheert ze?"},
-    {k:"ads", t:"Lopen er advertenties (Google, Meta, ...) of zijn die gepland?", type:"r", opts:["Ja","Nee","Gepland"], extra:true},
+    {k:"ads", t:"Lopen er advertenties (Google, Meta, ...) of zijn die gepland?", type:"r", opts:["Ja","Nee","Gepland"], extra:true}
+  ]},
+  { title:"Wettelijk", qs:[
+    {k:"juridisch", t:"Volledige bedrijfsnaam, rechtsvorm en ondernemingsnummer. Hebben jullie een privacyverklaring en algemene voorwaarden, of maken we die op?"}
+  ]},
+  { title:"Planning", qs:[
     {k:"timing", t:"Is er een gewenste lanceringsdatum, of een drukke periode waar we rekening mee moeten houden?"},
-    {k:"goedkeuring", t:"Wie keurt de ontwerpen goed en is ons vaste aanspreekpunt?"}
+    {k:"goedkeuring", t:"Wie keurt de ontwerpen goed en is ons vaste aanspreekpunt?"},
+    {k:"extra", t:"Is er nog iets dat we moeten weten en dat nergens in deze lijst past?"}
   ]}]
 }
 ];
