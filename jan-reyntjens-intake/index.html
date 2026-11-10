@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Website intake | Jan Reyntjens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: fixed soft-grey sidebar (brand, progress, step list, save state) + white canvas with one step at a time; every question is its own card, no rules. */
+:root{
+  --bg:#ffffff;
+  --side:#f6f6f4;
+  --card:#ffffff;
+  --line:#e8e8e5;
+  --line-strong:#d6d6d2;
+  --fg:#1c1c1a;
+  --fg-muted:#6f6f6a;
+  --fg-faint:#a3a39d;
+  --charcoal:#222226;
+  --charcoal-hover:#36363c;
+  --coral:#ff6b4a;
+  --coral-soft:#fff1ec;
+  --coral-deep:#e2583c;
+  --ok:#2f8f5b;
+  --ok-soft:#eaf6ee;
+  --err:#c93c2d;
+  --err-soft:#fdeeec;
+  --shadow:0 1px 2px rgba(20,20,20,.04),0 8px 24px -12px rgba(20,20,20,.10);
+  --shadow-hover:0 1px 2px rgba(20,20,20,.05),0 14px 32px -14px rgba(20,20,20,.16);
+  --font-display:"Sora",system-ui,sans-serif;
+  --font-body:"Figtree",system-ui,sans-serif;
+  --r:14px;
+  --side-w:300px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:var(--font-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+
+/* ---- Sidebar ---- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--side-w);background:var(--side);display:flex;flex-direction:column;padding:28px 20px 20px max(20px,env(safe-area-inset-left,0px));overflow-y:auto;scrollbar-width:thin}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:15px;padding:0 8px;margin-bottom:28px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.brand small{display:block;font-family:var(--font-body);font-weight:400;font-size:12px;color:var(--fg-muted);margin-top:2px}
+.progress{padding:0 8px;margin-bottom:22px}
+.progress .lbl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.progress .lbl b{font-family:var(--font-display);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.progress .lbl span{font-size:12px;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.progress .bar{height:5px;background:#e3e3df;border-radius:3px;overflow:hidden}
+.progress .bar i{display:block;height:100%;background:var(--coral);width:0;transition:width .3s ease;border-radius:3px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;margin-inline:-4px;padding-inline:4px}
+.steps button{width:100%;display:flex;align-items:center;gap:12px;padding:9px 10px;background:none;border:0;text-align:left;color:var(--fg-muted);border-radius:9px;transition:background .15s,color .15s}
+.steps button:hover{background:#ededea;color:var(--fg)}
+.steps button.active{background:#fff;color:var(--fg);font-weight:600;box-shadow:var(--shadow)}
+.steps .n{width:24px;height:24px;flex:0 0 24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;color:var(--fg-muted);background:#e7e7e3;transition:all .15s}
+.steps button.active .n{background:var(--charcoal);color:#fff}
+.steps button.done .n{background:var(--coral);color:#fff}
+.steps button.done:not(.active) .n::before{content:"✓"}
+.steps button.done:not(.active) .n span{display:none}
+.steps button.final .n{background:transparent;border:1px dashed var(--line-strong)}
+.steps button.final.active .n{background:var(--charcoal);border-color:var(--charcoal)}
+.steps .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}
+.steps .cnt{font-size:11px;color:var(--fg-faint);font-variant-numeric:tabular-nums}
+.steps button.active .cnt{color:var(--coral-deep)}
+.sidefoot{flex:0 0 auto;margin-top:14px;padding:14px 10px 0;border-top:1px solid #e3e3df;display:flex;flex-direction:column;gap:10px}
+.save{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-muted);font-variant-numeric:tabular-nums}
+.save .pip{width:7px;height:7px;border-radius:50%;background:var(--line-strong);transition:background .2s;flex:0 0 7px}
+.save.saving .pip{background:var(--coral)}
+.save.saved .pip{background:var(--ok)}
+.sidefoot .to{font-size:12px;color:var(--fg-faint)}
+.sidefoot .to b{color:var(--fg-muted);font-weight:500}
+
+/* ---- Mobile header ---- */
+.mhead{display:none}
+
+/* ---- Canvas ---- */
+.canvas{margin-left:var(--side-w);min-height:100vh}
+.wrap{max-width:780px;margin:0 auto;padding-block:56px 80px;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}
+.step{display:none}
+.step.active{display:block}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--coral-deep);font-weight:600;margin:0 0 14px}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--coral);border-radius:1px}
+h1{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.4vw,36px);line-height:1.15;margin:0 0 14px;text-wrap:balance;letter-spacing:-.015em}
+.intro{color:var(--fg-muted);max-width:60ch;margin:0 0 40px;font-size:16.5px}
+.group{margin:0 0 44px}
+.group:last-of-type{margin-bottom:0}
+.gh{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 14px;padding:0 4px}
+.gh h2{font-family:var(--font-display);font-size:17px;font-weight:600;margin:0;letter-spacing:-.005em}
+.gh .gc{font-size:12px;color:var(--fg-faint);font-variant-numeric:tabular-nums}
+.gh.sub{margin-top:26px}
+.gh.sub h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--fg-muted);font-weight:600}
+.cards{display:flex;flex-direction:column;gap:14px}
+
+/* ---- Question card ---- */
+.q{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px 24px;box-shadow:var(--shadow);transition:box-shadow .2s,border-color .2s}
+.q:focus-within{box-shadow:var(--shadow-hover);border-color:var(--line-strong)}
+.q.answered{border-color:#dcdcd8}
+.q .meta{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.q .num{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--fg-faint);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.q .pre{font-size:11px;font-weight:600;color:#2f6b4f;background:#e4f2ea;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+.q .req{font-size:11px;font-weight:600;color:var(--coral-deep);background:var(--coral-soft);padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+.q .chk{margin-left:auto;width:18px;height:18px;border-radius:50%;background:var(--coral);color:#fff;display:none;place-items:center;font-size:10px}
+.q.answered .chk{display:grid}
+.q .qt{display:block;font-weight:500;font-size:16.5px;line-height:1.45;margin:0 0 14px;letter-spacing:-.005em}
+.q ul.sub{margin:-6px 0 12px;padding-left:18px;color:var(--fg-muted);font-size:14px}
+.q .ctl{min-width:0}
+
+textarea,input[type=text],input[type=email],select{width:100%;border:1px solid var(--line);border-radius:10px;background:#fbfbfa;padding:11px 14px;line-height:1.45;transition:border-color .15s,box-shadow .15s,background .15s}
+textarea{min-height:80px;resize:vertical}
+textarea:focus,input:focus,select:focus{border-color:var(--charcoal);background:#fff;box-shadow:0 0 0 3px rgba(34,34,38,.07);outline:none}
+textarea.filled,input.filled,select.filled{background:#fff;border-color:var(--line-strong)}
+.extra{margin-top:12px}
+
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices label{position:relative;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer;background:#fbfbfa;transition:all .15s;user-select:none}
+.choices label:hover{border-color:var(--charcoal);background:#fff}
+.choices input{position:absolute;opacity:0;width:0;height:0}
+.choices label.on{background:var(--charcoal);border-color:var(--charcoal);color:#fff}
+
+/* ---- Grids ---- */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--fg-muted);font-weight:600;background:#fafaf8;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.rowlbl{font-weight:500;min-width:220px}
+td.rowlbl small{display:block;color:var(--fg-muted);font-weight:400}
+td select{padding:6px 10px;min-width:130px;width:auto;border-radius:8px}
+td input[type=text]{padding:6px 10px;min-width:150px;border-radius:8px}
+td.ck{text-align:center;width:84px}
+th.ck{text-align:center}
+.ckbox{appearance:none;width:18px;height:18px;border:1px solid var(--line-strong);border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;vertical-align:middle;transition:all .15s;margin:0}
+.ckbox:checked{background:var(--charcoal);border-color:var(--charcoal)}
+.ckbox:checked::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.legend{font-size:13px;color:var(--fg-muted);margin:10px 0 0}
+
+/* ---- Checklist ---- */
+.checklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.checklist label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;cursor:pointer;border:1px solid var(--line);border-radius:10px;background:#fbfbfa;transition:all .15s}
+.checklist label:hover{border-color:var(--charcoal);background:#fff}
+.checklist .ckbox{flex:0 0 18px;margin-top:3px}
+.checklist label.on{background:#fff;border-color:var(--line-strong)}
+.checklist label.on span{color:var(--fg-muted)}
+
+/* ---- Footer nav ---- */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:44px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:12px 20px;font-weight:600;font-size:15px;border:1px solid transparent;transition:all .15s;text-decoration:none;line-height:1.2}
+.btn.primary{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+.btn.primary:hover{background:var(--charcoal-hover)}
+.btn.primary:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:#fff;color:var(--fg);border-color:var(--line-strong)}
+.btn.ghost:hover{border-color:var(--charcoal)}
+.btn.coral{background:var(--coral);color:#fff;border-color:var(--coral)}
+.btn.coral:hover{background:var(--coral-deep)}
+.btn.text{background:none;border:0;color:var(--fg-muted);padding:8px 4px;font-weight:500}
+.btn.text:hover{color:var(--err)}
+.nav .right{display:flex;gap:10px;align-items:center;margin-left:auto}
+
+/* ---- Note ---- */
+.note{border:1px solid #ffd9cf;background:var(--coral-soft);border-radius:12px;padding:12px 16px;font-size:14px;color:var(--fg-muted);margin:0 0 18px}
+.note strong{color:var(--coral-deep)}
+
+/* ---- Review ---- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 28px}
+@media (max-width:560px){.stats{grid-template-columns:1fr}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
+.stat b{display:block;font-family:var(--font-display);font-size:30px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat.accent b{color:var(--coral-deep)}
+.stat span{font-size:13px;color:var(--fg-muted)}
+.review{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column;gap:8px}
+.review li{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14px}
+.review .pct{font-variant-numeric:tabular-nums;color:var(--fg-muted);font-size:13px;min-width:60px;text-align:right}
+.review .mini{flex:0 0 90px;height:4px;background:#ededea;border-radius:2px;overflow:hidden}
+.review .mini i{display:block;height:100%;background:var(--coral)}
+.review button{background:none;border:0;color:var(--fg);text-align:left;padding:0;flex:1;min-width:0;font-weight:500}
+.review button:hover{color:var(--coral-deep)}
+.sendbox{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;box-shadow:var(--shadow)}
+.sendbox h2{font-family:var(--font-display);font-size:19px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+.sendbox p{margin:0 0 18px;color:var(--fg-muted);font-size:14.5px}
+.status{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:14px;display:none}
+.status.show{display:block}
+.status.ok{background:var(--ok-soft);color:var(--ok)}
+.status.err{background:var(--err-soft);color:var(--err)}
+.fallback{display:none;margin-top:18px}
+.fallback.show{display:block}
+.fallback textarea{min-height:220px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.fallback .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.addr{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;background:#f3f3f1;padding:2px 8px;border-radius:6px;user-select:all;color:var(--fg)}
+.done{text-align:center;padding:56px 16px}
+.done .mark{width:64px;height:64px;border-radius:50%;background:var(--coral);color:#fff;display:grid;place-items:center;margin:0 auto 22px;font-size:26px}
+
+/* ---- Responsive ---- */
+@media (max-width:980px){
+  :root{--side-w:260px}
+  .wrap{padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px))}
+}
+@media (max-width:820px){
+  .side{display:none}
+  .canvas{margin-left:0}
+  .mhead{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px))}
+  .mhead .row{display:flex;align-items:center;gap:12px}
+  .mhead select{flex:1;padding:9px 12px;border-radius:10px;background:#fff}
+  .mhead .mp{font-family:var(--font-display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;color:var(--coral-deep);flex:0 0 auto}
+  .mhead .bar{height:3px;background:#ededea;border-radius:2px;overflow:hidden;margin-top:10px}
+  .mhead .bar i{display:block;height:100%;background:var(--coral);width:0;transition:width .3s}
+  .wrap{padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .q{padding:18px 18px 20px;border-radius:12px}
+  .sendbox{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<aside class="side">
+  <div class="brand"><span class="dot"></span><div>Website intake<small>Voorbereiding nieuwe website</small></div></div>
+  <div class="progress">
+    <div class="lbl"><b id="progPct">0 %</b><span>compleet</span></div>
+    <div class="bar"><i id="progBar"></i></div>
+  </div>
+  <ul class="steps" id="stepsNav"></ul>
+  <div class="sidefoot">
+    <div class="save" id="saveState"><span class="pip"></span><span id="saveText">Nog niets ingevuld</span></div>
+    <div class="to">Alles wordt <b>automatisch bewaard</b></div>
+  </div>
+</aside>
+
+<div class="canvas">
+  <div class="mhead">
+    <div class="row"><select id="mSelect" aria-label="Ga naar stap"></select><span class="mp" id="mPct">0 %</span></div>
+    <div class="bar"><i id="mBar"></i></div>
+  </div>
+  <div class="wrap">
+    <main id="main"></main>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — verzenden
+   Maak op https://web3forms.com een gratis access key aan voor
+   luka@cohezy.agency en plak die hieronder. Zonder key, of bij
+   een netwerkfout, toont het formulier een kopieerbare versie
+   van alle antwoorden als terugvaloptie.
+   ============================================================ */
+const SEND_TO = "luka@cohezy.agency";
+const WEB3FORMS_KEY = "";           // bv. "a1b2c3d4-...."
+const STORAGE_KEY = /[?&]test\b/.test(location.search) ? "website-intake-jr-test" : "website-intake-jan-reyntjens-v1";
+/* Online opslag in Google Sheet (Apps Script web-app). Leeg = enkel lokaal bewaren. */
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbx0GTZM6i2XBU854MBidg_f63EGzfQKQMVeg9U4iBWJ7DlnvTgUm9N8u3kAg0TqBepo/exec";
+const TEST_MODE = /[?&]test\b/.test(location.search);
+const CLIENT_ID = TEST_MODE ? "TEST" : "jan-reyntjens";
+/* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
+const PREFILL_V = 1;
+const PREFILL = {"start.bedrijf": "Schildersbedrijf Jan Reyntjens", "bedrijf.team": "Van jullie huidige website: 9 specialisten, elk in zijn eigen vakgebied. Wie zijn ze en wie doet wat?", "bedrijf.diensten": ["Binnenschilderwerken", "Buitenschilderwerken en gevels", "Behangwerken", "Spuit- en decoratietechnieken", "Raamdecoratie (gordijnen, shutters, lamellen, ...)", "Zachte vloerbekleding", "Renovatie en restauratie"], "bedrijf.diensten.extra": "Van jullie huidige website: binnen- en buitenschilderwerken, behang en schildersdoek, verf- en spuittechnieken, gevel- en houtwerk bij nieuwbouw, renovatie en restauratie, raamdecoratie (klassieke gordijnen, American stores, schuifpanelen, shutters, houten lamellen) en zachte vloerbekleding (linoleum, vinyl, kamerbreed tapijt, traplopers). Klopt dit nog allemaal?", "bedrijf.onderscheid": "Van jullie huidige website: gratis offertes, gratis en correct technisch advies, hoog geschoold personeel, strikte opvolging van de werken, en jullie volgen de nieuwste trends in woningdecoratie. Wat zou je hier zelf aan toevoegen?", "bedrijf.bewijs": "Van jullie huidige website: 15 jaar ervaring in raamdecoratie, merken als Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, en Copahome voor raamdecoratie. Bij technische vragen schakelen jullie de fabrikant in voor gratis advies. Zijn er ook reviews of keurmerken?", "nieuw.doel": ["Offerteaanvragen"], "praktisch.domein": "Van jullie huidige website: gebouwd door 2design. Wie beheert vandaag de domeinnaam en de hosting?", "praktisch.socials": "Van jullie huidige website: een Facebookpagina (Schildersbedrijf Jan Reyntjens). Zijn er nog andere kanalen?"};
+/* waarden uit een vorige versie die vervangen mogen worden zolang niemand ze aanpaste */
+const PREFILL_OLD = {};
+
+/* ---------- Vragenlijst ---------- */
+// t = tekstvak (standaard), s = kort tekstveld, r = één keuze, c = meerdere keuzes
+// grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
+const STEPS = [
+{ id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
+  intro:"Een korte vragenlijst met enkel wat we echt nodig hebben om jullie nieuwe website op te bouwen. Reken op een twintigtal minuten. Een paar antwoorden vulden we al in op basis van jullie huidige website: je herkent ze aan het groene label “vooraf ingevuld”. Klopt iets niet, pas het dan gewoon aan. Alles wordt automatisch bewaard, dus je kan stoppen en later verdergaan, ook op een ander toestel.",
+  groups:[{ title:"Wie vult dit in?", qs:[
+    {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
+    {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
+    {k:"email", t:"Jouw e-mailadres", type:"email", req:true},
+    {k:"tel", t:"Telefoonnummer", type:"s"}
+  ]}]
+},
+{ id:"bedrijf", nav:"Bedrijf en aanbod", title:"Jullie bedrijf en aanbod", eyebrow:"Deel 1",
+  intro:"Wie jullie zijn, wat jullie doen en voor wie. Hieruit schrijven we de teksten.",
+  groups:[
+  { title:"Het bedrijf", qs:[
+    {k:"verhaal", t:"Hoe en wanneer is het bedrijf ontstaan? Wat is het verhaal van Jan?"},
+    {k:"team", t:"Wie zit er vandaag in het team (aantal mensen, wie doet wat)?"}
+  ]},
+  { title:"Aanbod", qs:[
+    {k:"diensten", t:"Welke diensten moeten op de nieuwe website?", type:"c", opts:["Binnenschilderwerken","Buitenschilderwerken en gevels","Behangwerken","Spuit- en decoratietechnieken","Raamdecoratie (gordijnen, shutters, lamellen, ...)","Zachte vloerbekleding","Renovatie en restauratie"], extra:true},
+    {k:"focus", t:"Met welke dienst willen jullie de komende jaren het meest groeien? Is er iets dat jullie liever minder doen?"},
+    {k:"regio", t:"In welke gemeenten of regio werken jullie?"},
+    {k:"klant", t:"Wie is jullie typische klant?", type:"c", opts:["Particulieren met een bestaande woning","Nieuwbouw","Renovatie en restauratie","Aannemers en architecten","Bedrijven en winkels"], extra:true}
+  ]},
+  { title:"Waarom jullie", qs:[
+    {k:"onderscheid", t:"Waarom kiezen klanten voor jullie en niet voor een andere schilder? Noem gerust de drie belangrijkste redenen."},
+    {k:"bewijs", t:"Wat mogen we tonen als bewijs: reviews, merken waarmee jullie werken, keurmerken, garanties, aantal jaren ervaring?"}
+  ]}]
+},
+{ id:"nieuw", nav:"Nieuwe website", title:"De nieuwe website", eyebrow:"Deel 2",
+  intro:"Wat de website moet opleveren en wat er zeker op moet.",
+  groups:[
+  { title:"Doel", qs:[
+    {k:"doel", t:"Wat moet de website vooral opleveren?", type:"c", opts:["Offerteaanvragen","Telefoontjes","Bezoek aan de toonzaal","Nieuwe medewerkers","Vertrouwen bij wie ons al kent"], extra:true},
+    {k:"offerte", t:"Wat willen jullie weten bij een offerteaanvraag? (soort werk, adres, binnen of buiten, oppervlakte, foto's, gewenste timing, ...)"}
+  ]},
+  { title:"Inhoud", qs:[
+    {k:"realisaties", t:"Willen jullie zelf realisaties (foto's, voor en na) kunnen toevoegen?", type:"r", opts:["Ja","Nee, dat mag Cohezy doen","Weet ik nog niet"]},
+    {k:"toonzaal", t:"Kunnen klanten langskomen (toonzaal of winkel, bv. voor raamdecoratie)? Zo ja: waar en wanneer?"},
+    {k:"vacatures", t:"Zoeken jullie personeel? Moet er een vacaturepagina komen?", type:"r", opts:["Ja","Nee","Later misschien"]}
+  ]},
+  { title:"Stijl", qs:[
+    {k:"logo", t:"Wat doen we met het logo en de kleuren?", type:"r", opts:["Behouden zoals ze zijn","Behouden, maar mag opgefrist worden","Mag volledig nieuw"]},
+    {k:"voorbeelden", t:"Welke websites vinden jullie mooi, ook uit andere sectoren? Wat spreekt je erin aan?"}
+  ]}]
+},
+{ id:"beeld", nav:"Beeld en teksten", title:"Beeld en teksten", eyebrow:"Deel 3",
+  intro:"Goede foto's verkopen een schilder. Hier bekijken we wat er al is en wat we nog maken.",
+  groups:[{ title:"Materiaal", qs:[
+    {k:"fotos", t:"Welke foto's of video's hebben jullie al (realisaties, team, toonzaal)? Van wie zijn de rechten?"},
+    {k:"shoot", t:"Mogen we langskomen op een werf of in de toonzaal om te fotograferen en te filmen?", type:"r", opts:["Ja","Ja, maar enkel op bepaalde werven","Nee"], extra:true},
+    {k:"teksten", t:"Wie schrijft de teksten?", type:"r", opts:["Cohezy schrijft ze op basis van deze antwoorden","Wij leveren ze zelf aan","Samen"]}
+  ]}]
+},
+{ id:"praktisch", nav:"Praktisch", title:"Praktisch en technisch", eyebrow:"Deel 4",
+  intro:"Een paar praktische vragen zodat de overstap vlot verloopt en er niets uitvalt.",
+  groups:[{ title:"Overstap", qs:[
+    {k:"domein", t:"Wie beheert vandaag de domeinnaam janreyntjens.be en de hosting? Hebben jullie de logingegevens (die hoeven hier niet, enkel of jullie ze hebben)?"},
+    {k:"mail", t:"Loopt jullie e-mail (info@janreyntjens.be) via dezelfde partij? Dat is belangrijk zodat jullie mail blijft werken bij de overstap.", type:"r", opts:["Ja","Nee, via een andere partij","Weet ik niet"], extra:true},
+    {k:"socials", t:"Welke kanalen hebben jullie (Facebook, Instagram, Google Bedrijfsprofiel, ...)? Wie beheert ze?"},
+    {k:"ads", t:"Lopen er advertenties (Google, Meta, ...) of zijn die gepland?", type:"r", opts:["Ja","Nee","Gepland"], extra:true},
+    {k:"timing", t:"Is er een gewenste lanceringsdatum, of een drukke periode waar we rekening mee moeten houden?"},
+    {k:"goedkeuring", t:"Wie keurt de ontwerpen goed en is ons vaste aanspreekpunt?"}
+  ]}]
+}
+];
+
+
+/* ---------- Compacte versie ----------
+   Vragen in COMPACT_REMOVE worden verborgen, BEHALVE als er al een antwoord bij staat:
+   ingevulde info verdwijnt dus nooit. Elke vraag krijgt een vaste sleutel, zodat
+   bestaande antwoorden bij de juiste vraag blijven staan. */
+const COMPACT_REMOVE = new Set([]);
+const COMPACT_RETEXT = {};
+const COMPACT_INTRO = {};
+STEPS.forEach(st => st.groups.forEach((g, gi) => g.qs.forEach((q, qi) => { if (!q.k) q.k = gi + "-" + qi; })));
+const ALL_STEPS = STEPS.map(st => Object.assign({}, st, {groups: st.groups.map(g => Object.assign({}, g, {qs: g.qs.slice()}))}));
+function hasAnswer(key){
+  return Object.keys(state).some(k => (k === key || k === key + ".extra" || k.startsWith(key + "[")) && state[k] !== "" && state[k] != null && state[k] !== false && !(Array.isArray(state[k]) && !state[k].length));
+}
+function applyCompact(){
+  const out = ALL_STEPS.map(st => {
+    const groups = [];
+    st.groups.forEach(g => {
+      const qs = g.qs.filter(q => { const key = st.id + "." + q.k; return !COMPACT_REMOVE.has(key) || hasAnswer(key); })
+        .map(q => { const t = COMPACT_RETEXT[st.id + "." + q.k]; return t ? Object.assign({}, q, {t}) : q; });
+      if (qs.length) groups.push(Object.assign({}, g, {qs}));
+      else if (g.title) groups.pendingTitle = g.title;
+      if (qs.length && groups.pendingTitle) { if (!groups[groups.length - 1].title) groups[groups.length - 1].title = groups.pendingTitle; delete groups.pendingTitle; }
+    });
+    return Object.assign({}, st, {groups, intro: COMPACT_INTRO[st.id] || st.intro});
+  }).filter(st => st.groups.length);
+  STEPS.length = 0; out.forEach(st => STEPS.push(st));
+}
+/* ---------- State ---------- */
+let state = {};
+try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch (e) { state = {}; }
+function applyPrefill(){
+  if ((state._pf || 0) >= PREFILL_V) return false;
+  Object.keys(PREFILL).forEach(k => {
+    const untouched = k in PREFILL_OLD && JSON.stringify(state[k]) === JSON.stringify(PREFILL_OLD[k]);
+    if (state[k] == null || state[k] === "" || untouched) state[k] = PREFILL[k];
+  });
+  state._pf = PREFILL_V;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  return true;
+}
+const VALUE_MIGRATE = {};
+function migrateValues(){
+  let changed = false;
+  Object.keys(VALUE_MIGRATE).forEach(k => { const m = VALUE_MIGRATE[k]; if (typeof state[k] === "string" && m[state[k]]) { state[k] = m[state[k]]; changed = true; } });
+  if (changed) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+  return changed;
+}
+applyPrefill();
+let migratedAtBoot = migrateValues();
+applyCompact();
+function isPrefilled(key){
+  if ([key, key + ".extra"].some(k => k in PREFILL && JSON.stringify(state[k]) === JSON.stringify(PREFILL[k]))) return true;
+  const sub = Object.keys(PREFILL).filter(k => k.startsWith(key + "["));
+  return sub.length > 0 && sub.every(k => JSON.stringify(state[k]) === JSON.stringify(PREFILL[k]));
+}
+let current = 0;
+try { const c = parseInt(localStorage.getItem(STORAGE_KEY + ":step"), 10); if (!isNaN(c)) current = Math.min(Math.max(c, 0), STEPS.length); } catch (e) {}
+
+let saveTimer = null;
+const saveEl = document.getElementById("saveState"), saveTxt = document.getElementById("saveText");
+function persist(){
+  saveEl.classList.remove("saved"); saveEl.classList.add("saving"); saveTxt.textContent = "Bewaren…";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); localStorage.setItem(STORAGE_KEY + ":step", String(current)); } catch (e) {}
+    saveEl.classList.remove("saving"); saveEl.classList.add("saved");
+    const d = new Date(); saveTxt.textContent = "Bewaard om " + d.toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
+    updateProgress();
+    pushRemote();
+  }, 400);
+}
+let pushTimer = null, pushPending = false, pushTries = 0;
+function payload(){
+  let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
+  return JSON.stringify({klant: CLIENT_ID, state, pct: t ? Math.round(d / t * 100) : 0, rows: buildRows()});
+}
+function pushRemote(){
+  if (!SHEET_URL) return;
+  pushPending = true;
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(doPush, 1200);
+}
+async function doPush(){
+  const ts = state._ts || 0;
+  try {
+    await fetch(SHEET_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: payload()});
+    /* controleren of het echt online staat */
+    const r = await fetch(SHEET_URL + "?klant=" + encodeURIComponent(CLIENT_ID), {cache:"no-store"});
+    const j = await r.json();
+    if (!j || !j.state || (j.state._ts || 0) < ts) throw new Error("niet bevestigd");
+    pushPending = false; pushTries = 0;
+    saveEl.classList.remove("err");
+    saveTxt.textContent = "Online bewaard om " + new Date().toLocaleTimeString("nl-BE", {hour:"2-digit", minute:"2-digit"});
+  } catch (e) {
+    pushTries++;
+    saveTxt.textContent = "Bewaard op dit toestel, online opslaan wordt opnieuw geprobeerd…";
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(doPush, Math.min(30000, 3000 * pushTries));
+  }
+}
+/* bij sluiten of wegklikken: openstaande wijziging meteen doorsturen */
+function flushPush(){
+  if (!SHEET_URL || !pushPending) return;
+  try { navigator.sendBeacon(SHEET_URL, new Blob([payload()], {type:"text/plain;charset=utf-8"})); } catch (e) {}
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushPush(); });
+window.addEventListener("pagehide", flushPush);
+function userKeys(st){
+  return Object.keys(st).filter(k => !k.startsWith("_") && !(k in PREFILL && JSON.stringify(st[k]) === JSON.stringify(PREFILL[k])));
+}
+async function pullRemote(){
+  if (!SHEET_URL) return;
+  try {
+    const r = await fetch(SHEET_URL + "?klant=" + encodeURIComponent(CLIENT_ID), {cache:"no-store"});
+    const j = await r.json();
+    if (!j || !j.state) return;
+    const remote = j.state, local = state;
+    if ((remote._ts || 0) > (local._ts || 0)) {
+      /* online versie is nieuwer: overnemen, maar nooit eigen antwoorden van dit toestel verliezen */
+      const merged = Object.assign({}, remote);
+      let added = false;
+      userKeys(local).forEach(k => { if (merged[k] == null || merged[k] === "") { merged[k] = local[k]; added = true; } });
+      state = merged;
+      if (applyPrefill()) added = true;
+      if (migrateValues()) added = true;
+      applyCompact();
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      go(current);
+      saveEl.classList.add("saved"); saveTxt.textContent = "Laatste versie geladen";
+      if (added) { state._ts = Date.now(); persist(); }
+    } else if (migratedAtBoot && local._ts) {
+      migratedAtBoot = false; state._ts = Date.now(); persist();
+    } else if ((remote._pf || 0) < PREFILL_V && local._ts) {
+      state._ts = Date.now(); persist(); /* nieuwe vooraf ingevulde antwoorden ook online zetten */
+    } else if ((local._ts || 0) > (remote._ts || 0)) {
+      pushRemote(); /* dit toestel heeft nieuwere antwoorden die nog niet online staan */
+    }
+  } catch (e) {}
+}
+function setVal(key, val){ if (val === "" || val == null || (Array.isArray(val) && !val.length)) delete state[key]; else state[key] = val; state._ts = Date.now(); persist(); }
+
+/* ---------- Keys & counting ---------- */
+function qKey(si, gi, qi){ return STEPS[si].id + "." + (STEPS[si].groups[gi].qs[qi].k || (gi + "-" + qi)); }
+function isAnswered(q, key){
+  if (q.type === "grid") {
+    return Object.keys(state).some(k => k.startsWith(key + "[") && state[k] !== "" && state[k] !== false);
+  }
+  if (q.type === "check") return Array.isArray(state[key]) && state[key].length > 0;
+  const v = state[key];
+  const extra = state[key + ".extra"];
+  return (v != null && v !== "" && !(Array.isArray(v) && !v.length)) || (extra && extra !== "");
+}
+function stepStats(si){
+  let total = 0, done = 0;
+  STEPS[si].groups.forEach((g, gi) => g.qs.forEach((q, qi) => { total++; if (isAnswered(q, qKey(si, gi, qi))) done++; }));
+  return {total, done};
+}
+function updateProgress(){
+  let t = 0, d = 0;
+  STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
+  const pct = t ? Math.round(d / t * 100) : 0;
+  document.getElementById("progPct").textContent = pct + " %";
+  document.getElementById("progBar").style.width = pct + "%";
+  document.getElementById("mPct").textContent = pct + " %";
+  document.getElementById("mBar").style.width = pct + "%";
+  document.querySelectorAll("#stepsNav li").forEach((li, i) => {
+    const b = li.querySelector("button"); if (i >= STEPS.length) return;
+    const st = stepStats(i);
+    b.classList.toggle("done", st.done > 0 && st.done === st.total);
+    const c = b.querySelector(".cnt"); if (c) c.textContent = st.done + "/" + st.total;
+    const o = mSel.options[i]; if (o) o.textContent = (i + 1) + ". " + STEPS[i].nav + "  (" + st.done + "/" + st.total + ")";
+  });
+  if (current === STEPS.length) renderReview();
+}
+
+/* ---------- Rendering ---------- */
+const main = document.getElementById("main");
+const nav = document.getElementById("stepsNav");
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  for (const k in (attrs || {})) { if (k === "class") el.className = attrs[k]; else if (k === "html") el.innerHTML = attrs[k]; else if (k.startsWith("on")) el.addEventListener(k.slice(2), attrs[k]); else el.setAttribute(k, attrs[k]); }
+  kids.flat().forEach(c => { if (c == null) return; el.append(c.nodeType ? c : document.createTextNode(c)); });
+  return el;
+}
+
+const mSel = document.getElementById("mSelect");
+function buildNav(){
+  nav.innerHTML = ""; mSel.innerHTML = "";
+  STEPS.forEach((s, i) => {
+    nav.append(h("li", null, h("button", {type:"button", onclick:() => go(i)},
+      h("span", {class:"n"}, h("span", null, String(i + 1))), h("span", {class:"t"}, s.nav), h("span", {class:"cnt"}))));
+    mSel.append(h("option", {value:String(i)}, (i + 1) + ". " + s.nav));
+  });
+  nav.append(h("li", null, h("button", {type:"button", class:"final", onclick:() => go(STEPS.length)},
+    h("span", {class:"n"}, h("span", null, "→")), h("span", {class:"t"}, "Overzicht"), h("span", {class:"cnt"}))));
+  mSel.append(h("option", {value:String(STEPS.length)}, "Overzicht"));
+  mSel.addEventListener("change", () => go(parseInt(mSel.value, 10)));
+}
+
+function textControl(q, key, id){
+  const tall = q.tall;
+  let el;
+  if (q.type === "s" || q.type === "email") el = h("input", {type: q.type === "email" ? "email" : "text", id});
+  else { el = h("textarea", {id}); if (tall) el.style.minHeight = "130px"; }
+  el.value = state[key] || "";
+  el.classList.toggle("filled", !!el.value);
+  el.addEventListener("input", () => { setVal(key, el.value.trim() ? el.value : ""); el.classList.toggle("filled", !!el.value.trim()); markCard(el, q, key); });
+  return el;
+}
+function choiceControl(q, key, id, multi){
+  const wrap = h("div", {class:"choices", role: multi ? "group" : "radiogroup"});
+  const cur = multi ? (Array.isArray(state[key]) ? state[key] : []) : (state[key] || "");
+  q.opts.forEach((o, i) => {
+    const inp = h("input", {type: multi ? "checkbox" : "radio", name:id, id:id + "-" + i, value:o});
+    const on = multi ? cur.includes(o) : cur === o;
+    inp.checked = on;
+    const lab = h("label", {class: on ? "on" : "", for:id + "-" + i}, inp, o);
+    inp.addEventListener("change", () => {
+      if (multi) {
+        const arr = Array.isArray(state[key]) ? [...state[key]] : [];
+        const ix = arr.indexOf(o); if (inp.checked && ix < 0) arr.push(o); if (!inp.checked && ix >= 0) arr.splice(ix, 1);
+        setVal(key, arr); lab.classList.toggle("on", inp.checked);
+      } else {
+        setVal(key, o); wrap.querySelectorAll("label").forEach(l => l.classList.remove("on")); lab.classList.add("on");
+      }
+    });
+    wrap.append(lab);
+  });
+  return wrap;
+}
+function gridControl(q, key, id){
+  const table = h("table");
+  const thead = h("tr", null, h("th", null, "Veld"));
+  const colUsed = c => Object.keys(state).some(k => k.startsWith(key + "[") && k.endsWith("]." + c.k) && state[k]);
+  const cols = q.cols.filter(c => !c.hidden || colUsed(c));
+  cols.forEach(c => thead.append(h("th", {class: c.kind === "check" ? "ck" : ""}, c.l)));
+  table.append(h("thead", null, thead));
+  const tb = h("tbody");
+  q.rows.forEach((r, ri) => {
+    if (r[2] === "__hidden" && !Object.keys(state).some(k => k.startsWith(key + "[" + ri + "]") && state[k])) return;
+    const tr = h("tr");
+    const lbl = h("td", {class:"rowlbl"}, r[0]); if (r[1]) lbl.append(h("small", null, r[1]));
+    tr.append(lbl);
+    cols.forEach(c => {
+      const ck = key + "[" + ri + "]." + c.k;
+      const cid = id + "-" + ri + "-" + c.k;
+      let cell;
+      if (c.kind === "select") {
+        const sel = h("select", {id:cid, "aria-label": r[0] + " – " + c.l});
+        sel.append(h("option", {value:""}, "–"));
+        c.opts.forEach(o => sel.append(h("option", {value:o}, o)));
+        sel.value = state[ck] || ""; sel.classList.toggle("filled", !!sel.value);
+        sel.addEventListener("change", () => { setVal(ck, sel.value); sel.classList.toggle("filled", !!sel.value); });
+        cell = h("td", null, sel);
+      } else if (c.kind === "check") {
+        const inp = h("input", {type:"checkbox", class:"ckbox", id:cid, "aria-label": r[0] + " – " + c.l});
+        inp.checked = !!state[ck];
+        inp.addEventListener("change", () => setVal(ck, inp.checked ? true : ""));
+        cell = h("td", {class:"ck"}, inp);
+      } else {
+        const inp = h("input", {type:"text", id:cid, "aria-label": r[0] + " – " + c.l, placeholder:"…"});
+        inp.value = state[ck] || "";
+        inp.addEventListener("input", () => setVal(ck, inp.value.trim() ? inp.value : ""));
+        cell = h("td", null, inp);
+      }
+      tr.append(cell);
+    });
+    tb.append(tr);
+  });
+  table.append(tb);
+  const wrap = h("div", null, h("div", {class:"tbl"}, table));
+  if (q.legend) wrap.append(h("p", {class:"legend"}, q.legend));
+  return wrap;
+}
+function checklistControl(q, key, id){
+  const ul = h("ul", {class:"checklist"});
+  const cur = Array.isArray(state[key]) ? state[key] : [];
+  q.opts.forEach((o, i) => {
+    const inp = h("input", {type:"checkbox", class:"ckbox", id:id + "-" + i});
+    inp.checked = cur.includes(o);
+    const lab = h("label", {for:id + "-" + i, class: inp.checked ? "on" : ""}, inp, h("span", null, o));
+    inp.addEventListener("change", () => {
+      const arr = Array.isArray(state[key]) ? [...state[key]] : [];
+      const ix = arr.indexOf(o); if (inp.checked && ix < 0) arr.push(o); if (!inp.checked && ix >= 0) arr.splice(ix, 1);
+      setVal(key, arr); lab.classList.toggle("on", inp.checked);
+    });
+    ul.append(h("li", null, lab));
+  });
+  return ul;
+}
+
+function markCard(el, q, key){
+  const card = el.closest(".q"); if (card) card.classList.toggle("answered", isAnswered(q, key));
+}
+function renderStep(si){
+  const s = STEPS[si];
+  const sec = h("section", {class:"step active"});
+  const total = s.groups.reduce((a, g) => a + g.qs.length, 0);
+  sec.append(h("p", {class:"eyebrow"}, s.eyebrow + " · " + total + " " + (total === 1 ? "vraag" : "vragen")), h("h1", null, s.title), h("p", {class:"intro"}, s.intro));
+  let n = 0;
+  let groupEl = null, cards = null;
+  s.groups.forEach((g, gi) => {
+    if (g.title || !groupEl) {
+      groupEl = h("div", {class:"group"}); sec.append(groupEl);
+      if (g.title) {
+        let c = 0; for (let k = gi; k < s.groups.length; k++) { if (k > gi && s.groups[k].title) break; c += s.groups[k].qs.length; }
+        groupEl.append(h("div", {class:"gh"}, h("h2", null, g.title), h("span", {class:"gc"}, c + " vragen")));
+      }
+    }
+    if (g.sub) groupEl.append(h("div", {class:"gh sub"}, h("h2", null, g.sub)));
+    cards = h("div", {class:"cards"}); groupEl.append(cards);
+    g.qs.forEach((q, qi) => {
+      n++;
+      const key = qKey(si, gi, qi), id = "f-" + key.replace(/[^a-z0-9]/gi, "_");
+      const isForm = q.type === "grid" || q.type === "check" || q.type === "r" || q.type === "c";
+      const meta = h("div", {class:"meta"}, h("span", {class:"num"}, String(n).padStart(2, "0")));
+      if (q.req) meta.append(h("span", {class:"req"}, "verplicht"));
+      if (isPrefilled(key)) meta.append(h("span", {class:"pre", title:"Ingevuld op basis van ons eerste gesprek en de strategie. Klopt het niet? Pas het gerust aan."}, "vooraf ingevuld · klopt dit?"));
+      meta.append(h("span", {class:"chk"}, "✓"));
+      const qt = isForm ? h("div", {class:"qt"}, q.t) : h("label", {class:"qt", for:id}, q.t);
+      const ctl = h("div", {class:"ctl"});
+      if (q.sub) ctl.append(h("ul", {class:"sub"}, q.sub.map(x => h("li", null, x))));
+      if (q.type === "grid") ctl.append(gridControl(q, key, id));
+      else if (q.type === "check") ctl.append(checklistControl(q, key, id));
+      else if (q.type === "r") ctl.append(choiceControl(q, key, id, false));
+      else if (q.type === "c") ctl.append(choiceControl(q, key, id, true));
+      else ctl.append(textControl(q, key, id));
+      if (q.extra) {
+        const ex = h("textarea", {id:id + "-extra", class:"extra", placeholder:"Toelichting…"});
+        ex.value = state[key + ".extra"] || "";
+        ex.addEventListener("input", () => { setVal(key + ".extra", ex.value.trim() ? ex.value : ""); markCard(ex, q, key); });
+        ctl.append(ex);
+      }
+      const card = h("div", {class:"q" + (isAnswered(q, key) ? " answered" : "")}, meta, qt, ctl);
+      card.addEventListener("change", () => card.classList.toggle("answered", isAnswered(q, key)));
+      cards.append(card);
+    });
+  });
+  const navEl = h("div", {class:"nav"});
+  if (si > 0) navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(si - 1)}, "← Vorige"));
+  const right = h("div", {class:"right"});
+  right.append(h("button", {type:"button", class:"btn primary", onclick:() => go(si + 1)}, si === STEPS.length - 1 ? "Naar overzicht →" : "Volgende →"));
+  navEl.append(right);
+  sec.append(navEl);
+  return sec;
+}
+
+function renderReview(){
+  main.innerHTML = "";
+  const sec = h("section", {class:"step active"});
+  let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
+  sec.append(h("p", {class:"eyebrow"}, "Afronden"), h("h1", null, "Overzicht"),
+    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. Klik op een deel om het nog eens na te kijken."));
+  if (false) sec.append(h("div", {class:"stats"},
+    h("div", {class:"stat"}, h("b", null, String(d)), h("span", null, "vragen beantwoord")),
+    h("div", {class:"stat"}, h("b", null, String(t - d)), h("span", null, "nog open")),
+    h("div", {class:"stat accent"}, h("b", null, Math.round(d / t * 100) + " %"), h("span", null, "compleet"))));
+  const ul = h("ul", {class:"review"});
+  STEPS.forEach((s, i) => {
+    const st = stepStats(i), p = st.total ? Math.round(st.done / st.total * 100) : 0;
+    ul.append(h("li", null,
+      h("button", {type:"button", onclick:() => go(i)}, (i + 1) + ". " + s.title),
+      h("span", {class:"mini"}, h("i", {style:"width:" + p + "%"})),
+      h("span", {class:"pct"}, st.done + " / " + st.total)));
+  });
+  sec.append(ul);
+
+  const missing = [];
+  STEPS.forEach((s, si) => s.groups.forEach((g, gi) => g.qs.forEach((q, qi) => { if (q.req && !isAnswered(q, qKey(si, gi, qi))) missing.push(q); })));
+  const box = h("div", {class:"sendbox"});
+  box.append(h("h2", null, "Verzenden"),
+    h("p", null, "De antwoorden gaan naar ", h("span", {class:"addr"}, SEND_TO), ". Ze blijven ook in deze browser bewaard tot je ze wist."));
+  if (missing.length) box.append(h("div", {class:"note"}, h("strong", null, missing.length + " verplichte " + (missing.length === 1 ? "vraag is" : "vragen zijn") + " nog niet beantwoord. "), "Je kunt toch verzenden, maar met deze antwoorden kunnen we sneller starten."));
+  const copyLab = h("label", {class:"choices"}, (() => { const i = h("input", {type:"checkbox", id:"copyme"}); i.checked = !!state["_copyme"]; i.addEventListener("change", () => { setVal("_copyme", i.checked ? true : ""); copyLab.querySelector("label").classList.toggle("on", i.checked); }); return h("label", {for:"copyme", class: i.checked ? "on" : ""}, i, "Stuur mij een kopie"); })());
+  copyLab.style.marginBottom = "16px";
+  box.append(copyLab);
+  const row = h("div", {style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"});
+  const sendBtn = h("button", {type:"button", class:"btn coral", onclick:() => send(sendBtn)}, "Verzend antwoorden");
+  row.append(sendBtn, h("button", {type:"button", class:"btn ghost", onclick:showFallback}, "Toon als tekst"));
+  box.append(row);
+  box.append(h("div", {class:"status", id:"status"}));
+  /* notities doorsturen via eigen mail of bestand, geen externe dienst */
+  const nb = h("div", {class:"sendbox"});
+  nb.append(h("h2", null, "Je notities doorsturen"),
+    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we meteen aan de slag kunnen."));
+  const nrow = h("div", {style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"});
+  nrow.append(h("button", {type:"button", class:"btn coral", onclick:showFallback}, "Toon mijn notities"));
+  nb.append(nrow);
+  const fb = h("div", {class:"fallback", id:"fallback"});
+  const ta = h("textarea", {id:"fallbackText", readonly:""});
+  const copyBtn = h("button", {type:"button", class:"btn primary", onclick:async () => {
+    try { await navigator.clipboard.writeText(ta.value); copyBtn.textContent = "Gekopieerd"; }
+    catch (e) { ta.focus(); ta.select(); copyBtn.textContent = "Selecteer en kopieer (Ctrl+C)"; }
+    setTimeout(() => copyBtn.textContent = "Kopieer alles", 2500);
+  }}, "Kopieer alles");
+  const mailA = h("a", {class:"btn ghost", id:"mailLink", href:"#"}, "Open in e-mail");
+  const dlBtn = h("button", {type:"button", class:"btn ghost", onclick:() => {
+    const b = new Blob([ta.value], {type:"text/plain;charset=utf-8"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(b);
+    a.download = "Intake website - " + ((state["start.bedrijf"] || "notities").replace(/[\\/:*?"<>|]/g, "")) + ".txt";
+    document.body.append(a); a.click(); a.remove();
+  }}, "Download als bestand");
+  fb.append(h("p", {class:"legend", id:"fbLegend"}), ta, h("div", {class:"row"}, copyBtn, mailA, dlBtn));
+  nb.append(fb);
+  sec.append(nb);
+
+  const navEl = h("div", {class:"nav"});
+  navEl.append(h("button", {type:"button", class:"btn ghost", onclick:() => go(STEPS.length - 1)}, "← Vorige"));
+  sec.append(navEl);
+  main.append(sec);
+}
+
+function go(i){
+  current = Math.min(Math.max(i, 0), STEPS.length);
+  try { localStorage.setItem(STORAGE_KEY + ":step", String(current)); } catch (e) {}
+  main.innerHTML = "";
+  if (current === STEPS.length) renderReview(); else main.append(renderStep(current));
+  document.querySelectorAll("#stepsNav button").forEach((b, i) => b.classList.toggle("active", i === current));
+  mSel.value = String(current);
+  updateProgress();
+  window.scrollTo({top:0, behavior:"auto"});
+}
+
+/* ---------- Export ---------- */
+function answerText(q, key){
+  if (q.type === "grid") {
+    const lines = [];
+    q.rows.forEach((r, ri) => {
+      const parts = [];
+      q.cols.forEach(c => { const v = state[key + "[" + ri + "]." + c.k]; if (v === true) parts.push(c.l); else if (v) parts.push(c.l + ": " + v); });
+      if (parts.length) lines.push("  - " + r[0] + " → " + parts.join(" · "));
+    });
+    return lines.length ? "\n" + lines.join("\n") : "";
+  }
+  let v = state[key];
+  if (Array.isArray(v)) v = v.join(", ");
+  v = v == null ? "" : String(v);
+  const ex = state[key + ".extra"];
+  if (ex) v += (v ? "\n  Toelichting: " : "") + ex;
+  return v;
+}
+function buildRows(){
+  const rows = [];
+  STEPS.forEach((s, si) => {
+    const deel = si === 0 ? "Gegevens" : "Deel " + si + " · " + (s.nav || s.title);
+    let n = 0;
+    s.groups.forEach((g, gi) => g.qs.forEach((q, qi) => {
+      n++;
+      const a = answerText(q, qKey(si, gi, qi));
+      if (a) rows.push([deel, n, q.t, a.startsWith("\n") ? a.slice(1) : a]);
+    }));
+  });
+  return rows;
+}
+function buildText(onlyAnswered){
+  const out = [];
+  out.push("INTAKE NIEUWE WEBSITE");
+  out.push("Bedrijf: " + (state["start.bedrijf"] || "–"));
+  out.push("Contact: " + (state["start.contact"] || "–") + " · " + (state["start.email"] || "–") + (state["start.tel"] ? " · " + state["start.tel"] : ""));
+  out.push("Datum: " + new Date().toLocaleString("nl-BE"));
+  STEPS.forEach((s, si) => {
+    if (si === 0) return;
+    const sec = []; let n = 0, any = false;
+    s.groups.forEach((g, gi) => {
+      const grp = [];
+      g.qs.forEach((q, qi) => {
+        n++;
+        const a = answerText(q, qKey(si, gi, qi));
+        if (onlyAnswered && !a) return;
+        if (a) any = true;
+        grp.push("", n + ". " + q.t, a ? (a.startsWith("\n") ? a.slice(1) : "   " + a.replace(/\n/g, "\n   ")) : "   (niet beantwoord)");
+      });
+      if (!grp.length) return;
+      if (g.title) sec.push("", "## " + g.title);
+      if (g.sub) sec.push("", "### " + g.sub);
+      sec.push(...grp);
+    });
+    if (onlyAnswered && !any) return;
+    out.push("", "=".repeat(60), s.eyebrow.toUpperCase() + " · " + s.title.toUpperCase(), "=".repeat(60), ...sec);
+  });
+  return out.join("\n");
+}
+function showFallback(){
+  const fb = document.getElementById("fallback"), ta = document.getElementById("fallbackText");
+  const txt = buildText(true); ta.value = txt; fb.classList.add("show");
+  const subj = "Intake nieuwe website – " + (state["start.bedrijf"] || "");
+  const full = txt.length < 1800;
+  document.getElementById("mailLink").href = "mailto:" + SEND_TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(full ? txt : "Mijn antwoorden (geplakt uit de vragenlijst):\n\n");
+  document.getElementById("fbLegend").textContent = full
+    ? "Klik op \u201cOpen in e-mail\u201d: je notities staan dan al in een mail naar " + SEND_TO + ". Je hoeft enkel nog op verzenden te drukken."
+    : "Klik op \u201cKopieer alles\u201d en daarna op \u201cOpen in e-mail\u201d, en plak je notities in de mail naar " + SEND_TO + ". Of download ze als bestand en voeg dat als bijlage toe.";
+  ta.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function setStatus(kind, msg){ const s = document.getElementById("status"); s.className = "status show " + kind; s.textContent = msg; }
+
+async function send(btn){
+  const name = state["start.contact"], email = state["start.email"], bedrijf = state["start.bedrijf"];
+  if (!bedrijf || !name || !email) { setStatus("err", "Vul eerst je bedrijfsnaam, naam en e-mailadres in bij Jouw gegevens."); return; }
+  if (!WEB3FORMS_KEY) { setStatus("err", "Verzenden is nog niet geconfigureerd. Kopieer je antwoorden hieronder en mail ze door."); showFallback(); return; }
+  btn.disabled = true; btn.textContent = "Verzenden…";
+  const text = buildText();
+  const payload = {
+    access_key: WEB3FORMS_KEY,
+    subject: "Intake nieuwe website – " + bedrijf,
+    from_name: name + " (" + bedrijf + ")",
+    email: email,
+    bedrijf: bedrijf,
+    telefoon: state["start.tel"] || "",
+    message: text
+  };
+  if (state["_copyme"]) payload.ccemail = email;
+  try {
+    const r = await fetch("https://api.web3forms.com/submit", {method:"POST", headers:{"Content-Type":"application/json", "Accept":"application/json"}, body:JSON.stringify(payload)});
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.success !== false) {
+      main.innerHTML = "";
+      main.append(h("section", {class:"step active"}, h("div", {class:"done"},
+        h("div", {class:"mark"}, "✓"), h("h1", null, "Verzonden"),
+        h("p", {class:"intro", style:"margin:0 auto 24px"}, "Bedankt. Je antwoorden zijn naar " + SEND_TO + " gestuurd. We nemen ze door en komen terug met de open punten voor het gesprek."),
+        h("div", {style:"display:flex;gap:10px;justify-content:center;flex-wrap:wrap"},
+          h("button", {type:"button", class:"btn ghost", onclick:() => go(0)}, "Antwoorden bekijken"),
+          h("button", {type:"button", class:"btn text", onclick:clearAll}, "Wis alles op dit toestel")))));
+      return;
+    }
+    throw new Error(j.message || "Verzenden mislukt");
+  } catch (e) {
+    btn.disabled = false; btn.textContent = "Verzend antwoorden";
+    setStatus("err", "Verzenden lukte niet (" + (e.message || "netwerkfout") + "). Je antwoorden zijn niet verloren: kopieer ze hieronder en mail ze door.");
+    showFallback();
+  }
+}
+function clearAll(){
+  const box = document.getElementById("status");
+  if (box && box.dataset.confirm === "1") {
+    state = {}; try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY + ":step"); } catch (e) {}
+    saveTxt.textContent = "Nog niets ingevuld"; saveEl.className = "save"; go(0); return;
+  }
+  if (box) { box.dataset.confirm = "1"; setStatus("err", "Zeker? Klik nog eens op 'Wis alle antwoorden' om alles op dit toestel te wissen."); setTimeout(() => { box.dataset.confirm = ""; }, 6000); }
+  else { state = {}; try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY + ":step"); } catch (e) {} go(0); }
+}
+
+/* ---------- Boot ---------- */
+buildNav();
+go(current);
+if (state._ts) { saveEl.classList.add("saved"); saveTxt.textContent = "Eerder bewaard"; }
+pullRemote();
+</script>
+</body>
+</html>
