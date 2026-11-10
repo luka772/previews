@@ -8,5 +8,11 @@
 :HL["/previews/vbtec/_next/static/chunks/0gn3ywoicx7na.css","style"]
 :HL["/previews/vbtec/_next/static/chunks/0an8fqhwrw4nh.css","style"]
 :HL["/previews/vbtec/_next/static/chunks/2g01zr-ob7gxq.css","style"]
+:HL["/previews/vbtec/dagklok/img/hero-lucht.webp","image",{"fetchPriority":"high"}]
+:HL["/previews/vbtec/dagklok/img/hero-huis.webp","image",{"fetchPriority":"high"}]
+:HL["/previews/vbtec/dagklok/img/hero-haag.webp","image"]
+:HL["/previews/vbtec/dagklok/img/dag-poster.webp","image"]
+:HL["/previews/vbtec/dagklok/img/bedrijf-dak.webp","image"]
+:HL["/previews/vbtec/dagklok/img/bedrijf-laadpalen.webp","image"]
 1:[["children",{"s":"__PAGE__","h":128}]]
-0:{"b":"OCQLfvrt3XydGiNH_yLjD","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"xlMzqGi89T8OZ5P3TEWaN","t":{"t":{"s":"","h":16,"c":"$Q1"}}}

@@ -8,6 +8,7 @@
 :HL["/previews/vbtec/_next/static/chunks/0gn3ywoicx7na.css","style"]
 :HL["/previews/vbtec/_next/static/chunks/0ci43vuyiwigc.css","style"]
 :HL["/previews/vbtec/_next/static/chunks/0an8fqhwrw4nh.css","style"]
+:HL["/previews/vbtec/dagklok/img/site/ff3c0c64.webp","image",{"fetchPriority":"high"}]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"bedrijven","h":64,"c":"$Q2"}]]
-0:{"b":"OCQLfvrt3XydGiNH_yLjD","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
+0:{"b":"xlMzqGi89T8OZ5P3TEWaN","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
