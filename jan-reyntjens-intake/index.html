@@ -225,7 +225,7 @@ th.ck{text-align:center}
   <ul class="steps" id="stepsNav"></ul>
   <div class="sidefoot">
     <div class="save" id="saveState"><span class="pip"></span><span id="saveText">Nog niets ingevuld</span></div>
-    <div class="to">Alles wordt <b>automatisch bewaard</b></div>
+    <div class="to">We overlopen alles <b>samen tijdens de meeting</b></div>
   </div>
 </aside>
 
@@ -265,7 +265,7 @@ const PREFILL_OLD = {};
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Een korte vragenlijst met enkel wat we echt nodig hebben om jullie nieuwe website op te bouwen. Reken op een twintigtal minuten. Een paar antwoorden vulden we al in op basis van jullie huidige website: je herkent ze aan het groene label “vooraf ingevuld”. Klopt iets niet, pas het dan gewoon aan. Alles wordt automatisch bewaard, dus je kan stoppen en later verdergaan, ook op een ander toestel.",
+  intro:"Een korte vragenlijst met enkel wat we echt nodig hebben om jullie nieuwe website op te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Een paar antwoorden vulden we al in op basis van jullie huidige website: je herkent ze aan het groene label “vooraf ingevuld”. Wil je iets noteren? Dat kan in de vakjes, alles wordt automatisch bewaard.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -681,7 +681,7 @@ function renderReview(){
   const sec = h("section", {class:"step active"});
   let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
   sec.append(h("p", {class:"eyebrow"}, "Afronden"), h("h1", null, "Overzicht"),
-    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. Klik op een deel om het nog eens na te kijken."));
+    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. We overlopen ze samen tijdens de meeting. Klik op een deel om het nog eens te bekijken."));
   if (false) sec.append(h("div", {class:"stats"},
     h("div", {class:"stat"}, h("b", null, String(d)), h("span", null, "vragen beantwoord")),
     h("div", {class:"stat"}, h("b", null, String(t - d)), h("span", null, "nog open")),
@@ -713,7 +713,7 @@ function renderReview(){
   /* notities doorsturen via eigen mail of bestand, geen externe dienst */
   const nb = h("div", {class:"sendbox"});
   nb.append(h("h2", null, "Je notities doorsturen"),
-    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we meteen aan de slag kunnen."));
+    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we er tijdens de meeting al rekening mee houden. Dit is volledig vrijblijvend."));
   const nrow = h("div", {style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"});
   nrow.append(h("button", {type:"button", class:"btn coral", onclick:showFallback}, "Toon mijn notities"));
   nb.append(nrow);
@@ -816,7 +816,7 @@ function showFallback(){
   const txt = buildText(true); ta.value = txt; fb.classList.add("show");
   const subj = "Intake nieuwe website – " + (state["start.bedrijf"] || "");
   const full = txt.length < 1800;
-  document.getElementById("mailLink").href = "mailto:" + SEND_TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(full ? txt : "Mijn antwoorden (geplakt uit de vragenlijst):\n\n");
+  document.getElementById("mailLink").href = "mailto:" + SEND_TO + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(full ? txt : "Mijn notities voor de meeting (geplakt uit de vragenlijst):\n\n");
   document.getElementById("fbLegend").textContent = full
     ? "Klik op \u201cOpen in e-mail\u201d: je notities staan dan al in een mail naar " + SEND_TO + ". Je hoeft enkel nog op verzenden te drukken."
     : "Klik op \u201cKopieer alles\u201d en daarna op \u201cOpen in e-mail\u201d, en plak je notities in de mail naar " + SEND_TO + ". Of download ze als bestand en voeg dat als bijlage toe.";
