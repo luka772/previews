@@ -339,7 +339,7 @@ window.__DK_RUN__ = function () {
     var href = 'mailto:info@vbtec.be?subject=' + encodeURIComponent('Offerteaanvraag') + '&body=' + encodeURIComponent(lines.join('\n'));
     status.hidden = false;
     status.innerHTML = '';
-    status.append('Uw aanvraag staat klaar in uw mailprogramma. ');
+    status.append('Bijna klaar: uw aanvraag staat klaar in uw mailprogramma. Druk daar nog op Verzenden. ');
     var a = document.createElement('a'); a.href = href; a.textContent = 'Opent er niets? Klik hier';
     a.style.fontWeight = '700';
     status.append(a, ' of bel +32 51 15 31 12.');

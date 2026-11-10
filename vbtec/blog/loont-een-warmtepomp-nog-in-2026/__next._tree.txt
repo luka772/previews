@@ -1,0 +1,13 @@
+:HL["/previews/vbtec/_next/static/chunks/07izv1lakn_jt.css","style"]
+:HL["/previews/vbtec/_next/static/media/Gilroy_Bold-s.p.1-t_2ns46upk_.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/previews/vbtec/_next/static/media/Gilroy_Heavy-s.p.3208zk5dp9ehi.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/previews/vbtec/_next/static/media/Gilroy_Light-s.p.0pbvz64r26ssr.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/previews/vbtec/_next/static/media/Gilroy_Medium-s.p.2hty6olzk9d6b.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/previews/vbtec/_next/static/media/Gilroy_Regular-s.p.0qxkshbmsy_ir.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/previews/vbtec/_next/static/chunks/0an8fqhwrw4nh.css","style"]
+:HL["/previews/vbtec/_next/static/chunks/0ci43vuyiwigc.css","style"]
+:HL["/previews/vbtec/_next/static/chunks/0gn3ywoicx7na.css","style"]
+3:[["children",{"s":"__PAGE__","h":160}]]
+2:[["children",{"s":{"n":"slug","t":"d","k":"loont-een-warmtepomp-nog-in-2026","s":[]},"h":96,"c":"$Q3"}]]
+1:[["children",{"s":"blog","h":64,"c":"$Q2"}]]
+0:{"b":"OCQLfvrt3XydGiNH_yLjD","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
