@@ -100,7 +100,21 @@
   </div>
 </div>
 
-<footer class="foot">Demo enkel voor SCT Truck Design. © 2026 Poortbuilder.</footer>
+<footer class="foot">Demo enkel voor SCT Truck Design. © 2026 Poortbuilder. <button id="btnInfo" class="infobtn" type="button" aria-haspopup="dialog" aria-controls="credits" aria-label="Info en bronvermelding">i</button></footer>
+<div id="credits" role="dialog" aria-modal="false" aria-labelledby="credTitle" hidden>
+  <button id="credClose" type="button" aria-label="Sluiten">×</button>
+  <h3 id="credTitle">Info en bronvermelding</h3>
+  <p>3D-model truck: <a href="https://sketchfab.com/3d-models/scania-s730-2-axle-2016-891ee120d3734b439a9a5e63eaa10a4c" target="_blank" rel="noopener">"Scania S730 2-Axle 2016"</a> door <a href="https://sketchfab.com/Asadawut.Kaewma" target="_blank" rel="noopener">Asadawut.Kaewma</a>, via Sketchfab, gebruikt onder de licentie <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.</p>
+  <p>Aangepast: vereenvoudigd, logo's verwijderd, materialen en onderdelen gewijzigd.</p>
+  <p>Het model is een voorbeeld voor de visualisatie. Deze configurator is geen product van Scania en wordt niet door Scania ondersteund. Merknamen zijn eigendom van hun respectieve eigenaars.</p>
+</div>
+<script>
+(function(){var b=document.getElementById('btnInfo'),d=document.getElementById('credits'),c=document.getElementById('credClose');
+function o(){d.hidden=false;b.setAttribute('aria-expanded','true');c.focus();}
+function x(){d.hidden=true;b.setAttribute('aria-expanded','false');b.focus();}
+b.addEventListener('click',function(){d.hidden?o():x();});c.addEventListener('click',x);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!d.hidden)x();});})();
+</script>
 <div id="loader"><div><img src="assets/sct-logo.svg" alt="" width="229" height="35"><div class="ldbar"><i id="ldBar"></i></div><p><span>De showroom wordt klaargezet</span> <b id="ldPct">0%</b></p></div></div>
 <script src="app.js"></script>
 </body>
