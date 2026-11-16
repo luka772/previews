@@ -256,17 +256,17 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbxG9pz7vDGvQl-2hTOpTV
 const TEST_MODE = /[?&]test\b/.test(location.search);
 const CLIENT_ID = TEST_MODE ? "TEST" : "tuinconfigurator-" + KLANT;
 /* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
-const PREFILL_V = 1;
-const PREFILL = {"start.bedrijf": "Gard'or", "start.contact": "Gerdy Verstraete", "start.email": "gerdy@gardor.be", "start.tel": "+32 477 34 30 69", "start.talen": ["Nederlands"], "beeld.logo": "Zet ik in de map"};
+const PREFILL_V = 2;
+const PREFILL = {"start.bedrijf": "Gard'or", "start.contact": "Stan", "start.talen": ["Nederlands"], "beeld.logo": "Zet ik in de map"};
 /* waarden uit een vorige versie die vervangen mogen worden zolang niemand ze aanpaste */
-const PREFILL_OLD = {};
+const PREFILL_OLD = {"start.contact": "Gerdy Verstraete", "start.email": "gerdy@gardor.be", "start.tel": "+32 477 34 30 69"};
 
 /* ---------- Vragenlijst ---------- */
 // t = tekstvak (standaard), s = kort tekstveld, r = één keuze, c = meerdere keuzes
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jullie gegevens", title:"Jullie gegevens", eyebrow:"Start",
-  intro:"Met deze vragenlijst maken we jullie tuinconfigurator af: jullie stijlen, materialen, beplanting, prijzen en foto's. Wat we al weten, staat er vooraf ingevuld: kijk het even na. Wat je niet weet, laat je open, dan overlopen we het samen. Alles wordt automatisch bewaard, dus je kan later verder, ook op een ander toestel.",
+  intro:"Dag Stan, met deze vragenlijst maken we jullie tuinconfigurator af: jullie stijlen, materialen, beplanting, prijzen en foto's. Wat we al weten, staat er vooraf ingevuld: kijk het even na. Wat je niet weet, laat je open, dan overlopen we het samen. Alles wordt automatisch bewaard, dus je kan later verder, ook op een ander toestel.",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Contactpersoon voor de configurator", type:"s", req:true},
