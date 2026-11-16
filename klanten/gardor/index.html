@@ -256,7 +256,7 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbxG9pz7vDGvQl-2hTOpTV
 const TEST_MODE = /[?&]test\b/.test(location.search);
 const CLIENT_ID = TEST_MODE ? "TEST" : "tuinconfigurator-" + KLANT;
 /* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
-const PREFILL_V = 2;
+const PREFILL_V = 3;
 const PREFILL = {"start.bedrijf": "Gard'or", "start.contact": "Stan", "start.talen": ["Nederlands"], "beeld.logo": "Zet ik in de map"};
 /* waarden uit een vorige versie die vervangen mogen worden zolang niemand ze aanpaste */
 const PREFILL_OLD = {"start.contact": "Gerdy Verstraete", "start.email": "gerdy@gardor.be", "start.tel": "+32 477 34 30 69"};
@@ -276,6 +276,32 @@ const STEPS = [
     {k:"goedkeuring", t:"Wie keurt het eindresultaat goed?", type:"s"},
     {k:"aanspreken", t:"Hoe spreken jullie je klanten aan?", type:"r", opts:["Je","U"]},
     {k:"talen", t:"In welke talen moet de configurator werken?", type:"c", opts:["Nederlands","Frans","Engels"]}
+  ]}]
+},
+{ id:"doel", nav:"Doel en keuzes", title:"Wat moet de configurator opleveren?", eyebrow:"Eerst dit",
+  intro:"Voor we iets afwerken, de belangrijkste keuzes. Wees gerust kritisch: hoe eerlijker, hoe beter de configurator voor jullie werkt.",
+  groups:[
+  { title:"Het doel", qs:[
+    {k:"waarom", t:"Wat moet de configurator vooral opleveren?", type:"c", opts:["Meer aanvragen","Betere aanvragen (met adres, wensen en budget)","Minder nutteloze plaatsbezoeken","Klanten die al weten wat ze willen","Hogere bedragen per project","Meer onderhoudscontracten","Een sterker imago dan de concurrentie"]},
+    {k:"nu", t:"Hoeveel aanvragen krijgen jullie nu per maand, en hoeveel daarvan worden een project?", type:"s"},
+    {k:"budget", t:"Vanaf welk budget is een tuinproject interessant voor jullie?", type:"s"},
+    {k:"nietwillen", t:"Welke aanvragen willen jullie liever niet? (te klein, te ver, enkel onderhoud, enkel een prijs vragen, ...)"},
+    {k:"succes", t:"Wanneer is de configurator over zes maanden voor jullie een succes?"}
+  ]},
+  { title:"Prijs: ja of nee?", qs:[
+    {k:"prijs", t:"Willen jullie überhaupt een prijs tonen?", type:"r", req:true, opts:["Ja, een richtprijs","Ja, een marge (van ... tot ...)","Enkel een vanaf-prijs","Nee, geen prijs: de klant laat zijn gegevens na en wij komen langs","Twijfel: wat raden jullie aan?"]},
+    {k:"prijswaarom", t:"Waarom wel of niet? Waar zijn jullie bang voor? (bv. dat klanten afhaken, dat de concurrentie meekijkt, dat de prijs te laag of te hoog uitvalt)"}
+  ]},
+  { title:"De demo, eerlijk bekeken", qs:[
+    {k:"tekort", t:"Wat is nu te kort, te simpel of klopt niet met hoe jullie werken?"},
+    {k:"teveel", t:"Wat is te veel of mag eruit? Is het voor een klant te lang of te ingewikkeld?"},
+    {k:"keuzes", t:"Hoeveel moet de klant zelf kiezen?", type:"r", opts:["Zo weinig mogelijk: in 2 minuten een aanvraag","Een middenweg","Zoveel mogelijk detail, ook planten en materialen"]},
+    {k:"nooit", t:"Wat mag de configurator zeker níet doen of beloven?"},
+    {k:"moestuineigen", t:"Jullie werkten zelf al aan een moestuinconfigurator. Wat wilden jullie daarmee bereiken, en wat moet daarvan zeker in deze configurator?"}
+  ]},
+  { title:"Opvolging", qs:[
+    {k:"wie", t:"Wie volgt de aanvragen op, en hoe snel kan die terugbellen?", type:"s"},
+    {k:"seizoen", t:"Wanneer hebben jullie het drukst? Mogen er in die periode minder aanvragen binnenkomen, of net meer?", type:"s"}
   ]}]
 },
 { id:"aanbod", nav:"Tuinen en stijlen", title:"Wat de klant kan kiezen", eyebrow:"Deel 1",
@@ -321,7 +347,6 @@ const STEPS = [
      rows:[["Grondwerken / tuin klaarmaken (per m²)"],["Terras klinkers (per m²)"],["Terras keramiek (per m²)"],["Terras natuursteen (per m²)"],["Terras hout of composiet (per m²)"],["Grindverharding (per m²)"],["Pad (per meter)"],["Graszoden (per m²)"],["Gras zaaien (per m²)"],["Haag (per meter)"],["Schutting of schermen (per meter)"],["Border met vaste planten (per m²)"],["Boom (per stuk)"],["Leiboom (per stuk)"],["Moestuinbak (per stuk)"],["Pergola of overkapping (vanaf)"],["Tuinhuis (vanaf)"],["Sfeerverlichting (vanaf)"],["Regenwaterput (vanaf)"],["Onderhoud (per maand of per beurt)"]],
      cols:[{k:"prijs",l:"Prijs (euro)",kind:"text"},{k:"btw",l:"Btw",kind:"select",opts:["Excl. btw","Incl. btw"]}]},
     {k:"minimum", t:"Minimumbedrag per project of vaste startkost (werfinrichting, verplaatsing, afvoer)", type:"s"},
-    {k:"vorm", t:"Tonen we een prijs aan de klant?", type:"r", opts:["Geen prijs tonen: de klant laat zijn gegevens na en jullie komen langs","Eén richtprijs (bv. ± 18.500 euro)","Een marge (bv. tussen 15.000 en 20.000 euro)","Een vanaf-prijs"]},
     {k:"tonen", t:"Tonen we prijzen excl. of incl. btw?", type:"r", opts:["Excl. btw","Incl. btw"]},
     {k:"premies", t:"Premies die we mogen vermelden (bv. voor ontharding, regenwater, groendak)", type:"s"},
     {k:"offertes", t:"Sturen jullie drie recente offertes om de prijzen op af te stemmen?", type:"r", opts:["Ja, sturen we door","Nee, de prijzen hierboven volstaan"]}
