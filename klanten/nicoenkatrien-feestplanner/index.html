@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Feestplanner · Nico &amp; Katrien</title>
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f3ec; --card:#fffdf9; --ink:#1d1b19; --soft:#6f6860; --line:#e5ddd1;
+  --blue:#2443a6; --blue-soft:#e8ecf8; --wine:#7a2a2a; --wood:#c9a77c;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.5 Geist,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);background:var(--card)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand img{width:42px;height:auto}
+.brand b{font:600 15px/1.2 Geist;letter-spacing:.02em}
+.brand small{display:block;color:var(--soft);font-size:12px}
+.top a.shop{font-size:14px;color:var(--ink);text-decoration:none;border:1px solid var(--ink);padding:8px 14px;border-radius:99px}
+.top a.shop:hover{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(32px,6vw,80px) clamp(16px,4vw,48px) 24px;max-width:1240px;margin:0 auto}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:600}
+h1{font:500 clamp(42px,6vw,76px)/.98 "Cormorant Garamond",Georgia,serif;margin:14px 0 18px;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--wine)}
+.lead{font-size:18px;color:var(--soft);max-width:34ch}
+.collage{position:relative;height:clamp(300px,36vw,440px)}
+.collage img{position:absolute;object-fit:cover;border-radius:10px;box-shadow:0 18px 40px -18px rgba(40,25,10,.45)}
+.collage .a{width:58%;height:78%;left:0;top:8%;transform:rotate(-3deg)}
+.collage .b{width:50%;height:62%;right:0;top:0;transform:rotate(2.5deg)}
+.collage .c{width:40%;height:44%;right:8%;bottom:0;transform:rotate(-1.5deg);border:6px solid var(--card)}
+
+/* planner */
+.planner{max-width:1240px;margin:0 auto;padding:24px clamp(16px,4vw,48px) 80px;display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:28px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.step{padding:16px 0;border-bottom:1px dashed var(--line)}
+.step:first-child{padding-top:0}.step:last-child{border:0;padding-bottom:0}
+.step h3{font:600 13px/1 Geist;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;display:flex;gap:8px;align-items:center}
+.step h3 i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 14px;font-size:14px;transition:.15s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.styles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.style{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;text-align:left;transition:.15s}
+.style b{display:block;font-weight:600;font-size:15px}
+.style span{font-size:12.5px;color:var(--soft);line-height:1.35;display:block;margin-top:2px}
+.style[aria-pressed=true]{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue);background:var(--blue-soft)}
+.count{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.count label{font-weight:500}.count label small{display:block;color:var(--soft);font-weight:400;font-size:12.5px}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:99px;background:#fff}
+.stepper button{width:40px;height:40px;border:0;background:none;font-size:20px;border-radius:50%}
+.stepper button:hover{background:var(--paper)}
+.stepper output{min-width:34px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:10px 6px;font-size:14px;border-right:1px solid var(--line)}
+.seg button:last-child{border:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.extras{display:grid;gap:8px}
+.extra{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer}
+.extra input{accent-color:var(--blue);width:18px;height:18px}
+.extra b{font-weight:500}.extra small{color:var(--soft);display:block;font-size:12.5px}
+.sub{margin-top:10px;display:none}.sub.on{display:block}
+.sub .chips .chip{font-size:13px;padding:6px 11px}
+
+/* result */
+.result{position:sticky;top:16px}
+.tablewrap{display:grid;grid-template-columns:210px 1fr;gap:22px;align-items:center;background:var(--ink);color:#f3ede4;border-radius:var(--r);padding:20px 24px}
+.tablewrap svg{width:100%;height:auto;display:block}
+.tablewrap h2{font:500 34px/1.05 "Cormorant Garamond",Georgia,serif}
+.tablewrap p{color:#b9b0a4;font-size:14px;margin-top:6px}
+.big{font:600 40px/1 Geist;letter-spacing:-.02em;margin-top:14px;font-variant-numeric:tabular-nums}
+.big small{font-size:15px;font-weight:400;color:#b9b0a4;letter-spacing:0}
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-top:14px;overflow:hidden}
+.group{padding:6px 18px 2px;font:600 12px/1 Geist;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);background:var(--paper);border-top:1px solid var(--line);padding-top:12px;padding-bottom:10px}
+.group:first-child{border-top:0}
+.row{display:grid;grid-template-columns:56px 1fr auto auto;gap:14px;align-items:center;padding:12px 18px;border-top:1px solid var(--line)}
+.group+.row{border-top:0}
+.row .ph{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--paper)}
+.row .ph.ini{display:grid;place-items:center;font:500 24px "Cormorant Garamond",serif;color:var(--wine);background:#f1e8dc}
+.row b{font-weight:500;display:block;line-height:1.25}
+.row small{color:var(--soft);font-size:12.5px}
+.row .q{display:flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:99px}
+.row .q button{width:30px;height:30px;border:0;background:none;border-radius:50%;font-size:16px}
+.row .q button:hover{background:var(--paper)}
+.row .q span{min-width:46px;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.row .p{min-width:72px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.tip{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;margin-top:14px;background:var(--blue-soft);border-radius:var(--r);padding:14px 18px}
+.tip img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:62% 30%}
+.tip b{display:block;font:500 20px/1.1 "Cormorant Garamond",serif;color:var(--blue)}
+.tip p{font-size:14.5px;margin-top:3px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:99px;padding:13px 20px;font-weight:500;text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{opacity:.88}
+.note{font-size:12.5px;color:var(--soft);margin-top:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:99px;font-size:14px;transition:.3s;opacity:0;pointer-events:none}
+.toast.on{transform:translate(-50%,0);opacity:1}
+
+/* story */
+.story{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 72px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.story div{border-top:2px solid var(--ink);padding-top:14px}
+.story b{font:500 24px/1.1 "Cormorant Garamond",serif;display:block;margin-bottom:6px}
+.story p{color:var(--soft);font-size:14.5px}
+footer{border-top:1px solid var(--line);padding:22px clamp(16px,4vw,48px);font-size:13px;color:var(--soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;background:var(--card)}
+
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr}.collage{height:300px}
+  .planner{grid-template-columns:1fr}.result{position:static}
+  .story{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .tablewrap{grid-template-columns:120px 1fr;padding:16px}
+  .tablewrap h2{font-size:26px}.big{font-size:32px}
+  .row{grid-template-columns:44px 1fr auto;gap:10px;padding:12px 14px}
+  .row .ph{width:44px;height:44px}
+  .row .p{grid-column:3;grid-row:1}
+  .row .q{grid-column:2/4;justify-self:start}
+  .styles{grid-template-columns:1fr 1fr}
+  .top a.shop{display:none}
+}
+@media print{
+  .top,.hero,.panel,.actions,.story,.tip,footer,.row .q button{display:none!important}
+  .planner{display:block;padding:0}.tablewrap{background:none;color:#000;border:1px solid #000}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#"><img src="img/logo.png" alt="Nico &amp; Katrien"><span><b>Nico &amp; Katrien</b><small>Kwaliteitsslagerij · traiteur · kaas</small></span></a>
+  <a class="shop" href="https://www.nicoenkatrien.be" target="_blank" rel="noopener">Naar de webshop</a>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="kicker">Feestplanner</div>
+    <h1>Hoeveel heb ik <em>nodig?</em></h1>
+    <p class="lead">Zeg hoeveel gasten er komen en hoe je wil eten. Wij rekenen uit wat er op tafel moet, met de juiste hoeveelheden en de prijs erbij.</p>
+  </div>
+  <div class="collage" aria-hidden="true">
+    <img class="a" src="img/hero.jpg" alt="">
+    <img class="b" src="img/tapas.jpg" alt="">
+    <img class="c" src="img/taart.jpg" alt="">
+  </div>
+</section>
+
+<main class="planner">
+  <section class="panel" aria-label="Je feest">
+    <div class="step">
+      <h3><i>1</i>Wat vieren we?</h3>
+      <div class="chips" id="occ"></div>
+    </div>
+    <div class="step">
+      <h3><i>2</i>Wie schuift aan?</h3>
+      <div class="count"><label>Volwassenen<small>vanaf 12 jaar</small></label>
+        <div class="stepper"><button data-k="ad" data-d="-1" aria-label="Minder volwassenen">−</button><output id="ad">8</output><button data-k="ad" data-d="1" aria-label="Meer volwassenen">+</button></div></div>
+      <div class="count"><label>Kinderen<small>tot 12 jaar</small></label>
+        <div class="stepper"><button data-k="ki" data-d="-1" aria-label="Minder kinderen">−</button><output id="ki">2</output><button data-k="ki" data-d="1" aria-label="Meer kinderen">+</button></div></div>
+    </div>
+    <div class="step">
+      <h3><i>3</i>Hoe eten we?</h3>
+      <div class="styles" id="styles"></div>
+    </div>
+    <div class="step">
+      <h3><i>4</i>Hoeveel honger?</h3>
+      <div class="seg" id="hunger"></div>
+    </div>
+    <div class="step">
+      <h3><i>5</i>Er nog bij?</h3>
+      <div class="extras" id="extras"></div>
+    </div>
+  </section>
+
+  <section class="result" aria-live="polite">
+    <div class="tablewrap">
+      <svg id="table" viewBox="0 0 220 220" role="img" aria-label="Tafelschikking"></svg>
+      <div>
+        <h2 id="rTitle">Gourmet voor 10</h2>
+        <p id="rSub">8 volwassenen en 2 kinderen</p>
+        <div class="big"><span id="total">€ 0</span> <small id="pp"></small></div>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="tip"><img src="img/team.jpg" alt=""><div><b id="tipWho">Tip van Nico</b><p id="tip"></p></div></div>
+    <div class="actions">
+      <a class="btn" id="order" href="https://www.nicoenkatrien.be" target="_blank" rel="noopener">Bestel deze lijst</a>
+      <button class="btn ghost" id="copy">Kopieer lijst</button>
+      <button class="btn ghost" onclick="print()">Print</button>
+    </div>
+    <p class="note">Hoeveelheden zijn een richtlijn van onze traiteur; je past alles hierboven nog aan. Prijzen uit ons feestmenu, onder voorbehoud. Bestel tijdig: voor Kerstmis ten laatste op 16 december, voor Oudejaar op 23 december.</p>
+  </section>
+</main>
+
+<section class="story">
+  <div><b>Nico, vlees</b><p>Dry-aged côtes à l'os, wild in het seizoen en eigen charcuterie. Op maat gesneden voor jouw tafel.</p></div>
+  <div><b>Katrien, kaas</b><p>Kazen van boeren die we kennen, op een schotel die je zo op tafel zet.</p></div>
+  <div><b>Maxim, bakkerij</b><p>Kraakvers brood en feesttaarten uit eigen bakkerij, sinds 2018.</p></div>
+</section>
+
+<footer><span>Nico &amp; Katrien · Godshuislaan 45, Roeselare · 051 25 01 58</span><span>Voorstel feestplanner · demo</span></footer>
+<div class="toast" id="toast">Lijst gekopieerd</div>
+
+<script>
+const P={ // naam, prijs, eenheid-tekst, foto
+  gourmet:["Gourmetschotel / steengrill",15.95,"schotel","img/hertekalf.jpg"],
+  gourmetWild:["Gourmet met wild",29.95,"schotel","img/hertekalf.jpg"],
+  gourmetJr:["Gourmet junior",8,"schotel",null],
+  gourmetGr:["Gourmet- en steengrillgroenten",6.5,"portie",null],
+  gourmetSaus:["Gourmetsausjes",2.75,"portie",null],
+  gourmetAard:["Aardappelsalade",2.95,"portie",null],
+  flensjes:["Gourmetflensjes",1.5,"stuk",null],
+  fondue:["Feestfondue NK",13.95,"schotel",null],
+  fondueJr:["Fondue junior",8,"schotel",null],
+  fondueGr:["Fonduegroenten",6.5,"portie",null],
+  fondueSaus:["Fonduesausjes",2.75,"portie",null],
+  fondueAard:["Fondue-aardappelen",2.95,"portie",null],
+  teppan:["Teppan yaki",18.95,"schotel",null],
+  teppanGr:["Groenten bij teppan yaki",6.5,"portie",null],
+  buffet:["Koud buffet",39.95,"persoon","img/buffet.jpg"],
+  royal:["Buffet royal",43.95,"persoon","img/buffet.jpg"],
+  kidsBuffet:["Kids buffet",9.95,"persoon",null],
+  cote:["Côte à l'os Simmenthal, dry-aged",65.95,"kg","img/cotes.jpg"],
+  frietjes:["Verse frietjes, bakje 1 kg",3.95,"bakje","img/frietjes.jpg"],
+  gratin:["Gratin dauphinois, 750 g",9,"bakje","img/gratin.jpg"],
+  groenteGarn:["Groentegarnituur (2 pers.)",18,"bakje",null],
+  kaas:["Kaasschotel van Katrien",21.5,"persoon",null],
+  noten:["Noten- en rozijnenbrood",4.95,"brood",null],
+  broodjes:["Mini belegde broodjes (8 p.p.)",16,"persoon","img/brood.jpg"],
+  tapasD:["Tapasschotel Delicious (20 hapjes)",75,"schotel","img/tapas.jpg"],
+  tapasF:["Tapasschotel Flavors (12 hapjes)",45,"schotel","img/tapas.jpg"],
+  aperoPlank:["Apéroplank NK",55,"plank","img/hero.jpg"],
+  bladerdeeg:["Bladerdeeghapjes, 20 stuks",24,"doos",null],
+  ballekes:["4 kaas- en 4 garnaalballekes",10,"doos","img/ballekes.jpg"],
+  kipvleugel:["Kippenvleugeltjes, 6 stuks",7.5,"doos","img/kipvleugel.jpg"],
+  macaron:["Macaron foie gras, 4 stuks",13,"doos","img/macaron.jpg"],
+  tomatensoep:["Tomatensoep",5.5,"pot",null],
+  boschamp:["Boschampignonsoep",8,"pot",null],
+  kreeft:["Kreeftensoep",9,"pot",null],
+  buche6s:["Bûche samba (6 pers.)",30.6,"stuk","img/buche-samba.jpg"],
+  buche4s:["Bûche samba (4 pers.)",20.4,"stuk","img/buche-samba.jpg"],
+  buche6m:["Bûche mokka (6 pers.)",30.6,"stuk","img/buche-mokka.jpg"],
+  buche4m:["Bûche mokka (4 pers.)",20.4,"stuk","img/buche-mokka.jpg"],
+  rol6:["Rolbiscuit (6 pers.)",30.6,"stuk","img/rolbiscuit.jpg"],
+  rol4:["Rolbiscuit (4 pers.)",20.4,"stuk","img/rolbiscuit.jpg"],
+  krek6:["Kreketaart (6 pers.)",30.6,"stuk","img/kreketaart.jpg"],
+  ijs:["IJsbûche (2 pers.)",6.5,"stuk",null],
+  brood:["Kraakvers broodassortiment",6.5,"pakket","img/brood.jpg"],
+  kroket:["Aardappelkroketten, 12 stuks",5.4,"zakje","img/kroket.jpg"],
+};
+
+const OCC=[
+  {k:"verjaardag",t:"Verjaardag"},{k:"feestdagen",t:"Kerst & Nieuwjaar"},{k:"communie",t:"Communie / lentefeest"},
+  {k:"familie",t:"Familiedag"},{k:"vrienden",t:"Avond met vrienden"},{k:"werk",t:"Op het werk"}];
+const STY=[
+  {k:"gourmet",t:"Gourmet",d:"Steengrill of gourmetstel, iedereen bakt zelf"},
+  {k:"fondue",t:"Fondue",d:"Vlees, groenten en sausjes"},
+  {k:"cote",t:"Côte à l'os",d:"Dry-aged rund, frietjes erbij"},
+  {k:"buffet",t:"Koud buffet",d:"Alles klaar op plateaus"},
+  {k:"tapas",t:"Tapas & hapjes",d:"Staand feest, van plank tot warme hapjes"},
+  {k:"kaas",t:"Kaasavond",d:"Katriens kazen met vers brood"},
+  {k:"broodjes",t:"Broodjesmaaltijd",d:"Mini belegde broodjes, 8 per persoon"},
+  {k:"teppan",t:"Teppan yaki",d:"Op de bakplaat aan tafel"}];
+const HUNGER=[{k:.85,t:"Licht"},{k:1,t:"Normaal"},{k:1.2,t:"Stevig"}];
+const EXTRAS=[
+  {k:"apero",t:"Aperitiefhapjes",d:"4 tot 6 hapjes per persoon",sub:[["mix","Huismix"],["luxe","Met macaron foie gras"]]},
+  {k:"soep",t:"Soep vooraf",d:"Een kom per persoon",sub:[["tomatensoep","Tomaat"],["boschamp","Boschampignon"],["kreeft","Kreeft"]]},
+  {k:"dessert",t:"Dessert of taart",d:"Uit de bakkerij van Maxim",sub:[["samba","Bûche samba"],["mokka","Bûche mokka"],["rol","Rolbiscuit"],["krek","Kreketaart"],["ijs","IJsbûche"]]},
+  {k:"brood",t:"Vers brood",d:"Kraakvers assortiment"}];
+
+const S={occ:"verjaardag",ad:8,ki:2,sty:"gourmet",h:1,ex:{apero:true,dessert:true},sub:{apero:"mix",soep:"tomatensoep",dessert:"samba"},wild:false,buffet:"buffet",over:{}};
+
+const TIPS={
+  gourmet:["Nico","Reken voor kinderen een junior schotel: kleiner, zonder pikante stukken. Wil je het feestelijker, kies dan gourmet met wild."],
+  fondue:["Nico","Haal de olie of bouillon pas op het laatste moment op temperatuur en hou het vlees koud tot het op tafel komt."],
+  cote:["Nico","Haal de côte à l'os een uur voor het bakken uit de koelkast. Kort dichtschroeien, dan rustig gaar in de oven. Wij snijden hem op dikte voor jou."],
+  buffet:["Katrien","Alles komt op plateaus met deksel, klaar om op tafel te zetten. Breng ze gerust later terug, we rekenen geen waarborg."],
+  tapas:["Katrien","Voor een staand feest zonder hoofdgerecht rekenen we zo'n 12 hapjes per persoon. Mix koud en warm, dan blijft het interessant."],
+  kaas:["Katrien","Haal de kaas een uur op voorhand uit de koelkast. Ik leg ze in volgorde van zacht naar sterk, zo proef je ze het best."],
+  broodjes:["Katrien","Ideaal voor een communie of een vergadering: alles is belegd en klaar. Zet er een soep bij voor een volledige lunch."],
+  teppan:["Nico","Laat de bakplaat goed heet worden en bak in kleine porties, dan blijft alles sappig."]};
+
+const $=s=>document.querySelector(s);
+const eur=n=>"€ "+n.toFixed(2).replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+
+function plan(){
+  const A=S.ad,K=S.ki,T=A+K,h=S.h,L=[];
+  const add=(g,k,q,why,unitq)=>{if(q>0)L.push({g,k,q,why,unitq})};
+  const H="Hoofdgerecht";
+  if(S.sty==="gourmet"){
+    add(H,S.wild?"gourmetWild":"gourmet",Math.ceil(A*h),"1 per volwassene"+(h>1?", +20% bij stevige honger":h<1?", iets minder bij lichte honger":""));
+    add(H,"gourmetJr",K,"1 per kind");
+    add(H,"gourmetGr",T,"1 portie per persoon");add(H,"gourmetSaus",T,"1 portie per persoon");
+    add(H,"gourmetAard",T,"1 portie per persoon");add(H,"flensjes",K*2,"2 per kind");
+  }else if(S.sty==="fondue"){
+    add(H,"fondue",Math.ceil(A*h),"1 per volwassene");add(H,"fondueJr",K,"1 per kind");
+    add(H,"fondueGr",T,"1 portie per persoon");add(H,"fondueSaus",T,"1 portie per persoon");add(H,"fondueAard",T,"1 portie per persoon");
+  }else if(S.sty==="teppan"){
+    add(H,"teppan",Math.ceil(A*h+K/2),"1 per volwassene, 1 per 2 kinderen");add(H,"teppanGr",T,"1 portie per persoon");
+  }else if(S.sty==="buffet"){
+    add(H,S.buffet,A,"per persoon");add(H,"kidsBuffet",K,"per kind");
+    add(H,"brood",Math.ceil(T/4),"1 pakket per 4 personen");
+  }else if(S.sty==="cote"){
+    const g=A*400*h+K*150, kg=Math.ceil(g/100)/10;
+    add(H,"cote",kg,Math.round(400*h)+" g per volwassene, 150 g per kind","kg");
+    add(H,"frietjes",Math.ceil(T*.25*h),"ca. 250 g per persoon");
+    add(H,"gratin",Math.ceil(T/4),"1 bakje per 4 personen");
+    add(H,"groenteGarn",Math.ceil(T/2),"1 per 2 personen");
+  }else if(S.sty==="kaas"){
+    add(H,"kaas",Math.max(4,Math.ceil(A*h+K/2)),"per persoon, vanaf 4 personen");
+    add(H,"brood",Math.ceil(T/3),"1 pakket per 3 personen");add(H,"noten",Math.ceil(T/6),"1 per 6 personen");
+  }else if(S.sty==="broodjes"){
+    add(H,"broodjes",Math.ceil(A*h+K*.5),"8 broodjes per volwassene, half voor kinderen");
+  }else if(S.sty==="tapas"){
+    let n=Math.round((A*12+K*6)*h), left=n;
+    const d=Math.floor(n*.35/20); add(H,"tapasD",d,"20 hapjes per schotel");left-=d*20;
+    const pl=Math.max(1,Math.round(T/10)); add(H,"aperoPlank",pl,"1 plank per 10 personen");left-=pl*12;
+    const bl=Math.max(0,Math.ceil(left*.4/20)); add(H,"bladerdeeg",bl,"warme hapjes uit de oven");left-=bl*20;
+    const ba=Math.max(0,Math.ceil(left*.5/8)); add(H,"ballekes",ba,"kaas- en garnaalballekes");left-=ba*8;
+    add(H,"kipvleugel",Math.max(0,Math.ceil(left/6)),"warm, ook voor kinderen");
+  }
+  if(S.ex.apero&&S.sty!=="tapas"){
+    const n=Math.round(T*5*h);
+    add("Aperitief","bladerdeeg",Math.max(1,Math.round(n*.45/20)),"ca. 5 hapjes per persoon");
+    add("Aperitief","ballekes",Math.ceil(n*.3/8),"");
+    add("Aperitief",S.sub.apero==="luxe"?"macaron":"kipvleugel",Math.ceil(n*.25/(S.sub.apero==="luxe"?4:6)),"");
+  }
+  if(S.ex.soep) add("Voorgerecht",S.sub.soep,Math.ceil(T/3),"1 pot voor ca. 3 kommen");
+  if(S.ex.dessert){
+    const D="Dessert",f=S.sub.dessert;
+    if(f==="ijs") add(D,"ijs",Math.ceil(T/2),"1 per 2 personen");
+    else{
+      const k6={samba:"buche6s",mokka:"buche6m",rol:"rol6",krek:"krek6"}[f], k4={samba:"buche4s",mokka:"buche4m",rol:"rol4",krek:null}[f];
+      let six=Math.floor(T/6),r=T-six*6,four=0;
+      if(r>0){ if(r<=4&&k4) four=1; else six++; }
+      add(D,k6,six,"voor 6 personen");if(k4)add(D,k4,four,"voor 4 personen");
+    }
+  }
+  if(S.ex.brood&&!["buffet","kaas","broodjes"].includes(S.sty)) add("Brood","brood",Math.ceil(T/5),"1 pakket per 5 personen");
+  return L;
+}
+
+function render(){
+  const L=plan(); let tot=0,html="",last="";
+  L.forEach(l=>{
+    const id=l.g+"|"+l.k; if(S.over[id]!=null) l.q=S.over[id];
+    const p=P[l.k], line=p[1]*l.q; tot+=line;
+    if(l.g!==last){html+=`<div class="group">${l.g}</div>`;last=l.g;}
+    const qt=l.unitq==="kg"?l.q.toFixed(1).replace(".",",")+" kg":l.q+"×";
+    const ph=p[3]?`<img class="ph" src="${p[3]}" alt="" loading="lazy">`:`<div class="ph ini">${p[0][0]}</div>`;
+    html+=`<div class="row">${ph}<div><b>${p[0]}</b><small>${eur(p[1])} per ${p[2]}${l.why?" · "+l.why:""}</small></div>
+      <div class="q"><button data-id="${id}" data-d="-1" aria-label="Minder">−</button><span>${qt}</span><button data-id="${id}" data-d="1" aria-label="Meer">+</button></div>
+      <div class="p">${eur(line)}</div></div>`;
+    l.line=line;
+  });
+  $("#list").innerHTML=html;
+  const T=S.ad+S.ki, sty=STY.find(s=>s.k===S.sty);
+  $("#rTitle").textContent=`${sty.t} voor ${T}`;
+  $("#rSub").textContent=`${S.ad} volwassene${S.ad===1?"":"n"}${S.ki?` en ${S.ki} kind${S.ki===1?"":"eren"}`:""} · ${OCC.find(o=>o.k===S.occ).t.toLowerCase()}`;
+  $("#total").textContent=eur(tot);
+  $("#pp").textContent=T?"· "+eur(tot/T)+" p.p.":"";
+  const [who,t]=TIPS[S.sty]; $("#tipWho").textContent="Tip van "+who; $("#tip").textContent=t;
+  drawTable();
+  window._L=L;window._tot=tot;
+}
+
+function drawTable(){
+  const A=S.ad,K=S.ki,T=Math.min(A+K,40),svg=$("#table");
+  const R=T>16?62:T>8?56:50, cx=110,cy=110;
+  let s=`<circle cx="${cx}" cy="${cy}" r="${R+6}" fill="#c9a77c" opacity=".25"/><circle cx="${cx}" cy="${cy}" r="${R}" fill="#c9a77c"/>`;
+  s+=`<text x="${cx}" y="${cy+9}" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="30" font-weight="600" fill="#1d1b19">${A+K}</text>`;
+  for(let i=0;i<T;i++){
+    const a=-Math.PI/2+i*2*Math.PI/T, kid=i>=Math.min(A,40-0)&&i>=T-Math.min(K,T), pr=R+24, pl=kid?9:12;
+    const x=cx+Math.cos(a)*pr,y=cy+Math.sin(a)*pr;
+    s+=`<g style="transform-origin:${x}px ${y}px;animation:pop .3s ${i*0.015}s both"><circle cx="${x}" cy="${y}" r="${pl}" fill="#fffdf9" stroke="${kid?"#2443a6":"#e5ddd1"}" stroke-width="${kid?2:1}"/><circle cx="${x}" cy="${y}" r="${pl*.55}" fill="none" stroke="#e5ddd1"/></g>`;
+  }
+  svg.innerHTML=`<style>@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}</style>`+s;
+}
+
+function chips(el,arr,get,set,cls="chip"){
+  el.innerHTML=arr.map(o=>`<button class="${cls}" data-k="${o.k}" aria-pressed="${get()==o.k}">${o.d?`<b>${o.t}</b><span>${o.d}</span>`:o.t}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest("button");if(!b)return;set(b.dataset.k);el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S.over={};render();};
+}
+chips($("#occ"),OCC,()=>S.occ,k=>{S.occ=k;
+  const sug={feestdagen:"gourmet",communie:"buffet",vrienden:"tapas",werk:"broodjes"}[k];
+  if(sug){S.sty=sug;chips($("#styles"),STY,()=>S.sty,k=>S.sty=k,"style");}
+  if(k==="feestdagen"){S.ex.dessert=true;S.sub.dessert="samba";buildExtras();}
+});
+chips($("#styles"),STY,()=>S.sty,k=>S.sty=k,"style");
+chips($("#hunger"),HUNGER,()=>S.h,k=>S.h=+k,"x");
+
+function buildExtras(){
+  $("#extras").innerHTML=EXTRAS.map(x=>`<div><label class="extra"><input type="checkbox" data-x="${x.k}" ${S.ex[x.k]?"checked":""}><span><b>${x.t}</b><small>${x.d}</small></span></label>
+   ${x.sub?`<div class="sub ${S.ex[x.k]?"on":""}" data-sub="${x.k}"><div class="chips">${x.sub.map(([k,t])=>`<button class="chip" data-s="${x.k}" data-v="${k}" aria-pressed="${S.sub[x.k]===k}">${t}</button>`).join("")}</div></div>`:""}</div>`).join("");
+}
+buildExtras();
+$("#extras").addEventListener("change",e=>{const k=e.target.dataset.x;S.ex[k]=e.target.checked;const s=document.querySelector(`[data-sub=${k}]`);if(s)s.classList.toggle("on",e.target.checked);S.over={};render();});
+$("#extras").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;S.sub[b.dataset.s]=b.dataset.v;b.parentNode.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S.over={};render();});
+
+document.querySelectorAll(".stepper button").forEach(b=>b.onclick=()=>{const k=b.dataset.k;S[k]=Math.max(k==="ad"?1:0,Math.min(60,S[k]+ +b.dataset.d));$("#"+k).textContent=S[k];S.over={};render();});
+$("#list").onclick=e=>{const b=e.target.closest("button[data-id]");if(!b)return;const id=b.dataset.id,l=_L.find(x=>x.g+"|"+x.k===id);
+  const step=l.unitq==="kg"?.1:1; S.over[id]=Math.max(0,Math.round((l.q+step*b.dataset.d)*10)/10); render();};
+$("#copy").onclick=async()=>{
+  const T=S.ad+S.ki;let t=`Mijn bestelling bij Nico & Katrien\n${$("#rTitle").textContent} (${$("#rSub").textContent})\n\n`;
+  _L.filter(l=>l.q>0).forEach(l=>t+=`- ${l.unitq==="kg"?l.q.toFixed(1).replace(".",",")+" kg":l.q+"x"} ${P[l.k][0]}  ${eur(l.line)}\n`);
+  t+=`\nTotaal ongeveer ${eur(_tot)}`;
+  try{await navigator.clipboard.writeText(t)}catch(e){}
+  const o=$("#toast");o.classList.add("on");setTimeout(()=>o.classList.remove("on"),1800);
+};
+render();
+</script>
+</body>
+</html>
