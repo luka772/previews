@@ -1,4 +1,4 @@
-:HL["/previews/cohezy-website-configurator/_next/static/chunks/3b6z98or_nab1.css","style"]
+:HL["/previews/cohezy-website-configurator/_next/static/chunks/0e8grvu077_5v.css","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"vVDpQh3rTHXm1Bim1uqWI","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"MocQDajNCg3CvKgXjJfj0","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
