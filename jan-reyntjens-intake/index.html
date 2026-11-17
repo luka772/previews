@@ -107,6 +107,7 @@ h1{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.4vw,36
 .q .chk{margin-left:auto;width:18px;height:18px;border-radius:50%;background:var(--coral);color:#fff;display:none;place-items:center;font-size:10px}
 .q.answered .chk{display:grid}
 .q .qt{display:block;font-weight:500;font-size:16.5px;line-height:1.45;margin:0 0 14px;letter-spacing:-.005em}
+.gridtotal{margin-top:14px;background:#f6f5f2;border-radius:12px;padding:14px 16px}.gt-row{display:flex;justify-content:space-between;gap:12px;font-size:15px}.gt-row b{white-space:nowrap}.gt-sub{margin:6px 0 0;font-size:13px;color:var(--fg-muted)}
 .q ul.sub{margin:-6px 0 12px;padding-left:18px;color:var(--fg-muted);font-size:14px}
 .q .ctl{min-width:0}
 
@@ -130,8 +131,9 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--fg-m
 tr:last-child td{border-bottom:0}
 td.rowlbl{font-weight:500;min-width:220px}
 td.rowlbl small{display:block;color:var(--fg-muted);font-weight:400}
-td select{padding:6px 10px;min-width:130px;width:auto;border-radius:8px}
+td select{padding:6px 10px;min-width:0;width:auto;max-width:100%;border-radius:8px}
 td input[type=text]{padding:6px 10px;min-width:150px;border-radius:8px}
+table.compact td.rowlbl{min-width:190px}table.compact td input[type=text]{min-width:100px}table.compact td,table.compact th{padding-left:8px;padding-right:8px}
 td.ck{text-align:center;width:84px}
 th.ck{text-align:center}
 .ckbox{appearance:none;width:18px;height:18px;border:1px solid var(--line-strong);border-radius:5px;background:#fff;display:inline-grid;place-items:center;cursor:pointer;vertical-align:middle;transition:all .15s;margin:0}
@@ -225,7 +227,7 @@ th.ck{text-align:center}
   <ul class="steps" id="stepsNav"></ul>
   <div class="sidefoot">
     <div class="save" id="saveState"><span class="pip"></span><span id="saveText">Nog niets ingevuld</span></div>
-    <div class="to">We overlopen alles <b>samen tijdens de meeting</b></div>
+    <div class="to">Alles wordt <b>automatisch bewaard</b></div>
   </div>
 </aside>
 
@@ -255,8 +257,8 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbx0GTZM6i2XBU854MBidg
 const TEST_MODE = /[?&]test\b/.test(location.search);
 const CLIENT_ID = TEST_MODE ? "TEST" : "jan-reyntjens";
 /* Vooraf ingevuld op basis van het eerste gesprek en de strategie */
-const PREFILL_V = 3;
-const PREFILL = {"start.bedrijf": "Schildersbedrijf Jan Reyntjens", "bedrijf.team": "Van jullie huidige website: 9 specialisten, elk in zijn eigen vakgebied. Wie zijn ze en wie doet wat?", "bedrijf.diensten": ["Binnenschilderwerken", "Buitenschilderwerken en gevels", "Behangwerken", "Spuit- en decoratietechnieken", "Raamdecoratie (gordijnen, shutters, lamellen, ...)", "Zachte vloerbekleding", "Renovatie en restauratie"], "bedrijf.diensten.extra": "Van jullie huidige website: binnen- en buitenschilderwerken, behang en schildersdoek, verf- en spuittechnieken, gevel- en houtwerk bij nieuwbouw, renovatie en restauratie, raamdecoratie (klassieke gordijnen, American stores, schuifpanelen, shutters, houten lamellen) en zachte vloerbekleding (linoleum, vinyl, kamerbreed tapijt, traplopers). Klopt dit nog allemaal?", "bedrijf.onderscheid": "Van jullie huidige website: gratis offertes, gratis en correct technisch advies, hoog geschoold personeel, strikte opvolging van de werken, en jullie volgen de nieuwste trends in woningdecoratie. Wat zou je hier zelf aan toevoegen?", "bedrijf.bewijs": "Van jullie huidige website: 15 jaar ervaring in raamdecoratie, merken als Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, en Copahome voor raamdecoratie. Bij technische vragen schakelen jullie de fabrikant in voor gratis advies. Zijn er ook reviews of keurmerken?", "nieuw.doel": ["Offerteaanvragen"], "praktisch.domein": "Van jullie huidige website: gebouwd door 2design. Wie beheert vandaag de domeinnaam en de hosting?", "praktisch.socials": "Van jullie huidige website: een Facebookpagina (Schildersbedrijf Jan Reyntjens). Zijn er nog andere kanalen?", "nieuw.paginas": ["Home", "Binnenschilderwerk", "Buitenschilderwerk", "Raamdecoratie", "Vloerbekleding", "Realisaties", "Een pagina per gemeente", "Over ons", "Contact en offerte", "Privacy en cookies"], "nieuw.paginas.extra": "Voorstel volgens de aanbevolen versie. Nieuws en acties en Vacatures zitten in de volledige versie. Ontbreekt er een pagina?", "praktisch.juridisch": "Van jullie huidige website: BVBA Reyntjens Jan, Stationsdreef 36, 8800 Roeselare. Ondernemingsnummer? Is er al een privacyverklaring of algemene voorwaarden?", "nieuw.contactopties": ["Offerteformulier", "Bellen"]};
+const PREFILL_V = 4;
+const PREFILL = {"start.bedrijf": "Schildersbedrijf Jan Reyntjens", "bedrijf.team": "Van jullie huidige website: 9 specialisten, elk in zijn eigen vakgebied. Wie zijn ze en wie doet wat?", "bedrijf.diensten": ["Binnenschilderwerken", "Buitenschilderwerken en gevels", "Behangwerken", "Spuit- en decoratietechnieken", "Raamdecoratie (gordijnen, shutters, lamellen, ...)", "Zachte vloerbekleding", "Renovatie en restauratie"], "bedrijf.diensten.extra": "Van jullie huidige website: binnen- en buitenschilderwerken, behang en schildersdoek, verf- en spuittechnieken, gevel- en houtwerk bij nieuwbouw, renovatie en restauratie, raamdecoratie (klassieke gordijnen, American stores, schuifpanelen, shutters, houten lamellen) en zachte vloerbekleding (linoleum, vinyl, kamerbreed tapijt, traplopers). Klopt dit nog allemaal?", "bedrijf.onderscheid": "Van jullie huidige website: gratis offertes, gratis en correct technisch advies, hoog geschoold personeel, strikte opvolging van de werken, en jullie volgen de nieuwste trends in woningdecoratie. Wat zou je hier zelf aan toevoegen?", "bedrijf.bewijs": "Van jullie huidige website: 15 jaar ervaring in raamdecoratie, merken als Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, en Copahome voor raamdecoratie. Bij technische vragen schakelen jullie de fabrikant in voor gratis advies. Zijn er ook reviews of keurmerken?", "nieuw.doel": ["Offerteaanvragen"], "praktisch.domein": "Van jullie huidige website: gebouwd door 2design. Wie beheert vandaag de domeinnaam en de hosting?", "praktisch.socials": "Van jullie huidige website: een Facebookpagina (Schildersbedrijf Jan Reyntjens). Zijn er nog andere kanalen?", "praktisch.juridisch": "Van jullie huidige website: BVBA Reyntjens Jan, Stationsdreef 36, 8800 Roeselare. Ondernemingsnummer? Is er al een privacyverklaring of algemene voorwaarden?", "nieuw.contactopties": ["Offerteformulier", "Bellen"], "nieuw.paginaplan[0].keuze": "Nodig", "nieuw.paginaplan[0].soort": "Fundament · € 1.250", "nieuw.paginaplan[1].keuze": "Nodig", "nieuw.paginaplan[1].soort": "CMS · € 500", "nieuw.paginaplan[2].keuze": "Nodig", "nieuw.paginaplan[2].soort": "CMS · € 500", "nieuw.paginaplan[3].keuze": "Nodig", "nieuw.paginaplan[3].soort": "Vast · € 250", "nieuw.paginaplan[4].keuze": "Nodig", "nieuw.paginaplan[4].soort": "Vast · € 250", "nieuw.paginaplan[5].keuze": "Nodig", "nieuw.paginaplan[5].soort": "Vast · € 250", "nieuw.paginaplan[6].keuze": "Nodig", "nieuw.paginaplan[6].soort": "Vast · € 250", "nieuw.paginaplan[7].keuze": "Nodig", "nieuw.paginaplan[7].soort": "Vast · € 250", "nieuw.paginaplan[8].keuze": "Nodig", "nieuw.paginaplan[8].soort": "Vast · € 250", "nieuw.paginaplan[9].keuze": "Nodig", "nieuw.paginaplan[9].soort": "Vast · € 250", "nieuw.paginaplan[10].keuze": "Nodig", "nieuw.paginaplan[10].soort": "Vast · € 250", "nieuw.paginaplan[11].keuze": "Nodig", "nieuw.paginaplan[11].soort": "Vast · € 250", "nieuw.paginaplan[12].keuze": "Later", "nieuw.paginaplan[12].soort": "Vast · € 250", "nieuw.paginaplan[13].keuze": "Later", "nieuw.paginaplan[13].soort": "Vast · € 250", "nieuw.paginaplan[14].keuze": "Later", "nieuw.paginaplan[14].soort": "Vast · € 250", "nieuw.paginaplan[15].keuze": "Later", "nieuw.paginaplan[15].soort": "Vast · € 250", "nieuw.paginaplan[16].keuze": "Later", "nieuw.paginaplan[16].soort": "CMS · € 500", "nieuw.paginaplan[17].keuze": "Later", "nieuw.paginaplan[17].soort": "Vast · € 250", "nieuw.voorbeelden": "Uit ons gesprek: een website in de stijl van decuperedecoratie.be. Zie deel 4.", "voorbeeld.vb-blokken": ["Grote foto met slogan", "Realisaties (slider)", "Ons verhaal", "Onze diensten in tegels", "Reviews van klanten", "Offerteknop en contactformulier"], "voorbeeld.vb-beter": "Akkoord, zo doen", "voorbeeld.raam": ["Klassieke gordijnen", "Schuifpanelen", "American stores", "Shutters", "Houten lamellen"], "voorbeeld.raam.extra": "Van jullie huidige website. Klopt dit nog? Bieden jullie ook plaatsing aan huis?", "voorbeeld.vloer": ["Kamerbreed tapijt", "Traplopers", "Linoleum", "Vinyl of PVC"], "voorbeeld.vloer.extra": "Van jullie huidige website. Klopt dit nog?", "voorbeeld.merken": "Van jullie huidige website: Forbo, Sommer, Desso, Lano en DLW voor vloerbekleding, Copahome voor raamdecoratie. Welke verfmerken?"};
 /* waarden uit een vorige versie die vervangen mogen worden zolang niemand ze aanpaste */
 const PREFILL_OLD = {};
 
@@ -265,7 +267,7 @@ const PREFILL_OLD = {};
 // grid = tabel met per rij keuzes/vinkjes/tekst, check = afvinklijst
 const STEPS = [
 { id:"start", nav:"Jouw gegevens", title:"Jouw gegevens", eyebrow:"Start",
-  intro:"Een korte vragenlijst met enkel wat we echt nodig hebben om jullie nieuwe website op te bouwen. Je hoeft niets in te vullen of door te sturen: we overlopen de vragen samen tijdens de meeting. Neem ze gerust al eens door, zodat je weet wat er aan bod komt. Een paar antwoorden vulden we al in op basis van jullie huidige website: je herkent ze aan het groene label “vooraf ingevuld”. Wil je iets noteren? Dat kan in de vakjes, alles wordt automatisch bewaard.",
+  intro:"Een vragenlijst met wat we nodig hebben om jullie nieuwe website op te bouwen, in de stijl van decuperedecoratie.be. Vul ze in wanneer het je past: alles wordt automatisch bewaard, dus je kan er ook in een paar keer aan werken. Een paar antwoorden vulden we al in op basis van jullie huidige website en ons gesprek: je herkent ze aan het groene label “vooraf ingevuld”. Klopt iets niet? Pas het gerust aan. Foto's, logo en documenten zet je in jullie eigen map: https://drive.google.com/drive/folders/1agxIiNDoqWf_EJX6YH_LS4tpYfGjt7C5",
   groups:[{ title:"Wie vult dit in?", qs:[
     {k:"bedrijf", t:"Naam van het bedrijf", type:"s", req:true},
     {k:"contact", t:"Jouw naam en functie", type:"s", req:true},
@@ -309,7 +311,11 @@ const STEPS = [
     {k:"succes", t:"Wanneer is de nieuwe website over een jaar geslaagd voor jullie? (bv. aantal aanvragen per maand, meer werk in een bepaalde dienst of regio)"}
   ]},
   { title:"Pagina's", qs:[
-    {k:"paginas", t:"Welke pagina's moeten er op de website komen?", type:"c", opts:["Home","Binnenschilderwerk","Buitenschilderwerk","Raamdecoratie","Vloerbekleding","Realisaties","Een pagina per gemeente","Over ons","Contact en offerte","Nieuws en acties","Vacatures","Privacy en cookies"], extra:true},
+    {k:"paginaplan", t:"Ons voorstel, af te toetsen per pagina.", type:"grid", total:true, firstCol:"Pagina",
+     sub:["CMS-pagina (€ 500): voor wat vaak verandert. Eén vaste opmaak, en jullie vullen zelf onbeperkt aan: of het nu 5 of 50 projecten zijn, de prijs blijft dezelfde. Zelf aanpassen en toevoegen, zonder ons.","Vaste pagina (€ 250): voor wat zelden verandert, zoals een dienstpagina. Eén keer ontworpen en goed gezet. Kleine aanpassingen later lopen via ons.","CMS = jullie passen zelf aan. Vast = aanpassen via Cohezy. Wil je een pagina zelf kunnen aanpassen? Zet ze dan op CMS. Kies per pagina of ze nodig is, en hoe ze gemaakt wordt: de prijs onderaan rekent mee."],
+     rows:[["Homepagina + CMS-fundament", "grote foto met slogan, realisaties, jullie verhaal, diensten en een duidelijke offerteknop. Het fundament onder alle CMS-pagina's (één keer nodig)"], ["Realisaties (\"Doen en kunnen\")", "zoals bij De Cuperé: elk project een eigen pagina met grote foto, korte uitleg en ±10 foto's. Jullie voegen zelf nieuwe projecten toe"], ["Pagina per gemeente", "schilder Roeselare, Izegem, Hooglede, ... zodat jullie gevonden worden waar jullie werken. Zelf uit te breiden"], ["Binnenschilderwerk", "dienstpagina: uitleg, werkwijze en foto's"], ["Buitenschilderwerk en gevels", "dienstpagina: gevels, houtwerk, nieuwbouw"], ["Decoratieve technieken", "zoals hun pagina 'Technieken': spuitwerk, kalkverf, stuc, beton-look, ... met foto's per techniek"], ["Behang en wandbekleding", "behang en schildersdoek"], ["Raamdecoratie", "gordijnen, American stores, schuifpanelen, shutters, lamellen, plaatsing aan huis"], ["Vloerbekleding", "linoleum, vinyl, kamerbreed tapijt, traplopers, op maat met stalen"], ["Over ons", "jullie verhaal, team en waarden, zoals hun 'Missie en koers'"], ["Contact en offerte", "offerteformulier, telefoon, adres, openingsuren, kaart"], ["Privacy en cookies", "wettelijk verplicht"], ["Renovatie en restauratie", "dienstpagina voor oude woningen en restauratie"], ["Kleuradvies en kleurstalen", "hoe jullie helpen kiezen: advies, kleurstalen op de juiste ondergrond"], ["Toonzaal", "wat je er kan zien, openingsuren, afspraak maken (enkel als er een toonzaal is)"], ["Vacature", "zoals bij De Cuperé: profiel, taken, wat jullie bieden en een knop om te solliciteren"], ["Nieuws, acties en inspiratie", "acties, kleurtrends, tips. Jullie plaatsen zelf nieuwe berichten"], ["Veelgestelde vragen", "antwoorden op wat klanten vaak vragen. Sterk voor Google en ChatGPT"]],
+     cols:[{k:"keuze",l:"Beslissing",kind:"select",opts:["Nodig","Later","Schrappen"]},{k:"soort",l:"Soort",kind:"select",opts:["Fundament · € 1.250","CMS · € 500","Vast · € 250"]},{k:"opm",l:"Opmerking",kind:"text"}]},
+    {k:"paginas-extra", t:"Welke pagina's ontbreken nog in dit voorstel? Welke 3 pagina's zijn voor jullie het belangrijkst?"},
     {k:"gemeenten", t:"Voor welke gemeenten en zoektermen willen jullie gevonden worden in Google? (bv. schilder Roeselare, gordijnen Izegem) Per gemeente maken we een eigen pagina."},
     {k:"talen", t:"In welke talen komt de website?", type:"r", opts:["Enkel Nederlands","Nederlands en Frans","Nederlands, Frans en Engels"]}
   ]},
@@ -329,15 +335,44 @@ const STEPS = [
     {k:"voorbeelden", t:"Welke websites vinden jullie mooi, ook uit andere sectoren? Wat spreekt je erin aan? Zijn er websites waar jullie absoluut niet op willen lijken?"}
   ]}]
 },
-{ id:"beeld", nav:"Beeld en teksten", title:"Beeld en teksten", eyebrow:"Deel 4",
+{ id:"voorbeeld", nav:"Voorbeeld: De Cuperé", title:"Jullie voorbeeld: decuperedecoratie.be", eyebrow:"Deel 4",
+  intro:"Jullie willen een website in de stijl van decuperedecoratie.be. Hier overlopen we alles wat op hun site staat, zodat we weten wat jullie willen overnemen en wat we beter doen.",
+  groups:[
+  { title:"Stijl en homepagina", qs:[
+    {k:"vb-aanspreekt", t:"Wat spreekt je het meest aan op hun website?", type:"c", opts:["De strakke zwart-witte look","Grote, rustige sfeerfoto's van afgewerkte interieurs","Weinig tekst, veel beeld","Sierlijke, schuine titels","Een korte, sterke slogan bovenaan","De slider met realisaties op de homepagina","Per realisatie een eigen pagina met veel foto's","Per dienst een eigen pagina met foto's"], extra:true},
+    {k:"vb-kleuren", t:"Welke kleuren krijgt de nieuwe website?", type:"r", opts:["Onze eigen kleuren en logo","Zwart-wit zoals De Cuperé, met ons logo","Een mix: hun rust, onze kleuren","Te bespreken"], extra:true},
+    {k:"vb-blokken", t:"Welke blokken komen op de homepagina? Bij De Cuperé zijn dat: grote foto met slogan, realisaties, 'Missie en koers', diensten en contact.", type:"c", opts:["Grote foto met slogan","Realisaties (slider)","Ons verhaal","Onze diensten in tegels","Reviews van klanten","Merken waarmee we werken","Offerteknop en contactformulier","Openingsuren en toonzaal"], extra:true},
+    {k:"slogan", t:"Hebben jullie een slogan? Bij De Cuperé is dat 'Tijdloos met perfecte timing'. Wat is jullie belofte in één zin?"},
+    {k:"vb-beter", t:"Wat doen we beter dan hun website?", sub:["Hun site toont mooi, maar heeft geen offerteknop, geen reviews en geen pagina's per gemeente. Daardoor vragen bezoekers minder snel een offerte aan en worden ze minder gevonden in Google.","Ons voorstel: hun rustige look en opbouw, maar mét een duidelijke offerteknop, reviews en pagina's per gemeente."], type:"r", opts:["Akkoord, zo doen","Liever exact zoals hun site","Te bespreken"], extra:true}
+  ]},
+  { title:"Jullie verhaal (zoals hun 'Missie en koers')", qs:[
+    {k:"vb-verhaal", t:"Wat mag zeker in jullie verhaal komen?", type:"c", opts:["Sinds wanneer het bedrijf bestaat","Familiebedrijf, generaties","Goede prijs-kwaliteit","Duurzame kwaliteitsproducten","Kleuradvies","Opgeleide vakmensen","Persoonlijke opvolging van elk project","Stipt op tijd","Eigen toonzaal","Klantentevredenheid"], extra:true}
+  ]},
+  { title:"Diensten (zoals hun dienstpagina's)", qs:[
+    {k:"kleuradvies", t:"Geven jullie kleuradvies of maken jullie kleurstalen op de juiste ondergrond, zoals De Cuperé?", type:"r", opts:["Ja, kleuradvies én kleurstalen","Enkel kleuradvies","Nee"], extra:true},
+    {k:"technieken", t:"Welke decoratieve technieken voeren jullie uit? Bij De Cuperé staan ze allemaal op de pagina 'Technieken'.", type:"c", opts:["Spuitwerk","Kalkverf","Krijtverf","Metallic verf","Beton-look of cementstuc","Kalkstuc of glansstuc","Tadelakt","Steenimitatie","Kaleien","Streep- of korrelverf"], extra:true},
+    {k:"raam", t:"Welke raamdecoratie bieden jullie aan?", type:"c", opts:["Klassieke gordijnen","Rolgordijnen","Vouwgordijnen","Schuifpanelen","American stores","Shutters","Houten lamellen","Plaatsing aan huis"], extra:true},
+    {k:"vloer", t:"Welke vloerbekleding bieden jullie aan?", type:"c", opts:["Kamerbreed tapijt","Tapijttegels","Traplopers","Linoleum","Vinyl of PVC","Laminaat","Advies met stalen","Plaatsing","Onderhoudstips"], extra:true},
+    {k:"merken", t:"Met welke merken werken jullie (verf, raamdecoratie, vloeren)? Mogen we hun sfeerfoto's gebruiken, zoals De Cuperé doet?"}
+  ]},
+  { title:"Realisaties (zoals hun 'Doen en kunnen')", qs:[
+    {k:"vb-projecten", t:"Welke 5 tot 10 projecten tonen we bij de lancering? Per project: wat jullie deden, in welke gemeente, en een tiental foto's.", sub:["Zet de foto's per project in een mapje in jullie Drive-map: " + "https://drive.google.com/drive/folders/1agxIiNDoqWf_EJX6YH_LS4tpYfGjt7C5"]},
+    {k:"vb-fotos", t:"Hebben jullie zulke mooie, scherpe sfeerfoto's al? Die stijl valt of staat met de foto's.", type:"r", opts:["Ja, genoeg","Een paar","Nee, Cohezy mag een fotoshoot doen"], extra:true}
+  ]},
+  { title:"Contact en vacature", qs:[
+    {k:"openingsuren", t:"Wanneer zijn jullie bereikbaar? Openingsuren, en een toonzaal op afspraak zoals bij De Cuperé?"},
+    {k:"vacature", t:"Zoeken jullie nieuwe mensen? De Cuperé heeft een vacaturepagina met profiel, taken en wat ze bieden.", type:"r", opts:["Ja, nu","Af en toe","Nee"], extra:true}
+  ]}]
+},
+{ id:"beeld", nav:"Beeld en teksten", title:"Beeld en teksten", eyebrow:"Deel 5",
   intro:"Goede foto's verkopen een schilder. Hier bekijken we wat er al is en wat we nog maken.",
   groups:[{ title:"Materiaal", qs:[
-    {k:"fotos", t:"Welke foto's of video's hebben jullie al (realisaties, team, toonzaal)? Van wie zijn de rechten?"},
+    {k:"fotos", t:"Welke foto's of video's hebben jullie al (realisaties, team, toonzaal)? Van wie zijn de rechten?", sub:["Foto's, logo en documenten zet je in jullie Drive-map: https://drive.google.com/drive/folders/1agxIiNDoqWf_EJX6YH_LS4tpYfGjt7C5"]},
     {k:"shoot", t:"Mogen we langskomen op een werf of in de toonzaal om te fotograferen en te filmen?", type:"r", opts:["Ja","Ja, maar enkel op bepaalde werven","Nee"], extra:true},
     {k:"teksten", t:"Wie schrijft de teksten?", type:"r", opts:["Cohezy schrijft ze op basis van deze antwoorden","Wij leveren ze zelf aan","Samen"]}
   ]}]
 },
-{ id:"praktisch", nav:"Praktisch", title:"Praktisch en technisch", eyebrow:"Deel 5",
+{ id:"praktisch", nav:"Praktisch", title:"Praktisch en technisch", eyebrow:"Deel 6",
   intro:"Een paar praktische vragen zodat de overstap vlot verloopt en er niets uitvalt.",
   groups:[
   { title:"Overstap", qs:[
@@ -588,8 +623,8 @@ function choiceControl(q, key, id, multi){
   return wrap;
 }
 function gridControl(q, key, id){
-  const table = h("table");
-  const thead = h("tr", null, h("th", null, "Veld"));
+  const table = h("table", q.total ? {class:"compact"} : null);
+  const thead = h("tr", null, h("th", null, q.firstCol || "Veld"));
   const colUsed = c => Object.keys(state).some(k => k.startsWith(key + "[") && k.endsWith("]." + c.k) && state[k]);
   const cols = q.cols.filter(c => !c.hidden || colUsed(c));
   cols.forEach(c => thead.append(h("th", {class: c.kind === "check" ? "ck" : ""}, c.l)));
@@ -629,6 +664,25 @@ function gridControl(q, key, id){
   table.append(tb);
   const wrap = h("div", null, h("div", {class:"tbl"}, table));
   if (q.legend) wrap.append(h("p", {class:"legend"}, q.legend));
+  if (q.total) {
+    const tot = h("div", {class:"gridtotal"});
+    const price = v => { const m = String(v || "").match(/€\s*([\d.]+)/); return m ? parseInt(m[1].replace(/\./g, ""), 10) : 0; };
+    const eur = n => "€ " + n.toLocaleString("nl-BE");
+    const calc = () => {
+      let sum = 0, cms = 0, vast = 0, later = 0;
+      q.rows.forEach((r, ri) => {
+        const k = state[key + "[" + ri + "].keuze"], so = state[key + "[" + ri + "].soort"] || "";
+        if (k === "Nodig") { sum += price(so); if (so.startsWith("CMS")) cms++; else if (so.startsWith("Vast")) vast++; }
+        else if (k === "Later") later++;
+      });
+      tot.innerHTML = "";
+      tot.append(h("div", {class:"gt-row"}, h("span", null, "Prijs pagina's (stap 2), volgens jullie keuzes"), h("b", null, eur(sum) + " excl. btw")),
+        h("p", {class:"gt-sub"}, cms + " CMS-pagina's · " + vast + " vaste pagina's" + (later ? " · " + later + " voor later (kan nadien aan dezelfde prijs)" : "") + ". Stap 1 (€ 2.000) en stap 3 komen hier nog bij."));
+    };
+    calc();
+    table.addEventListener("change", calc);
+    wrap.append(tot);
+  }
   return wrap;
 }
 function checklistControl(q, key, id){
@@ -709,7 +763,7 @@ function renderReview(){
   const sec = h("section", {class:"step active"});
   let t = 0, d = 0; STEPS.forEach((s, i) => { const st = stepStats(i); t += st.total; d += st.done; });
   sec.append(h("p", {class:"eyebrow"}, "Afronden"), h("h1", null, "Overzicht"),
-    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. We overlopen ze samen tijdens de meeting. Klik op een deel om het nog eens te bekijken."));
+    h("p", {class:"intro"}, "Dit zijn alle delen van de vragenlijst. Je antwoorden worden automatisch bewaard. Klik op een deel om het nog eens te bekijken of aan te vullen."));
   if (false) sec.append(h("div", {class:"stats"},
     h("div", {class:"stat"}, h("b", null, String(d)), h("span", null, "vragen beantwoord")),
     h("div", {class:"stat"}, h("b", null, String(t - d)), h("span", null, "nog open")),
@@ -741,7 +795,7 @@ function renderReview(){
   /* notities doorsturen via eigen mail of bestand, geen externe dienst */
   const nb = h("div", {class:"sendbox"});
   nb.append(h("h2", null, "Je notities doorsturen"),
-    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we er tijdens de meeting al rekening mee houden. Dit is volledig vrijblijvend."));
+    h("p", null, "Al iets ingevuld? Dan kan je je notities hier doorsturen naar ", h("span", {class:"addr"}, SEND_TO), ", zodat we meteen aan de slag kunnen."));
   const nrow = h("div", {style:"display:flex;gap:10px;flex-wrap:wrap;align-items:center"});
   nrow.append(h("button", {type:"button", class:"btn coral", onclick:showFallback}, "Toon mijn notities"));
   nb.append(nrow);
