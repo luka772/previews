@@ -2,4 +2,4 @@
 :HL["https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Manrope:wght@500;800&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Oxygen:wght@400;700&family=Montserrat:wght@400;600;800&family=Crimson+Text:ital,wght@0,400;1,400&family=Abril+Fatface&family=Open+Sans:wght@400;600&family=Oswald:wght@300;500;700&family=EB+Garamond:ital,wght@0,400;1,400&family=Quicksand:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Space+Grotesk:wght@500;700&family=Syne:wght@600;800&display=swap","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"ctGk8QAPAmptgEcA_q6HW","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"aNrJMdfTFOITVcAR1MCDn","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
