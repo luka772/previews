@@ -1,5 +1,5 @@
-:HL["/previews/cohezy-website-configurator/_next/static/chunks/3jwju-lcpxwd4.css","style"]
+:HL["/previews/cohezy-website-configurator/_next/static/chunks/0ardtygjwv665.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Manrope:wght@500;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Space+Grotesk:wght@500;700&family=Syne:wght@600;800&display=swap","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"44KldbQVFzjb2nR50zGmp","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"GbjOanr48u_WiHuxuUb0J","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
