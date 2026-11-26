@@ -160,7 +160,7 @@ $("start").onclick=async()=>{
 $("stop").onclick=()=>{want=false;setTimeout(()=>syncSheet(true),8000);clearTimeout(chunkTimer);if(mr&&mr.state==="recording")mr.stop();setTimeout(()=>{if(stream)stream.getTracks().forEach(t=>t.stop());if(actx)actx.close();an=null;},300);uiRec(false);setStatus("Gestopt");};
 
 /* --- opslag in Google Sheets (tabblad per klant) --- */
-const SHEET_URL="https://script.google.com/macros/s/AKfycbxG9pz7vDGvQl-2hTOpTVDqITL8vdDhSrhvsLWKBK3a9t-1doEG5wv0FV1XNFgQx6p6/exec";
+const SHEET_URL="https://script.google.com/macros/s/AKfycbxG9pz7vDGvQl-2hTOpTVDqITL8vdDhSrhvsLWKBK3a9t-1doEG5wv0FV1XNFgQx6p6/exec";const SHEET_CODE = (function(){ try { const k = "sheet-code:" + location.pathname; const u = new URLSearchParams(location.search).get("code"); if (u) { localStorage.setItem(k, u); return u; } return localStorage.getItem(k) || ""; } catch (e) { return ""; } })();
 function slug(){return ($("klant").value||"algemeen").toLowerCase().trim().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,"")||"algemeen";}
 function sess(){let v=LS.get("gh-sess","");if(!v){const d=new Date();v=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");LS.set("gh-sess",v);}return v;}
 const sheetId=()=>"gesprek-"+slug()+"-"+sess();
@@ -168,12 +168,12 @@ let syncT=null,lastSync=0;
 function sheetRows(){const rows=[];lines.forEach((l,i)=>rows.push(["Gesprek",new Date(l.ts).toLocaleString("nl-BE"),(l.note?"[notitie] ":"")+l.text]));
   const r=result||{};[["Wat we al weten",r.facts],["Al beantwoord",r.done],["Nog open",r.open]].forEach(([t,a],i)=>{if(a&&a.length)rows.push(["Samenvatting",t,a.join("\n")]);});return rows;}
 function syncSheet(now){clearTimeout(syncT);syncT=setTimeout(async()=>{
-  try{await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({klant:sheetId(),state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})});lastSync=Date.now();$("sync").textContent="Opgeslagen in Google Sheets om "+fmt(lastSync);}
+  try{await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({klant:sheetId(),code:SHEET_CODE,state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})});lastSync=Date.now();$("sync").textContent="Opgeslagen in Google Sheets om "+fmt(lastSync);}
   catch(e){$("sync").textContent="Opslaan in Google Sheets mislukt, tekst staat wel nog op deze laptop";}
  },now?0:3000);}
-async function restoreSheet(){if(lines.length)return;try{const r=await fetch(SHEET_URL+"?klant="+encodeURIComponent(sheetId()),{cache:"no-store"});const j=await r.json();const st=j&&j.state;if(st&&Array.isArray(st.lines)&&st.lines.length>lines.length){lines=st.lines;result=st.result||{};persist();LS.set("gh-result",JSON.stringify(result));drawT();drawR();}}catch(e){}}
+async function restoreSheet(){if(lines.length)return;try{const r=await fetch(SHEET_URL+"?klant="+encodeURIComponent(sheetId())+"&code="+encodeURIComponent(SHEET_CODE),{cache:"no-store"});const j=await r.json();const st=j&&j.state;if(st&&Array.isArray(st.lines)&&st.lines.length>lines.length){lines=st.lines;result=st.result||{};persist();LS.set("gh-result",JSON.stringify(result));drawT();drawR();}}catch(e){}}
 restoreSheet();
-window.addEventListener("beforeunload",()=>{try{navigator.sendBeacon(SHEET_URL,new Blob([JSON.stringify({klant:sheetId(),state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})],{type:"text/plain;charset=utf-8"}));}catch(e){}});
+window.addEventListener("beforeunload",()=>{try{navigator.sendBeacon(SHEET_URL,new Blob([JSON.stringify({klant:sheetId(),code:SHEET_CODE,state:{_ts:Date.now(),lines,result},pct:0,rows:sheetRows()})],{type:"text/plain;charset=utf-8"}));}catch(e){}});
 
 /* --- notities --- */
 $("addnote").onclick=()=>{const v=$("note").value.trim();if(!v)return;lines.push({ts:Date.now(),text:v,note:true});persist();$("note").value="";drawT();ask();};
